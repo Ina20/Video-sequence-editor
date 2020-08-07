@@ -37,10 +37,50 @@ button {
 button:hover {
   background: #EDEBD7;
 }
-#drop {
-  margin-top: 0;
+.drop-zone {
+  cursor: pointer;
   height: 450px;
+  max-width: 450px;
+  margin: auto;
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px dashed #EDEBD7;
+  border-radius: 5px;
 }
-#drop:hover {
+.drop-zone-over {
   opacity: 70%;
+  border-style: solid;
+}
+.drop-zone-prompt {
+  font-size: 24px;
+  font-weight: 600;
+  font-family: 'Nunito', sans-serif;
+  color: #fff;
+}
+.drop-zone-input {
+  display: none;
+}
+.drop-zone-thumb {
+  width: 90%;
+  height: 90%;
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: #EDEBD7;
+  background-size: cover;
+  position: relative;
+}
+.drop-zone-thumb::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 5px 0;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.75);
+  font-size: 16px;
+  font-family: 'Nunito', sans-serif;
+  text-align: center;
 }

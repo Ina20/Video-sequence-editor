@@ -11,9 +11,12 @@
       <img src="./images/CoVideo_logo.png">
       <h1>CoVideo</h1>
       <p>Connect your videos</p>
-      <button>Upload videos</button>
-      <p>or</p>
-      <img id="drop" src="./images/Drop.png">
+      <div class="drop-zone">
+        <span class="drop-zone-prompt">Drop file here or click to upload</span>
+        <input type="file" name="myFile" class="drop-zone-input">
+      </div>
     </div>
+
+    <script src="uploadVideo.js"></script>
   </body>
 </html>
