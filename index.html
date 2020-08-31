@@ -5,15 +5,28 @@
     <title>CoVideo</title>
     <link rel="stylesheet" type="text/css" href="styles/global.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   </head>
   <body>
     <div id="home">
       <img src="./images/CoVideo_logo.png">
       <h1>CoVideo</h1>
       <p>Connect your videos</p>
-      <div class="drop-zone">
-        <span class="drop-zone-prompt">Drop file here or click to upload</span>
-        <input type="file" name="myFile" class="drop-zone-input">
+      <form id="uploadForm">
+        <div class="drop-zone">
+          <span class="drop-zone-prompt">Drop file here or click to upload</span>
+          <input type="file" name="myVideo" class="drop-zone-input" id="startUpload" onchange="openEditor()">
+        </div>
+      </form>
+    </div>
+    <div id="editor" class="container">
+      <div class="row">
+        <div class="col-sm-12 d-flex align-items-center" id="videoBar">
+          <div class="drop-zone drop-zone-sm">
+            <span class="drop-zone-prompt drop-zone-prompt-sm">+</span>
+            <input type="file" name="myVideo" class="drop-zone-input" id="nextUpload" onchange="addMoreVideo()">
+          </div>
+        </div>
       </div>
     </div>
 
