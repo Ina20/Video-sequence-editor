@@ -4,7 +4,10 @@ html, body {
   background-attachment: fixed;
   //overflow: hidden;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: 'Nunito', sans-serif;
+  overflow-x: hidden;
 }
 #home {
   height: 100%;
@@ -111,6 +114,10 @@ button:hover {
 #editor {
   display: none;
   height: 100%;
+  width: 100%;
+  white-space: nowrap;
+  padding: 0;
+  box-sizing: border-box;
 }
 .fileListDisplay {
   background-size: cover;
@@ -122,6 +129,22 @@ button:hover {
 #videoBar {
   background: rgba(0, 0, 0, 0.20);
   height: 150px;
-  margin: 10px;
+  margin: 0 auto 20px auto;
+  border-radius: 5px;
+}
+nav {
+  background: #731937;
+  color: #fff;
+  height: 50px;
+  margin-bottom: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 25px;
+}
+#videoTag {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 0 auto;
+  background: rgba(0, 0, 0, 0.20);
+  height: 50%;
   border-radius: 5px;
 }

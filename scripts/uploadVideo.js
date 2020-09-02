@@ -7,7 +7,7 @@ document.querySelectorAll(".drop-zone-input").forEach(inputElement => {
 
   inputElement.addEventListener("change", e => {
     if(inputElement.files.length) {
-      updateThumbnails(dropZoneElement, inputElement.files[0]);
+      //updateThumbnails(dropZoneElement, inputElement.files[0]);
     }
   });
 
@@ -29,7 +29,7 @@ document.querySelectorAll(".drop-zone-input").forEach(inputElement => {
     if(e.dataTransfer.files.length) {
       inputElement.files = e.dataTransfer.files;
       //console.log(inputElement.files);
-      updateThumbnails(dropZoneElement, e.dataTransfer.files[0]);
+      //updateThumbnails(dropZoneElement, e.dataTransfer.files[0]);
     }
 
     dropZoneElement.classList.remove("drop-zone-over");
