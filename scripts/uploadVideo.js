@@ -75,6 +75,20 @@ function openEditor(){
     document.getElementById("home").style.display = "none";
     document.getElementById("editor").style.display = "block";
     console.log(file);
+
+    let fileDisplay = document.createElement('video');
+    fileDisplay.classList.add("fileListDisplay");
+    document.getElementById("videoBar").appendChild(fileDisplay);
+    let blobURL = URL.createObjectURL(file);
+    console.log(blobURL);
+    fileDisplay.src = blobURL;
+    fileDisplay.onclick = function() {
+      console.log("hello, i'm a video");
+      console.log(file.name);
+      document.querySelector("video").src = blobURL;
+    }
+
+    /*
     let fileDisplay = document.createElement('div');
     fileDisplay.classList.add("fileListDisplay");
     document.getElementById("videoBar").appendChild(fileDisplay);
@@ -83,10 +97,25 @@ function openEditor(){
     reader.onload = () => {
       fileDisplay.style.backgroundImage = `url('${ reader.result }')`;
     };
+    */
 }
 function addMoreVideo(){
     let file = document.getElementById("nextUpload").files[0];
     console.log(file);
+
+    let fileDisplay = document.createElement('video');
+    fileDisplay.classList.add("fileListDisplay");
+    document.getElementById("videoBar").appendChild(fileDisplay);
+    let blobURL = URL.createObjectURL(file);
+    console.log(blobURL);
+    fileDisplay.src = blobURL;
+    fileDisplay.onclick = function() {
+      console.log("hello, i'm a video");
+      console.log(file.name);
+      document.querySelector("video").src = blobURL;
+    }
+
+    /*
     let fileDisplay = document.createElement('div');
     fileDisplay.classList.add("fileListDisplay");
     document.getElementById("videoBar").appendChild(fileDisplay);
@@ -95,4 +124,5 @@ function addMoreVideo(){
     reader.onload = () => {
       fileDisplay.style.backgroundImage = `url('${ reader.result }')`;
     };
+    */
 }
