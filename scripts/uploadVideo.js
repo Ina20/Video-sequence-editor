@@ -65,9 +65,15 @@ function updateThumbnails(dropZoneElement, file) {
     thumbnailElement.style.backgroundImage = null;
   }
 }
+
+let socket = io();
+let trimObject;
+
+
 function openEditor(){
     //document.getElementById("uploadForm").submit();
     let file = document.getElementById("startUpload").files[0];
+    let active = false;
 
     document.body.style.backgroundImage = "linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(321deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44, 44, 44,0.05) 53%, rgba(44, 44, 44,0.05) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(334deg, rgb(237,235,215),rgb(237,235,215))";
 
@@ -86,6 +92,14 @@ function openEditor(){
       console.log("hello, i'm a video");
       console.log(file.name);
       document.querySelector("video").src = blobURL;
+      if(active) {
+        fileDisplay.classList.remove("active");
+        active = false;
+      }else {
+        fileDisplay.classList.add("active");
+        active = true;
+      }
+      trimObject = file;
     }
 
     /*
@@ -101,6 +115,7 @@ function openEditor(){
 }
 function addMoreVideo(){
     let file = document.getElementById("nextUpload").files[0];
+    let active = false;
     console.log(file);
 
     let fileDisplay = document.createElement('video');
@@ -113,6 +128,14 @@ function addMoreVideo(){
       console.log("hello, i'm a video");
       console.log(file.name);
       document.querySelector("video").src = blobURL;
+      if(active) {
+        fileDisplay.classList.remove("active");
+        active = false;
+      }else {
+        fileDisplay.classList.add("active");
+        active = true;
+      }
+      trimObject = file;
     }
 
     /*
@@ -126,3 +149,28 @@ function addMoreVideo(){
     };
     */
 }
+
+function trim(){
+  console.log("Cięcie");
+  console.log(trimObject);
+  trimObject.toJSON = function() { return {
+       'lastModified'     : trimObject.lastModified,
+       'lastModifiedDate' : trimObject.lastModifiedDate,
+       'name'             : trimObject.name,
+       'size'             : trimObject.size,
+       'type'             : trimObject.type
+    };}
+    data = JSON.stringify(trimObject);
+    console.log(data);
+  /*
+  let trimObjectJSON = JSON.stringify(trimObject);
+  console.log(trimObjectJSON);
+  let data = trimObjectJSON;
+  */
+  socket.emit('trim', data);
+}
+
+socket.on('fromPython', (data) => {
+  console.log(data);
+  console.log(JSON.parse(data));
+});

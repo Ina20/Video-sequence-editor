@@ -1,11 +1,75 @@
 const express = require('express');
+//const {spawn} = require('child_process');
 const app = express();
 const port = 3000;
+let http = require('http').Server(app);
+let io = require('socket.io')(http);
 
+let fromPython = '';
+//let arg1 = 'Hello';
 
 app.use(express.static(__dirname + '/scripts'));
 app.use('/styles', express.static(__dirname + '/styles'));
 app.use('/images', express.static(__dirname + '/images'));
-app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
-app.listen(port, () => console.log("App listening at http://localhost:3000"));
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
+io.on("connection", (socket) => {
+  console.log('a user connected');
+  socket.on('trim', (data) => {
+    let result = JSON.parse(data);
+    console.log('result: ' + result.name);
+    console.log('data: ' + data);
+    arg1 = data;
+    console.log("Hello from socket " + arg1.name);
+
+      const spawn = require("child_process").spawn;
+
+      const pythonProcess = spawn('python', ["./scripts/editVideo.py"]);
+
+      pythonProcess.stdout.on('data', (data) => {
+        // Do something with the data returned from python script
+        fromPython = data.toString();
+        console.log(fromPython);
+        console.log(data.toString());
+
+      });
+      pythonProcess.stdout.on('end', () => {
+        try {
+          let fromPythonJSON = JSON.parse(fromPython);
+          console.log("coming from python: " + fromPythonJSON.name);
+          console.log(fromPython);
+          socket.emit('fromPython', fromPython);
+        } catch (e) {
+          console.log(fromPython);
+        }
+      });
+      pythonProcess.stdin.write(arg1);
+      pythonProcess.stdin.end();
+  });
+});
+
+http.listen(3000, () => {
+  console.log('listening on *:3000');
+});
+
+
+
+/*
+app.get('/', (req, res) => {
+  var dataToSend;
+  const python = spawn('python', ['./scripts/editVideo.py']);
+  python.stdout.on('data', function (data) {
+    console.log('Pipe data from python script ...');
+    dataToSend = data.toString();
+  });
+  python.on('close', (code) => {
+    console.log(`child process close all stdio with code ${code}`);
+    res.send(dataToSend)
+  });
+});
+*/
+
+//app.listen(port, () => console.log("App listening at http://localhost:3000"));

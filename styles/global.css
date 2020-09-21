@@ -148,3 +148,7 @@ nav {
   height: 50%;
   border-radius: 5px;
 }
+.active {
+  border: 2px solid #731937;
+  border-radius: 5px;
+}
