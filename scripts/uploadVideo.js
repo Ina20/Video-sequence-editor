@@ -71,7 +71,7 @@ let trimObject;
 
 
 function openEditor(){
-    //document.getElementById("uploadForm").submit();
+    document.getElementById("uploadForm").submit();
     let file = document.getElementById("startUpload").files[0];
     let active = false;
 
@@ -108,7 +108,10 @@ function openEditor(){
     document.getElementById("videoBar").appendChild(fileDisplay);
     const reader = new FileReader();
     reader.readAsDataURL(file);
+
     reader.onload = () => {
+
+  }
       fileDisplay.style.backgroundImage = `url('${ reader.result }')`;
     };
     */
@@ -167,7 +170,7 @@ function trim(){
   console.log(trimObjectJSON);
   let data = trimObjectJSON;
   */
-  socket.emit('trim', data);
+//  socket.emit('trim', data);
 }
 
 socket.on('fromPython', (data) => {

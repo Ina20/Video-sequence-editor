@@ -13,7 +13,7 @@
       <img src="./images/CoVideo_logo.png">
       <h1>CoVideo</h1>
       <p>Connect your videos</p>
-      <form id="uploadForm">
+      <form method="POST" action="/upload" enctype="multipart/form-data" id="uploadForm">
         <div class="drop-zone">
           <span class="drop-zone-prompt">Drop file here or click to upload</span>
           <input type="file" name="myVideo" class="drop-zone-input" id="startUpload" onchange="openEditor()">

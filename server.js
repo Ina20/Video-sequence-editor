@@ -2,22 +2,54 @@ const express = require('express');
 //const {spawn} = require('child_process');
 const app = express();
 const port = 3000;
+const upload = require('express-fileupload');
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
+let fs = require("fs");
 
 let fromPython = '';
+let toPython = '';
 //let arg1 = 'Hello';
 
 app.use(express.static(__dirname + '/scripts'));
 app.use('/styles', express.static(__dirname + '/styles'));
 app.use('/images', express.static(__dirname + '/images'));
 
+app.use(upload());
+
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
+app.post('/upload', (req, res) => {
+  if(req.files) {
+    console.log(req.files);
+    var file = req.files.myVideo;
+    var filename = file.name;
+    console.log(filename);
+    toPython = file;
+
+
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", toPython]);
+
+    /* save file
+    file.mv('./uploads/' + filename, function (err) {
+      if(err) {
+        res.send(err);
+      }else {
+        res.send("File Uploaded");
+      }
+    })
+    */
+  }
+});
+
 io.on("connection", (socket) => {
   console.log('a user connected');
+
+
   socket.on('trim', (data) => {
     let result = JSON.parse(data);
     console.log('result: ' + result.name);
@@ -54,8 +86,6 @@ io.on("connection", (socket) => {
 http.listen(3000, () => {
   console.log('listening on *:3000');
 });
-
-
 
 /*
 app.get('/', (req, res) => {

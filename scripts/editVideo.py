@@ -5,11 +5,13 @@ def read_in():
     return json.loads(lines[0])
 
 
-lines = read_in()
+#lines = read_in()
 #print('Python')
 #print(lines["name"])
 
-y = json.dumps(lines)
-print(y)
+#y = json.dumps(lines)
+#print(y)
+
+print(sys.argv[1])
 
 sys.stdout.flush()
