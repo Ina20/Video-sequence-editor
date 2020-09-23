@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const upload = require('express-fileupload');
+var bodyParser = require('body-parser');
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 let fs = require("fs");
@@ -16,33 +17,41 @@ app.use('/styles', express.static(__dirname + '/styles'));
 app.use('/images', express.static(__dirname + '/images'));
 
 app.use(upload());
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
 app.post('/upload', (req, res) => {
+  console.log("halfsuccess");
   if(req.files) {
     console.log(req.files);
     var file = req.files.myVideo;
     var filename = file.name;
     console.log(filename);
-    toPython = file;
 
 
+/*
     const spawn = require("child_process").spawn;
     const pythonProcess = spawn('python', ["./scripts/editVideo.py", toPython]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+    });
+*/
 
-    /* save file
+     //save file
     file.mv('./uploads/' + filename, function (err) {
       if(err) {
-        res.send(err);
+        //res.send(err);
       }else {
-        res.send("File Uploaded");
+        //res.send("File Uploaded");
+        console.log("success");
       }
     })
-    */
+
   }
 });
 
@@ -51,6 +60,16 @@ io.on("connection", (socket) => {
 
 
   socket.on('trim', (data) => {
+
+    toPython = data;
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", toPython]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+    });
+
+    /*
     let result = JSON.parse(data);
     console.log('result: ' + result.name);
     console.log('data: ' + data);
@@ -80,6 +99,8 @@ io.on("connection", (socket) => {
       });
       pythonProcess.stdin.write(arg1);
       pythonProcess.stdin.end();
+
+      */
   });
 });
 

@@ -5,13 +5,15 @@ def read_in():
     return json.loads(lines[0])
 
 
-#lines = read_in()
-#print('Python')
-#print(lines["name"])
+lines = read_in()
+print('Python')
+print(lines["name"])
 
 #y = json.dumps(lines)
 #print(y)
 
-print(sys.argv[1])
+#print(sys.argv[1]["name"])
+#sys.argv[1] = 'Hello from Python'
+#print(sys.argv[1])
 
 sys.stdout.flush()
