@@ -203,8 +203,9 @@ function addMoreVideo(){
 
 function trim(){
 
-  data = trimObject
-  //socket.emit('trim', data);
+  data = trimObject.name;
+  console.log("trim: " + data);
+  socket.emit('trim', data);
 
 
  /*
