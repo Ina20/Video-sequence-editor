@@ -43,6 +43,20 @@ button {
 button:hover {
   background: #EDEBD7;
 }
+#editButtons {
+  display: flex;
+  float: left;
+  width: 20%;
+  margin: 20px 0 0 100px;
+  padding: 20px;
+  //background: pink;
+}
+#trimButton {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  color: #000;
+  border-radius: 5px;
+}
 .drop-zone {
   cursor: pointer;
   height: 450px;
@@ -142,8 +156,9 @@ nav {
 }
 #videoTag {
   display: flex;
+  float: right;
   justify-content: center;
-  margin: 20px auto 0 auto;
+  margin: 20px 100px 0 0;
   background: rgba(0, 0, 0, 0.20);
   height: 50%;
   border-radius: 5px;
