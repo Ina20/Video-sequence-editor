@@ -10,12 +10,12 @@ let fs = require("fs");
 
 
 let fromPython = '';
-let toPython = '';
 //let arg1 = 'Hello';
 
 app.use(express.static(__dirname + '/scripts'));
 app.use('/styles', express.static(__dirname + '/styles'));
 app.use('/images', express.static(__dirname + '/images'));
+app.use('/results', express.static(__dirname + '/results'));
 
 app.use(upload());
 app.use(bodyParser.json());
@@ -61,13 +61,15 @@ io.on("connection", (socket) => {
 
 
   socket.on('trim', (data) => {
-
-    toPython = data;
+    let name = data.name;
+    let t1 = data.t1;
+    let t2 = data.t2;
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", toPython]);
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", name, t1, t2]);
     pythonProcess.stdout.on('data', (data) => {
       // Do something with the data returned from python script
       console.log(data.toString());
+      socket.emit('fromPythonTrim', data.toString());
     });
 
     /*

@@ -77,135 +77,82 @@ function openEditor(){
     //document.getElementById("uploadForm").submit();
 
     let file = document.getElementById("startUpload").files[0];
-    let active = false;
-
-
-    var data = new FormData();
-    //data = document.getElementById("startUpload").files[0];
-    data.append('myVideo', file)
-    console.log(data);
-        $.ajax({
-            url: '/upload',
-            method: 'POST',
-            type: 'POST',
-            cache: false,
-            data: data,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                alert(data)
-            },
-            //error: function (jqXHR, textStatus, err) {
-            //    alert('text status ' + textStatus + ', err ' + err)
-            //}
-        });
 
     document.body.style.backgroundImage = "linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(321deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44, 44, 44,0.05) 53%, rgba(44, 44, 44,0.05) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(334deg, rgb(237,235,215),rgb(237,235,215))";
 
     console.log("Hello there!");
     document.getElementById("home").style.display = "none";
     document.getElementById("editor").style.display = "block";
-    console.log(file);
 
-    let fileDisplay = document.createElement('video');
-    fileDisplay.classList.add("fileListDisplay");
-    document.getElementById("videoBar").appendChild(fileDisplay);
-    let blobURL = URL.createObjectURL(file);
-    console.log(blobURL);
-    fileDisplay.src = blobURL;
-    fileDisplay.onclick = function() {
-      console.log("hello, i'm a video");
-      console.log("name: " + file.name);
-      console.log("duration: " + fileDisplay.duration);
-      document.querySelector("video").src = blobURL;
-      if(active) {
-        fileDisplay.classList.remove("active");
-        active = false;
-      }else {
-        fileDisplay.classList.add("active");
-        active = true;
-        trimObject = file;
-        videoDuration = fileDisplay.duration;
-      }
-      console.log("trim active: " + trimObject.name);
-    }
-
-    /*
-    let fileDisplay = document.createElement('div');
-    fileDisplay.classList.add("fileListDisplay");
-    document.getElementById("videoBar").appendChild(fileDisplay);
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-
-  }
-      fileDisplay.style.backgroundImage = `url('${ reader.result }')`;
-    };
-    */
+    addVideo(file);
 }
+
 function addMoreVideo(){
     //document.getElementById("uploadForm2").submit();
 
     let file = document.getElementById("nextUpload").files[0];
-    let active = false;
 
-    var data = new FormData();
-    //data = document.getElementById("startUpload").files[0];
-    data.append('myVideo', file)
-    console.log(data);
-        $.ajax({
-            url: '/upload',
-            method: 'POST',
-            type: 'POST',
-            cache: false,
-            data: data,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                alert(data)
-            },
-            //error: function (jqXHR, textStatus, err) {
-            //    alert('text status ' + textStatus + ', err ' + err)
-            //}
-        });
+    addVideo(file);
+}
+
+function addVideo(file) {
+
+  let active = false;
+
+  var data = new FormData();
+  //data = document.getElementById("startUpload").files[0];
+  data.append('myVideo', file)
+  console.log(data);
+      $.ajax({
+          url: '/upload',
+          method: 'POST',
+          type: 'POST',
+          cache: false,
+          data: data,
+          processData: false,
+          contentType: false,
+          success: function (data) {
+              alert(data)
+          },
+          //error: function (jqXHR, textStatus, err) {
+          //    alert('text status ' + textStatus + ', err ' + err)
+          //}
+      });
 
 
-    console.log(file);
+  console.log(file);
 
-    let fileDisplay = document.createElement('video');
-    fileDisplay.classList.add("fileListDisplay");
-    document.getElementById("videoBar").appendChild(fileDisplay);
-    let blobURL = URL.createObjectURL(file);
-    console.log(blobURL);
-    fileDisplay.src = blobURL;
-    fileDisplay.onclick = function() {
-      console.log("hello, i'm a video");
-      console.log("name: " + file.name);
-      console.log("duration: " + fileDisplay.duration);
+  let fileDisplay = document.createElement('video');
+  fileDisplay.classList.add("fileListDisplay");
+  document.getElementById("videoBar").appendChild(fileDisplay);
+  let blobURL = URL.createObjectURL(file);
+  console.log(blobURL);
+  fileDisplay.src = blobURL;
+  console.log(fileDisplay.src);
+  fileDisplay.name = file.name;
+  fileDisplay.isTrimed = false;
+  console.log(fileDisplay.isTrimed)
+  fileDisplay.onclick = function() {
+    console.log("children: " + document.getElementById("videoBar").childNodes.item(3).name);
+    console.log("hello, i'm a video");
+    console.log("name: " + file.name);
+    console.log("duration: " + fileDisplay.duration);
+    if(!fileDisplay.isTrimed){
       document.querySelector("video").src = blobURL;
-      if(active) {
-        fileDisplay.classList.remove("active");
-        active = false;
-      }else {
-        fileDisplay.classList.add("active");
-        active = true;
-        trimObject = file;
-        videoDuration = fileDisplay.duration;
-      }
-      console.log("trim active: " + trimObject.name);
+    }else {
+      document.querySelector("video").src = "./results/trim_" + file.name;
     }
-
-    /*
-    let fileDisplay = document.createElement('div');
-    fileDisplay.classList.add("fileListDisplay");
-    document.getElementById("videoBar").appendChild(fileDisplay);
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      fileDisplay.style.backgroundImage = `url('${ reader.result }')`;
-    };
-    */
+    if(active) {
+      fileDisplay.classList.remove("active");
+      active = false;
+    }else {
+      fileDisplay.classList.add("active");
+      active = true;
+      trimObject = file;
+      videoDuration = fileDisplay.duration;
+    }
+    console.log("trim active: " + trimObject.name);
+  }
 }
 
 var slider = new Slider('#timeSlider', {
@@ -216,37 +163,41 @@ var slider = new Slider('#timeSlider', {
 
 function trim(){
   let vid = document.getElementById("videoBar");
-  console.log(videoDuration);
-
-  data = trimObject.name;
-  console.log("trim: " + data);
-
-  slider.setAttribute("max", videoDuration);
-  //socket.emit('trim', data);
-
-
- /*
-  console.log("Cięcie");
-  console.log(trimObject);
-  trimObject.toJSON = function() { return {
-       'lastModified'     : trimObject.lastModified,
-       'lastModifiedDate' : trimObject.lastModifiedDate,
-       'name'             : trimObject.name,
-       'size'             : trimObject.size,
-       'type'             : trimObject.type
-    };}
-    data = JSON.stringify(trimObject);
-    console.log(data);
-    */
-  /*
-  let trimObjectJSON = JSON.stringify(trimObject);
-  console.log(trimObjectJSON);
-  let data = trimObjectJSON;
-  */
-//  socket.emit('trim', data);
+  document.getElementById("trimOptions").style.display = "flex";
+  slider.setAttribute("max", Math.round(videoDuration));
 }
 
-socket.on('fromPython', (data) => {
+function trimSend(){
+  name = trimObject.name;
+  let t1 = slider.getValue()[0];
+  let t2 = slider.getValue()[1];
+  console.log("trim: " + name + " " + t1 + " " + t2);
+  //console.log("value: " + slider.getValue()[1])
+  let data = {name: name, t1: t1, t2: t2} ;
   console.log(data);
-  console.log(JSON.parse(data));
+  console.log(data.name);
+  socket.emit('trim', data);
+}
+
+socket.on('fromPythonTrim', (data) => {
+  console.log(data);
+  let name = "trim_" + trimObject.name;
+  let trimResult = "./results/" + name;
+  console.log("trimResult: " + trimResult);
+  console.log("./results/" + name);
+  console.log("children: " + document.getElementById("videoBar").childNodes);
+
+  for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
+    console.log(i + " " + document.getElementById("videoBar").childNodes.item(i).name);
+    if(trimObject.name == document.getElementById("videoBar").childNodes.item(i).name){
+      console.log("Found it! " + document.getElementById("videoBar").childNodes.item(i).name);
+      document.getElementById("videoBar").childNodes.item(i).src = trimResult;
+      document.querySelector("video").src = trimResult;
+      document.getElementById("videoBar").childNodes.item(i).isTrimed = true;
+    }
+  }
+
+  //document.getElementById("videoBar").childNodes.item(3).src
+
+  //console.log(JSON.parse(data));
 });

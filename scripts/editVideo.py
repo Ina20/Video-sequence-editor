@@ -4,6 +4,8 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
 
 video_name = sys.argv[1]
+t1 = int(sys.argv[2])
+t2 = int(sys.argv[3])
 
 def read_in():
     lines = sys.stdin.readlines()
@@ -11,8 +13,9 @@ def read_in():
 
 def trim():
     print("Python Trim")
-    print(path)
-    ffmpeg_extract_subclip("./uploads/" + video_name, 2, 6, targetname="./results/trim_" + video_name )
+    ffmpeg_extract_subclip("./uploads/" + video_name, t1, t2, targetname="./results/trim_" + video_name )
+    print("TrimOK")
+    sys.stdout.flush()
 
 #lines = read_in()
 #print('Python')
@@ -25,5 +28,3 @@ def trim():
 #sys.argv[1] = 'Hello from Python'
 #print(sys.argv[1])
 trim()
-
-sys.stdout.flush()

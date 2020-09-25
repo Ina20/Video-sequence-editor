@@ -59,11 +59,17 @@ button:hover {
   padding: 20px;
   background: pink;
 }
-#trimButton {
+.trimButton {
   font-family: 'Nunito', sans-serif;
   font-size: 20px;
   color: #000;
   border-radius: 5px;
+  text-align: center;
+}
+#trimSendButton {
+  text-align: center;
+  margin: 15px auto;
+  align-items: center;
 }
 .drop-zone {
   cursor: pointer;
@@ -176,12 +182,17 @@ nav {
   border-radius: 5px;
 }
 #trimOptions {
-  display: flex;
+  display: none;
+  flex-direction: column;
   float: right;
   margin: 20px 100px 0 0;
   justify-content: center;
+  align-items: center;
   background: pink;
+  text-align: center;
 }
 .center {
   justify-content: center;
+}
+#timeSlider {
 }
