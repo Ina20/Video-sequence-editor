@@ -68,6 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let trimObject;
+let videoDuration = 0;
 
 
 
@@ -114,7 +115,8 @@ function openEditor(){
     fileDisplay.src = blobURL;
     fileDisplay.onclick = function() {
       console.log("hello, i'm a video");
-      console.log(file.name);
+      console.log("name: " + file.name);
+      console.log("duration: " + fileDisplay.duration);
       document.querySelector("video").src = blobURL;
       if(active) {
         fileDisplay.classList.remove("active");
@@ -123,6 +125,7 @@ function openEditor(){
         fileDisplay.classList.add("active");
         active = true;
         trimObject = file;
+        videoDuration = fileDisplay.duration;
       }
       console.log("trim active: " + trimObject.name);
     }
@@ -178,7 +181,8 @@ function addMoreVideo(){
     fileDisplay.src = blobURL;
     fileDisplay.onclick = function() {
       console.log("hello, i'm a video");
-      console.log(file.name);
+      console.log("name: " + file.name);
+      console.log("duration: " + fileDisplay.duration);
       document.querySelector("video").src = blobURL;
       if(active) {
         fileDisplay.classList.remove("active");
@@ -187,6 +191,7 @@ function addMoreVideo(){
         fileDisplay.classList.add("active");
         active = true;
         trimObject = file;
+        videoDuration = fileDisplay.duration;
       }
       console.log("trim active: " + trimObject.name);
     }
@@ -203,11 +208,21 @@ function addMoreVideo(){
     */
 }
 
+var slider = new Slider('#timeSlider', {
+    min: 0,
+    max: 0,
+    step: 1
+  });
+
 function trim(){
+  let vid = document.getElementById("videoBar");
+  console.log(videoDuration);
 
   data = trimObject.name;
   console.log("trim: " + data);
-  socket.emit('trim', data);
+
+  slider.setAttribute("max", videoDuration);
+  //socket.emit('trim', data);
 
 
  /*
