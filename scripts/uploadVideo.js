@@ -69,7 +69,15 @@ function updateThumbnails(dropZoneElement, file) {
 let socket = io();
 let trimObject;
 let videoDuration = 0;
-
+var slider = new Slider('#timeSlider', {
+    min: 0,
+    max: 0,
+    step: 1,
+    formatter: function (value) {
+      let v = Math.floor(value[0] / 60) + ":" + (value[0] % 60 ? value[0] % 60 : '00') + ',' + Math.floor(value[1] / 60) + ":" + (value[1] % 60 ? value[1] % 60 : '00');
+      return v;
+    }
+});
 
 
 
@@ -137,29 +145,24 @@ function addVideo(file) {
     console.log("hello, i'm a video");
     console.log("name: " + file.name);
     console.log("duration: " + fileDisplay.duration);
-    if(!fileDisplay.isTrimed){
-      document.querySelector("video").src = blobURL;
-    }else {
-      document.querySelector("video").src = "./results/trim_" + file.name;
-    }
     if(active) {
       fileDisplay.classList.remove("active");
       active = false;
     }else {
+      videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
       active = true;
+      slider.setAttribute("max", Math.round(videoDuration));
+      if(!fileDisplay.isTrimed){
+        document.querySelector("video").src = blobURL;
+      }else {
+        document.querySelector("video").src = "./results/trim_" + file.name;
+      }
       trimObject = file;
-      videoDuration = fileDisplay.duration;
     }
     console.log("trim active: " + trimObject.name);
   }
 }
-
-var slider = new Slider('#timeSlider', {
-    min: 0,
-    max: 0,
-    step: 1
-  });
 
 function trim(){
   let vid = document.getElementById("videoBar");
@@ -196,8 +199,4 @@ socket.on('fromPythonTrim', (data) => {
       document.getElementById("videoBar").childNodes.item(i).isTrimed = true;
     }
   }
-
-  //document.getElementById("videoBar").childNodes.item(3).src
-
-  //console.log(JSON.parse(data));
 });
