@@ -68,14 +68,15 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let trimObject;
+let joinObject = [];
 let videoDuration = 0;
 var slider = new Slider('#timeSlider', {
     min: 0,
     max: 0,
     step: 1,
     formatter: function (value) {
-      let v = Math.floor(value[0] / 60) + ":" + (value[0] % 60 ? value[0] % 60 : '00') + ',' + Math.floor(value[1] / 60) + ":" + (value[1] % 60 ? value[1] % 60 : '00');
-      return v;
+      let val = Math.floor(value[0] / 60) + ":" + (value[0] % 60 ? value[0] % 60 : '00') + ',' + Math.floor(value[1] / 60) + ":" + (value[1] % 60 ? value[1] % 60 : '00');
+      return val;
     }
 });
 
@@ -148,25 +149,35 @@ function addVideo(file) {
     if(active) {
       fileDisplay.classList.remove("active");
       active = false;
+      for(var i = 0; i < joinObject.length; i++){
+        if ( joinObject[i] === file.name){
+          joinObject.splice(i, 1);
+        }
+      }
+      console.log("join: " + joinObject);
     }else {
       videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
       active = true;
+      trimObject = file;
+      joinObject.push(file.name);
+      console.log("join: " + joinObject);
       slider.setAttribute("max", Math.round(videoDuration));
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = blobURL;
       }else {
         document.querySelector("video").src = "./results/trim_" + file.name;
       }
-      trimObject = file;
     }
     console.log("trim active: " + trimObject.name);
+    updateJoinList();
   }
 }
 
 function trim(){
   let vid = document.getElementById("videoBar");
   document.getElementById("trimOptions").style.display = "flex";
+  document.getElementById("joinOptions").style.display = "none";
   slider.setAttribute("max", Math.round(videoDuration));
 }
 
@@ -180,6 +191,27 @@ function trimSend(){
   console.log(data);
   console.log(data.name);
   socket.emit('trim', data);
+}
+
+function join(){
+  document.getElementById("joinOptions").style.display = "flex";
+  document.getElementById("trimOptions").style.display = "none";
+  updateJoinList();
+  console.log("join click: " + joinObject);
+}
+
+function joinSend(){
+  socket.emit('join', joinObject);
+}
+
+function updateJoinList(){
+  document.getElementById("joinVideoList").innerHTML = "";
+  for(i=0; i<joinObject.length; i++){
+    var li = document.createElement("LI");
+    console.log("li: " + joinObject[i]);
+    li.appendChild(document.createTextNode(joinObject[i]));
+    document.getElementById("joinVideoList").appendChild(li);
+  }
 }
 
 socket.on('fromPythonTrim', (data) => {

@@ -72,6 +72,7 @@ io.on("connection", (socket) => {
       socket.emit('fromPythonTrim', data.toString());
     });
 
+
     /*
     let result = JSON.parse(data);
     console.log('result: ' + result.name);
@@ -105,6 +106,20 @@ io.on("connection", (socket) => {
 
       */
   });
+
+  socket.on('join', (data) => {
+    console.log("joinFromServer: " + data);
+    console.log(data[0]);
+    console.log(data[1]);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", data]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      //socket.emit('fromPythonTrim', data.toString());
+    });
+  });
+
 });
 
 http.listen(3000, () => {

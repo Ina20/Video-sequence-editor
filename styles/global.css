@@ -59,14 +59,15 @@ button:hover {
   padding: 20px;
   background: pink;
 }
-.trimButton {
+.button {
   font-family: 'Nunito', sans-serif;
   font-size: 20px;
   color: #000;
   border-radius: 5px;
   text-align: center;
+  margin: 5px;
 }
-#trimSendButton {
+.SendButton {
   text-align: center;
   margin: 15px auto;
   align-items: center;
@@ -182,6 +183,16 @@ nav {
   border-radius: 5px;
 }
 #trimOptions {
+  display: none;
+  flex-direction: column;
+  float: right;
+  margin: 20px 100px 0 0;
+  justify-content: center;
+  align-items: center;
+  background: pink;
+  text-align: center;
+}
+#joinOptions {
   display: none;
   flex-direction: column;
   float: right;
