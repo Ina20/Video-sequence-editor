@@ -11,9 +11,9 @@ def read_in():
     return json.loads(lines[0])
 
 def trim():
-    video_name = sys.argv[1]
-    t1 = int(sys.argv[2])
-    t2 = int(sys.argv[3])
+    video_name = sys.argv[2]
+    t1 = int(sys.argv[3])
+    t2 = int(sys.argv[4])
     print("Python Trim")
     ffmpeg_extract_subclip("./uploads/" + video_name, t1, t2, targetname="./results/trim_" + video_name )
     print("TrimOK")
@@ -21,7 +21,7 @@ def trim():
 
 def join():
     video_array = []
-    video_list = sys.argv[1].split(',')
+    video_list = sys.argv[2].split(',')
     for video in video_list:
         video_array.append(VideoFileClip("./uploads/" + video))
     final_video = concatenate_videoclips(video_array, method='compose')
@@ -39,5 +39,8 @@ def join():
 #print(sys.argv[1]["name"])
 #sys.argv[1] = 'Hello from Python'
 #print(sys.argv[1])
-#trim()
-join()
+
+if sys.argv[1] == "trim":
+    trim()
+elif sys.argv[1] == "join":
+    join()

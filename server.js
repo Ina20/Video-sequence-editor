@@ -65,7 +65,7 @@ io.on("connection", (socket) => {
     let t1 = data.t1;
     let t2 = data.t2;
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", name, t1, t2]);
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "trim", name, t1, t2]);
     pythonProcess.stdout.on('data', (data) => {
       // Do something with the data returned from python script
       console.log(data.toString());
@@ -112,7 +112,7 @@ io.on("connection", (socket) => {
     console.log(data[0]);
     console.log(data[1]);
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", data]);
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "join", data]);
     pythonProcess.stdout.on('data', (data) => {
       // Do something with the data returned from python script
       console.log(data.toString());
