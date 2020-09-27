@@ -150,7 +150,7 @@ function addVideo(file) {
       fileDisplay.classList.remove("active");
       active = false;
       for(var i = 0; i < joinObject.length; i++){
-        if ( joinObject[i] === file.name){
+        if ( joinObject[i] === "./uploads/" + file.name || joinObject[i] === "./results/trim_" + file.name){
           joinObject.splice(i, 1);
         }
       }
@@ -160,13 +160,14 @@ function addVideo(file) {
       fileDisplay.classList.add("active");
       active = true;
       trimObject = file;
-      joinObject.push(file.name);
       console.log("join: " + joinObject);
       slider.setAttribute("max", Math.round(videoDuration));
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = blobURL;
+        joinObject.push("./uploads/" + file.name);
       }else {
         document.querySelector("video").src = "./results/trim_" + file.name;
+        joinObject.push("./results/trim_" + file.name);
       }
     }
     console.log("trim active: " + trimObject.name);
@@ -208,8 +209,8 @@ function updateJoinList(){
   document.getElementById("joinVideoList").innerHTML = "";
   for(i=0; i<joinObject.length; i++){
     var li = document.createElement("LI");
-    console.log("li: " + joinObject[i]);
-    li.appendChild(document.createTextNode(joinObject[i]));
+    console.log("li: " + joinObject[i].substring(joinObject[i].indexOf("s/") + 2));
+    li.appendChild(document.createTextNode(joinObject[i].substring(joinObject[i].indexOf("s/") + 2)));
     document.getElementById("joinVideoList").appendChild(li);
   }
 }

@@ -23,7 +23,7 @@ def join():
     video_array = []
     video_list = sys.argv[2].split(',')
     for video in video_list:
-        video_array.append(VideoFileClip("./uploads/" + video))
+        video_array.append(VideoFileClip(video))
     final_video = concatenate_videoclips(video_array, method='compose')
     final_video.write_videofile("./results/join.mp4")
     print("JoinOK")
