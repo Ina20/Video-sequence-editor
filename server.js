@@ -15,7 +15,7 @@ let fromPython = '';
 app.use(express.static(__dirname + '/scripts'));
 app.use('/styles', express.static(__dirname + '/styles'));
 app.use('/images', express.static(__dirname + '/images'));
-app.use('/results', express.static(__dirname + '/results'));
+app.use('/videos', express.static(__dirname + '/videos'));
 
 app.use(upload());
 app.use(bodyParser.json());
@@ -44,7 +44,7 @@ app.post('/upload', (req, res) => {
 */
 
      //save file
-    file.mv('./uploads/' + filename, function (err) {
+    file.mv('./videos/' + filename, function (err) {
       if(err) {
         //res.send(err);
       }else {
@@ -116,7 +116,7 @@ io.on("connection", (socket) => {
     pythonProcess.stdout.on('data', (data) => {
       // Do something with the data returned from python script
       console.log(data.toString());
-      //socket.emit('fromPythonTrim', data.toString());
+      socket.emit('fromPythonJoin', data.toString());
     });
   });
 

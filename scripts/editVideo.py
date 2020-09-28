@@ -15,7 +15,7 @@ def trim():
     t1 = int(sys.argv[3])
     t2 = int(sys.argv[4])
     print("Python Trim")
-    ffmpeg_extract_subclip("./uploads/" + video_name, t1, t2, targetname="./results/trim_" + video_name )
+    ffmpeg_extract_subclip("./videos/" + video_name, t1, t2, targetname="./videos/trim_" + video_name )
     print("TrimOK")
     sys.stdout.flush()
 
@@ -23,9 +23,9 @@ def join():
     video_array = []
     video_list = sys.argv[2].split(',')
     for video in video_list:
-        video_array.append(VideoFileClip(video))
+        video_array.append(VideoFileClip("./videos/" + video))
     final_video = concatenate_videoclips(video_array, method='compose')
-    final_video.write_videofile("./results/join.mp4")
+    final_video.write_videofile("./videos/join.mp4")
     print("JoinOK")
     sys.stdout.flush()
 

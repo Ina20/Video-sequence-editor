@@ -150,7 +150,7 @@ function addVideo(file) {
       fileDisplay.classList.remove("active");
       active = false;
       for(var i = 0; i < joinObject.length; i++){
-        if ( joinObject[i] === "./uploads/" + file.name || joinObject[i] === "./results/trim_" + file.name){
+        if (joinObject[i] === file.name || joinObject[i] === "trim_" + file.name){
           joinObject.splice(i, 1);
         }
       }
@@ -164,10 +164,10 @@ function addVideo(file) {
       slider.setAttribute("max", Math.round(videoDuration));
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = blobURL;
-        joinObject.push("./uploads/" + file.name);
+        joinObject.push(file.name);
       }else {
-        document.querySelector("video").src = "./results/trim_" + file.name;
-        joinObject.push("./results/trim_" + file.name);
+        document.querySelector("video").src = "./videos/trim_" + file.name;
+        joinObject.push("trim_" + file.name);
       }
     }
     console.log("trim active: " + trimObject.name);
@@ -209,8 +209,8 @@ function updateJoinList(){
   document.getElementById("joinVideoList").innerHTML = "";
   for(i=0; i<joinObject.length; i++){
     var li = document.createElement("LI");
-    console.log("li: " + joinObject[i].substring(joinObject[i].indexOf("s/") + 2));
-    li.appendChild(document.createTextNode(joinObject[i].substring(joinObject[i].indexOf("s/") + 2)));
+    console.log("li: " + joinObject[i].substring(joinObject[i].indexOf("s/") + 1));
+    li.appendChild(document.createTextNode(joinObject[i].substring(joinObject[i].indexOf("s/") + 1)));
     document.getElementById("joinVideoList").appendChild(li);
   }
 }
@@ -218,9 +218,9 @@ function updateJoinList(){
 socket.on('fromPythonTrim', (data) => {
   console.log(data);
   let name = "trim_" + trimObject.name;
-  let trimResult = "./results/" + name;
+  let trimResult = "./videos/" + name;
   console.log("trimResult: " + trimResult);
-  console.log("./results/" + name);
+  console.log("./videos/" + name);
   console.log("children: " + document.getElementById("videoBar").childNodes);
 
   for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
@@ -231,5 +231,48 @@ socket.on('fromPythonTrim', (data) => {
       document.querySelector("video").src = trimResult;
       document.getElementById("videoBar").childNodes.item(i).isTrimed = true;
     }
+  }
+});
+
+socket.on('fromPythonJoin', (data) => {
+  let active = false;
+  console.log('fromPythonJoin: ' + data);
+  fileSrc = "./videos/join.mp4";
+  let fileDisplay = document.createElement('video');
+  fileDisplay.classList.add("fileListDisplay");
+  document.getElementById("videoBar").appendChild(fileDisplay);
+  fileDisplay.src = fileSrc;
+  fileDisplay.name = "join.mp4";
+  fileDisplay.onclick = function() {
+    console.log("hello, i'm a video");
+    console.log("duration: " + fileDisplay.duration);
+    if(active) {
+      fileDisplay.classList.remove("active");
+      active = false;
+      for(var i = 0; i < joinObject.length; i++){
+        console.log("for, " + joinObject[i] + ", " + fileDisplay.name);
+        if (joinObject[i] === fileDisplay.name || joinObject[i] === "trim_" + fileDisplay.name){
+          joinObject.splice(i, 1);
+        }
+      }
+      console.log("join: " + joinObject);
+    }else {
+      videoDuration = fileDisplay.duration;
+      fileDisplay.classList.add("active");
+      active = true;
+      trimObject = fileDisplay;
+      trimObject.name = fileDisplay.name;
+      console.log("join: " + joinObject);
+      slider.setAttribute("max", Math.round(videoDuration));
+      if(!fileDisplay.isTrimed){
+        document.querySelector("video").src = fileSrc;
+        joinObject.push(fileDisplay.name);
+      }else {
+        document.querySelector("video").src = "./videos/trim_" + fileDisplay.name;
+        joinObject.push("trim_" + fileDisplay.name);
+      }
+    }
+    console.log("trim active: " + trimObject.name);
+    updateJoinList();
   }
 });
