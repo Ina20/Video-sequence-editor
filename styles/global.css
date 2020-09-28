@@ -171,6 +171,12 @@ nav {
   font-family: 'Nunito', sans-serif;
   font-size: 25px;
 }
+i {
+  margin-left: 10px;
+}
+i:hover {
+  color: #BBB9A6;
+}
 #videoTag {
   display: flex;
   float: right;

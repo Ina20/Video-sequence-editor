@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>CoVideo</title>
     <link rel="stylesheet" type="text/css" href="styles/global.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <script src="/socket.io/socket.io.js"></script>
@@ -26,7 +27,8 @@
 
     <div id="editor" class="container-fluid vw-100">
       <nav class="navbar navbar-expand-lg">
-        CoVideo
+        CoVideo |
+        <i class="fas fa-save" onclick="save()"></i>
       </nav>
       <div class="row center">
         <div id="editButtons">

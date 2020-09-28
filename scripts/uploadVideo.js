@@ -154,6 +154,10 @@ function addVideo(file) {
           joinObject.splice(i, 1);
         }
       }
+      /*if(trimObject == file){
+        trimObject = '';
+        slider.setAttribute("max", 0);
+      }*/
       console.log("join: " + joinObject);
     }else {
       videoDuration = fileDisplay.duration;
@@ -276,3 +280,7 @@ socket.on('fromPythonJoin', (data) => {
     updateJoinList();
   }
 });
+
+function save(){
+  console.log("Save click!");
+}
