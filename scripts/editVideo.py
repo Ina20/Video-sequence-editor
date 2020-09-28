@@ -21,11 +21,13 @@ def trim():
 
 def join():
     video_array = []
+    video_name = ''
     video_list = sys.argv[2].split(',')
     for video in video_list:
         video_array.append(VideoFileClip("./videos/" + video))
+    video_name = video_list[0]
     final_video = concatenate_videoclips(video_array, method='compose')
-    final_video.write_videofile("./videos/join.mp4")
+    final_video.write_videofile("./videos/join_" + video_name)
     print("JoinOK")
     sys.stdout.flush()
 

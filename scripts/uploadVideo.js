@@ -237,12 +237,12 @@ socket.on('fromPythonTrim', (data) => {
 socket.on('fromPythonJoin', (data) => {
   let active = false;
   console.log('fromPythonJoin: ' + data);
-  fileSrc = "./videos/join.mp4";
+  fileSrc = "./videos/join_" + joinObject[0];
   let fileDisplay = document.createElement('video');
   fileDisplay.classList.add("fileListDisplay");
   document.getElementById("videoBar").appendChild(fileDisplay);
   fileDisplay.src = fileSrc;
-  fileDisplay.name = "join.mp4";
+  fileDisplay.name = "join_" + joinObject[0];
   fileDisplay.onclick = function() {
     console.log("hello, i'm a video");
     console.log("duration: " + fileDisplay.duration);
