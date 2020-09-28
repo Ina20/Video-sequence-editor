@@ -33,36 +33,38 @@ button {
   width: 200px;
   font-family: 'Nunito', sans-serif;
   font-size: 20px;
-  color: #000;
-  background: #BBB9A6;
+  color: #fff;
+  background: #731937;
   border: none;
   border-radius: 5px;
   display: block;
   margin: 30px auto 0 auto;
 }
 button:hover {
-  background: #EDEBD7;
+  background: #A54861;
 }
 #editButtons {
+  border-radius: 5px;
   display: flex;
   float: left;
   width: 20%;
   margin: 20px auto 0 100px;
   padding: 20px;
-  background: pink;
+  background: rgba(0, 0, 0, 0.20);
 }
 #editButtons2 {
+  border-radius: 5px;
   display: flex;
   float: left;
   width: 20%;
   margin: 20px auto 0 auto;
   padding: 20px;
-  background: pink;
+  background: rgba(0, 0, 0, 0.20);
 }
 .button {
   font-family: 'Nunito', sans-serif;
   font-size: 20px;
-  color: #000;
+  color: #fff;
   border-radius: 5px;
   text-align: center;
   margin: 5px;
@@ -183,27 +185,40 @@ nav {
   border-radius: 5px;
 }
 #trimOptions {
+  border-radius: 5px;
   display: none;
   flex-direction: column;
   float: right;
   margin: 20px 100px 0 0;
+  padding-top: 5px;
   justify-content: center;
   align-items: center;
-  background: pink;
+  background: rgba(0, 0, 0, 0.20);
   text-align: center;
 }
 #joinOptions {
+  border-radius: 5px;
   display: none;
   flex-direction: column;
   float: right;
   margin: 20px 100px 0 0;
   justify-content: center;
   align-items: center;
-  background: pink;
+  background: rgba(0, 0, 0, 0.20);
   text-align: center;
+}
+#joinOptions > p {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #000;
+  margin: 5px;
 }
 .center {
   justify-content: center;
 }
 #timeSlider {
+}
+#joinVideoList {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
 }
