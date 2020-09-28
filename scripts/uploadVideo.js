@@ -288,6 +288,43 @@ socket.on('fromPythonJoin', (data) => {
   }
 });
 
+//var zip = new JSZip();
+//videoZip = zip.folder('Videos');
+
 function save(){
   console.log("Save click!");
+/*
+for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
+  console.log("forSave: " + document.getElementById("videoBar").childNodes.item(i).name)
+  fileURL = "./videos/" + document.getElementById("videoBar").childNodes.item(i).name;
+  console.log(fileURL);
+}
+*/
+fileURL = "./videos/" + document.getElementById("videoBar").childNodes.item(3).name;
+    JSZipUtils.getBinaryContent(fileURL, function (err, data) {
+          if(err) {
+  	       console.log(err); // or handle the error
+          }
+          var zip = new JSZip();
+  	//zip.file("video.mp4", data, {binary:true});
+    videoZip = zip.folder('Videos');
+    videoZip.file(document.getElementById("videoBar").childNodes.item(3).name, data, {binary:true});
+    zip.generateAsync({type:"blob"}).then(function (blob) {
+  		saveAs(blob, "download.zip");
+  	}, function (err) {
+  		console.log(err);
+  	});
+  });
+
+  /*
+  	zip.generateAsync({type:"blob"}).then(function (blob) {
+  		saveAs(blob, "download.zip");
+  	}, function (err) {
+  		console.log(err);
+  	});
+*/
+//  videoZip.file(document.getElementById("videoBar").childNodes.item(3).name, tmp);
+//  zip.generateAsync({type: "blob"}).then(function(content) {
+//    saveAs(content, "download.zip");
+//  });
 }
