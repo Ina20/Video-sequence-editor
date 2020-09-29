@@ -234,6 +234,7 @@ socket.on('fromPythonTrim', (data) => {
     if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
       console.log("Found it! " + document.getElementById("videoBar").childNodes.item(i).name);
       document.getElementById("videoBar").childNodes.item(i).src = trimResult;
+      document.getElementById("videoBar").childNodes.item(i).name = "trim_" + document.getElementById("videoBar").childNodes.item(i).name;
       document.querySelector("video").src = trimResult;
       document.getElementById("videoBar").childNodes.item(i).isTrimed = true;
     }
