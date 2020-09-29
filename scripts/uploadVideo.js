@@ -189,6 +189,7 @@ function trim(){
 }
 
 function trimSend(){
+  document.getElementById("loadingDiv").style.display = "flex";
   name = activeObjects[activeObjects.length - 1];
   let t1 = slider.getValue()[0];
   let t2 = slider.getValue()[1];
@@ -208,6 +209,7 @@ function join(){
 }
 
 function joinSend(){
+  document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('join', activeObjects);
 }
 
@@ -222,6 +224,7 @@ function updateJoinList(){
 }
 
 socket.on('fromPythonTrim', (data) => {
+  document.getElementById("loadingDiv").style.display = "none";
   console.log(data);
   let name = "trim_" + activeObjects[activeObjects.length - 1];
   let trimResult = "./videos/" + name;
@@ -242,6 +245,7 @@ socket.on('fromPythonTrim', (data) => {
 });
 
 socket.on('fromPythonJoin', (data) => {
+  document.getElementById("loadingDiv").style.display = "none";
   let active = false;
   console.log('fromPythonJoin: ' + data);
   fileSrc = "./videos/join_" + activeObjects[0];
@@ -289,11 +293,9 @@ socket.on('fromPythonJoin', (data) => {
   }
 });
 
-//var zip;
-//videoZip = zip.folder('Videos');
-
 function save(){
   console.log("Save click!");
+  document.getElementsByClassName("fa-spinner")[0].style.display = "inline";
 
   zip = new JSZip();
   videoZip = zip.folder('Videos');
@@ -312,10 +314,6 @@ function save(){
       if(err) {
         console.log(err); // or handle the error
       }
-      //zip = new JSZip();
-      //zip.file("video.mp4", data, {binary:true});
-      //videoZip = zip.folder('Videos');
-      //console.log("data: " + data);
       videoZip.file(filename, data, {binary:true});
       count++;
       console.log("count: " + count);
@@ -326,22 +324,11 @@ function save(){
           console.log("Before Saved");
           saveAs(blob, "download.zip");
           console.log("Saved!!");
+          document.getElementsByClassName("fa-spinner")[0].style.display = "none";
         }, function (err) {
           console.log(err);
         });
       }
     });
   })
-
-/*
-  	zip.generateAsync({type:"blob"}).then(function (blob) {
-  		saveAs(blob, "download.zip");
-  	}, function (err) {
-  		console.log(err);
-  	});
-*/
-//  videoZip.file(document.getElementById("videoBar").childNodes.item(3).name, tmp);
-//  zip.generateAsync({type: "blob"}).then(function(content) {
-//    saveAs(content, "download.zip");
-//  });
 }

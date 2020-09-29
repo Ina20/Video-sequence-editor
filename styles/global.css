@@ -150,6 +150,21 @@ button:hover {
   padding: 0;
   box-sizing: border-box;
 }
+#loadingDiv {
+  display: none;
+  position: absolute;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.30);
+  justify-content: center;
+  align-items: center;
+}
+#loadingImage {
+  width: 40%;
+  height: 50%;
+  object-fit: cover;
+}
 .fileListDisplay {
   background-size: cover;
   margin: 3px;
@@ -159,6 +174,8 @@ button:hover {
 }
 #videoBar {
   background: rgba(0, 0, 0, 0.20);
+  position: fixed;
+  z-index: 2;
   height: 150px;
   margin: 0 auto 20px auto;
   border-radius: 5px;
@@ -176,6 +193,13 @@ i {
 }
 i:hover {
   color: #BBB9A6;
+}
+span {
+  margin-left: 5px;
+  font-size: 16px;
+}
+.fa-spinner {
+  display: none;
 }
 #videoTag {
   display: flex;
