@@ -246,7 +246,11 @@ span {
 .center {
   justify-content: center;
 }
-#timeSlider {
+#slider .slider-selection {
+  background: #731937;
+}
+#slider .slider-handle {
+	background: #430011;
 }
 #joinVideoList {
   font-family: 'Nunito', sans-serif;

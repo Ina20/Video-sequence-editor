@@ -70,6 +70,7 @@ let socket = io();
 let activeObjects = [];
 let videoDuration = 0;
 var slider = new Slider('#timeSlider', {
+    id: "slider",
     min: 0,
     max: 0,
     step: 1,
