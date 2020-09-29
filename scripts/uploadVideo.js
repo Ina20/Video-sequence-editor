@@ -246,6 +246,7 @@ socket.on('fromPythonTrim', (data) => {
 });
 
 socket.on('fromPythonJoin', (data) => {
+  console.log("Hello after join");
   document.getElementById("loadingDiv").style.display = "none";
   let active = false;
   console.log('fromPythonJoin: ' + data);
@@ -291,6 +292,22 @@ socket.on('fromPythonJoin', (data) => {
       }
     }
     updateJoinList();
+  }
+  console.log("active " + activeObjects);
+  for(j=0; j<activeObjects.length; j++){
+    for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
+      console.log("active before slice: " + activeObjects[j] + "/// " + document.getElementById("videoBar").childNodes.item(i).name);
+      if(document.getElementById("videoBar").childNodes.item(i).name == activeObjects[j]){
+        console.log("delete: " + document.getElementById("videoBar").childNodes.item(i).name + activeObjects[j])
+        document.getElementById("videoBar").childNodes.item(i).classList.remove("active");
+        activeObjects.splice(j, 1);
+        console.log("active after slice: " + activeObjects);
+        document.getElementById("videoBar").removeChild(document.getElementById("videoBar").childNodes.item(i));
+        document.querySelector("video").src = "";
+        updateJoinList();
+        i--;
+      }
+    }
   }
 });
 
