@@ -288,35 +288,51 @@ socket.on('fromPythonJoin', (data) => {
   }
 });
 
-//var zip = new JSZip();
+//var zip;
 //videoZip = zip.folder('Videos');
 
 function save(){
   console.log("Save click!");
-/*
-for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
-  console.log("forSave: " + document.getElementById("videoBar").childNodes.item(i).name)
-  fileURL = "./videos/" + document.getElementById("videoBar").childNodes.item(i).name;
-  console.log(fileURL);
-}
-*/
-fileURL = "./videos/" + document.getElementById("videoBar").childNodes.item(3).name;
-    JSZipUtils.getBinaryContent(fileURL, function (err, data) {
-          if(err) {
-  	       console.log(err); // or handle the error
-          }
-          var zip = new JSZip();
-  	//zip.file("video.mp4", data, {binary:true});
-    videoZip = zip.folder('Videos');
-    videoZip.file(document.getElementById("videoBar").childNodes.item(3).name, data, {binary:true});
-    zip.generateAsync({type:"blob"}).then(function (blob) {
-  		saveAs(blob, "download.zip");
-  	}, function (err) {
-  		console.log(err);
-  	});
-  });
 
-  /*
+  zip = new JSZip();
+  videoZip = zip.folder('Videos');
+  count = 0;
+  fileURL = [];
+  for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
+    console.log("forSave: " + document.getElementById("videoBar").childNodes.item(i).name)
+    fileURL.push({url: "./videos/" + document.getElementById("videoBar").childNodes.item(i).name, name: document.getElementById("videoBar").childNodes.item(i).name});
+  }
+  console.log(fileURL[0].url);
+
+  fileURL.forEach(function(url){
+    console.log("url: " + url.url);
+    let filename = url.name
+    JSZipUtils.getBinaryContent(url.url, function (err, data) {
+      if(err) {
+        console.log(err); // or handle the error
+      }
+      //zip = new JSZip();
+      //zip.file("video.mp4", data, {binary:true});
+      //videoZip = zip.folder('Videos');
+      //console.log("data: " + data);
+      videoZip.file(filename, data, {binary:true});
+      count++;
+      console.log("count: " + count);
+      console.log("length: " + fileURL.length);
+      if(count == fileURL.length){
+        console.log("Hurray!");
+        zip.generateAsync({type:"blob"}).then(function (blob) {
+          console.log("Before Saved");
+          saveAs(blob, "download.zip");
+          console.log("Saved!!");
+        }, function (err) {
+          console.log(err);
+        });
+      }
+    });
+  })
+
+/*
   	zip.generateAsync({type:"blob"}).then(function (blob) {
   		saveAs(blob, "download.zip");
   	}, function (err) {
