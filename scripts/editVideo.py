@@ -32,12 +32,21 @@ def join():
     print("JoinOK")
     sys.stdout.flush()
 
+def luminosity():
+    print("Hello from Python LM")
+    video_name = sys.argv[2]
+    print(video_name)
+    video = VideoFileClip("./videos/" + video_name)
+    newclip = (video.fx( vfx.lum_contrast, lum=0, contrast=0, contrast_thr=127))
+    newclip.write_videofile("./videos/lm_" + video_name)
+    print("LuminosityOK")
+    sys.stdout.flush()
+
 def blackwhite():
     print("Hello from Python BW")
     video_name = sys.argv[2]
     print(video_name)
     video = VideoFileClip("./videos/" + video_name)
-    #final_video = moviepy.video.fx.all.blackwhite(tmp, RGB=None, preserve_luminosity=True)
     newclip = (video.fx( vfx.blackwhite, RGB=None, preserve_luminosity=True))
     newclip.write_videofile("./videos/bw_" + video_name)
     print("BlackWhiteOK")
@@ -50,7 +59,6 @@ def brightness():
     print(video_name)
     print(bv)
     video = VideoFileClip("./videos/" + video_name)
-    #final_video = moviepy.video.fx.all.blackwhite(tmp, RGB=None, preserve_luminosity=True)
     newclip = (video.fx( vfx.colorx, bv))
     newclip.write_videofile("./videos/br_" + video_name)
     print("BrightnessOK")
@@ -69,6 +77,7 @@ def brightness():
 #print(sys.argv[1])
 def filters(argument):
     switcher = {
+        'luminosity': luminosity,
         'blackwhite': blackwhite,
         'brightness': brightness,
     }

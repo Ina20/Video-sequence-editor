@@ -372,6 +372,15 @@ function replaceAfterFilter(filterName){
     }
   }
 }
+function luminosity(){
+  name = activeObjects[activeObjects.length - 1];
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('luminosity', name);
+}
+socket.on('fromPythonLuminosity', (data) => {
+  console.log("Hello after Luminosity");
+  replaceAfterFilter('lm');
+});
 
 function blackwhite(){
   name = activeObjects[activeObjects.length - 1];

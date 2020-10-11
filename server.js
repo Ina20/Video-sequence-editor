@@ -121,6 +121,17 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on('luminosity', (data) => {
+    console.log("luminosityFromServer: " + data);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "luminosity", data]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonLuminosity', data.toString());
+    });
+  });
+
   socket.on('blackwhite', (data) => {
     console.log("blackWhiteFromServer: " + data);
     const spawn = require("child_process").spawn;
