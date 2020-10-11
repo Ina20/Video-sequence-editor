@@ -224,6 +224,10 @@ function updateJoinList(){
   }
 }
 
+function filters(){
+  document.getElementById("editButtons2").style.display = "flex";
+}
+
 socket.on('fromPythonTrim', (data) => {
   document.getElementById("loadingDiv").style.display = "none";
   console.log(data);
@@ -251,6 +255,7 @@ socket.on('fromPythonJoin', (data) => {
   let active = false;
   console.log('fromPythonJoin: ' + data);
   fileSrc = "./videos/join_" + activeObjects[0];
+  console.log("fileSRC: " + fileSrc);
   let fileDisplay = document.createElement('video');
   fileDisplay.classList.add("fileListDisplay");
   document.getElementById("videoBar").appendChild(fileDisplay);
@@ -309,6 +314,73 @@ socket.on('fromPythonJoin', (data) => {
       }
     }
   }
+});
+
+
+function replaceAfterFilter(filterName){
+  console.log("Filter Here: " + filterName);
+  document.getElementById("loadingDiv").style.display = "none";
+  let active = false;
+  fileSrc = "./videos/" + filterName + '_' + activeObjects[activeObjects.length - 1];
+  let fileDisplay = document.createElement('video');
+  fileDisplay.classList.add("fileListDisplay");
+  document.getElementById("videoBar").appendChild(fileDisplay);
+  fileDisplay.src = fileSrc;
+  fileDisplay.name = filterName + '_' + activeObjects[activeObjects.length - 1];
+  fileDisplay.onclick = function() {
+    if(active) {
+      fileDisplay.classList.remove("active");
+      active = false;
+      for(var i = 0; i < activeObjects.length; i++){
+        if (activeObjects[i] === fileDisplay.name || activeObjects[i] === "trim_" + fileDisplay.name){
+          activeObjects.splice(i, 1);
+        }
+      }
+      document.querySelector("video").src = "./videos/" + activeObjects[activeObjects.length - 1];
+      for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
+        if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
+          videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
+        }
+      }
+      slider.setAttribute("max", Math.round(videoDuration));
+    }else {
+      videoDuration = fileDisplay.duration;
+      fileDisplay.classList.add("active");
+      active = true;
+      slider.setAttribute("max", Math.round(videoDuration));
+      if(!fileDisplay.isTrimed){
+        document.querySelector("video").src = fileSrc;
+        activeObjects.push(fileDisplay.name);
+      }else {
+        document.querySelector("video").src = "./videos/trim_" + fileDisplay.name;
+        activeObjects.push("trim_" + fileDisplay.name);
+      }
+    }
+    updateJoinList();
+  }
+  for(j=0; j<activeObjects.length; j++){
+    for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
+      if(document.getElementById("videoBar").childNodes.item(i).name == activeObjects[j]){
+        document.getElementById("videoBar").childNodes.item(i).classList.remove("active");
+        activeObjects.splice(j, 1);
+        document.getElementById("videoBar").removeChild(document.getElementById("videoBar").childNodes.item(i));
+        document.querySelector("video").src = "";
+        updateJoinList();
+        i--;
+      }
+    }
+  }
+}
+
+function blackwhite(){
+  name = activeObjects[activeObjects.length - 1];
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('blackwhite', name);
+}
+
+socket.on('fromPythonBlackWhite', (data) => {
+  console.log("Hello after BlackAndWhite");
+  replaceAfterFilter('bw');
 });
 
 function save(){

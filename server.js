@@ -121,6 +121,18 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on('blackwhite', (data) => {
+    console.log("blackWhiteFromServer: " + data);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "blackwhite", data]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonBlackWhite', data.toString());
+    });
+  });
+
+
 });
 
 http.listen(3000, () => {
