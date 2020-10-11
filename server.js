@@ -123,8 +123,11 @@ io.on("connection", (socket) => {
 
   socket.on('luminosity', (data) => {
     console.log("luminosityFromServer: " + data);
+    name = data.name;
+    lbv = data.lbv;
+    lcv = data.lcv;
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "luminosity", data]);
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "luminosity", name, lbv, lcv]);
     pythonProcess.stdout.on('data', (data) => {
       // Do something with the data returned from python script
       console.log(data.toString());

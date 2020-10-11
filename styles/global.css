@@ -240,6 +240,10 @@ span {
   display: none;
   margin: 20px 100px 0 0;
 }
+#luminosityOptions {
+  display: none;
+  margin: 20px 100px 0 0;
+}
 #joinOptions > p {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
@@ -247,6 +251,12 @@ span {
   margin: 5px;
 }
 #brightnessOptions > label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #000;
+  margin: 5px;
+}
+#luminosityOptions > label {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
   color: #000;

@@ -187,6 +187,7 @@ function trim(){
   document.getElementById("trimOptions").style.display = "flex";
   document.getElementById("joinOptions").style.display = "none";
   document.getElementById("brightnessOptions").style.display = "none";
+  document.getElementById("luminosityOptions").style.display = "none";
   slider.setAttribute("max", Math.round(videoDuration));
 }
 
@@ -207,6 +208,7 @@ function join(){
   document.getElementById("joinOptions").style.display = "flex";
   document.getElementById("trimOptions").style.display = "none";
   document.getElementById("brightnessOptions").style.display = "none";
+  document.getElementById("luminosityOptions").style.display = "none";
   updateJoinList();
   console.log("join click: " + activeObjects);
 }
@@ -373,9 +375,18 @@ function replaceAfterFilter(filterName){
   }
 }
 function luminosity(){
+  document.getElementById("luminosityOptions").style.display = "flex";
+  document.getElementById("brightnessOptions").style.display = "none";
+  document.getElementById("trimOptions").style.display = "none";
+  document.getElementById("joinOptions").style.display = "none";
+}
+function luminositySend(){
   name = activeObjects[activeObjects.length - 1];
+  lumiBrightnessValue = document.getElementById("lumiBrightnessInput").value;
+  lumiContrastValue = document.getElementById("lumiContrastInput").value;
+  let data = {name: name, lbv: lumiBrightnessValue, lcv: lumiContrastValue};
   document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('luminosity', name);
+  socket.emit('luminosity', data);
 }
 socket.on('fromPythonLuminosity', (data) => {
   console.log("Hello after Luminosity");
@@ -387,7 +398,6 @@ function blackwhite(){
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('blackwhite', name);
 }
-
 socket.on('fromPythonBlackWhite', (data) => {
   console.log("Hello after BlackAndWhite");
   replaceAfterFilter('bw');
@@ -397,6 +407,7 @@ function brightness(){
   document.getElementById("brightnessOptions").style.display = "flex";
   document.getElementById("trimOptions").style.display = "none";
   document.getElementById("joinOptions").style.display = "none";
+  document.getElementById("luminosityOptions").style.display = "none";
 }
 function brightnessSend(){
   name = activeObjects[activeObjects.length - 1];

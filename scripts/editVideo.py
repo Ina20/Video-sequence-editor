@@ -35,9 +35,11 @@ def join():
 def luminosity():
     print("Hello from Python LM")
     video_name = sys.argv[2]
+    lbv = float(sys.argv[3])
+    lcv = float(sys.argv[4])
     print(video_name)
     video = VideoFileClip("./videos/" + video_name)
-    newclip = (video.fx( vfx.lum_contrast, lum=0, contrast=0, contrast_thr=127))
+    newclip = (video.fx( vfx.lum_contrast, lum=lbv, contrast=lcv, contrast_thr=127))
     newclip.write_videofile("./videos/lm_" + video_name)
     print("LuminosityOK")
     sys.stdout.flush()
