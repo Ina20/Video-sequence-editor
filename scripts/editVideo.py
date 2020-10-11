@@ -36,12 +36,24 @@ def blackwhite():
     print("Hello from Python BW")
     video_name = sys.argv[2]
     print(video_name)
-    tmp = VideoFileClip("./videos/" + video_name)
-    tmp2 = "./videos/" + video_name
+    video = VideoFileClip("./videos/" + video_name)
     #final_video = moviepy.video.fx.all.blackwhite(tmp, RGB=None, preserve_luminosity=True)
-    newclip = (tmp.fx( vfx.blackwhite, RGB=None, preserve_luminosity=True))
+    newclip = (video.fx( vfx.blackwhite, RGB=None, preserve_luminosity=True))
     newclip.write_videofile("./videos/bw_" + video_name)
     print("BlackWhiteOK")
+    sys.stdout.flush()
+
+def brightness():
+    print("Hello from Python BR")
+    video_name = sys.argv[2]
+    bv = float(sys.argv[3])
+    print(video_name)
+    print(bv)
+    video = VideoFileClip("./videos/" + video_name)
+    #final_video = moviepy.video.fx.all.blackwhite(tmp, RGB=None, preserve_luminosity=True)
+    newclip = (video.fx( vfx.colorx, bv))
+    newclip.write_videofile("./videos/br_" + video_name)
+    print("BrightnessOK")
     sys.stdout.flush()
 
 
@@ -58,6 +70,7 @@ def blackwhite():
 def filters(argument):
     switcher = {
         'blackwhite': blackwhite,
+        'brightness': brightness,
     }
     func = switcher.get(argument, lambda: "Invalid argument")
     return func()

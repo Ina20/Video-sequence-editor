@@ -45,19 +45,25 @@
         </div>
         <div id="editButtons2">
           <button type="button" onclick="blackwhite()" class="button">Black and white</button>
+          <button type="button" onclick="brightness()" class="button">Brightness</button>
         </div>
         <div id="videoTag" class="col-sm-5 d-flex align-items-center">
           <video width="100%" height="100%" controls></video>
         </div>
       </div>
-      <div id="trimOptions" class="row col-sm-5">
+      <div id="trimOptions" class="row col-sm-5 options">
           <input id="timeSlider" type="text" value="" data-slider-value="[250,450]"/>
           <button type="button" onclick="trimSend()" class="sendButton button" id="trimSendButton">Trim</button>
       </div>
-      <div id="joinOptions" class="row col-sm-5">
+      <div id="joinOptions" class="row col-sm-5 options">
         <p>Join Order:</p>
         <ol id="joinVideoList"></ol>
         <button type="button" onclick="joinSend()" class="sendButton button" id="joinSendButton">Join</button>
+      </div>
+      <div id="brightnessOptions" class="row col-sm-5 options">
+        <label for="brightnessValue">Enter a brightness value between 0 and 2:</label>
+        <input type="text" id="brightnessInput" name="brightnessValue"><br><br>
+        <button type="button" onclick="brightnessSend()" class="sendButton button" id="brightnessSendButton">Change Brightness</button>
       </div>
       <div class="row">
         <div class="col-sm-10 d-flex align-items-center fixed-bottom" id="videoBar">

@@ -132,6 +132,20 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on('brightness', (data) => {
+    console.log("brightnessFromServer: " + data);
+    let name = data.name;
+    let bv = data.bv;
+    console.log("server: " + name + " " + bv);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "brightness", name, bv]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonBrightness', data.toString());
+    });
+  });
+
 
 });
 

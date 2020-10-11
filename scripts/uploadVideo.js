@@ -186,6 +186,7 @@ function trim(){
   let vid = document.getElementById("videoBar");
   document.getElementById("trimOptions").style.display = "flex";
   document.getElementById("joinOptions").style.display = "none";
+  document.getElementById("brightnessOptions").style.display = "none";
   slider.setAttribute("max", Math.round(videoDuration));
 }
 
@@ -205,6 +206,7 @@ function trimSend(){
 function join(){
   document.getElementById("joinOptions").style.display = "flex";
   document.getElementById("trimOptions").style.display = "none";
+  document.getElementById("brightnessOptions").style.display = "none";
   updateJoinList();
   console.log("join click: " + activeObjects);
 }
@@ -358,16 +360,15 @@ function replaceAfterFilter(filterName){
     }
     updateJoinList();
   }
-  for(j=0; j<activeObjects.length; j++){
-    for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
-      if(document.getElementById("videoBar").childNodes.item(i).name == activeObjects[j]){
-        document.getElementById("videoBar").childNodes.item(i).classList.remove("active");
-        activeObjects.splice(j, 1);
-        document.getElementById("videoBar").removeChild(document.getElementById("videoBar").childNodes.item(i));
-        document.querySelector("video").src = "";
-        updateJoinList();
-        i--;
-      }
+  for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
+    if(document.getElementById("videoBar").childNodes.item(i).name == activeObjects[activeObjects.length - 1]){
+      console.log(document.getElementById("videoBar").childNodes.item(i).name + " // " + activeObjects[activeObjects.length - 1])
+      document.getElementById("videoBar").childNodes.item(i).classList.remove("active");
+      activeObjects.splice((activeObjects.length - 1), 1);
+      document.getElementById("videoBar").removeChild(document.getElementById("videoBar").childNodes.item(i));
+      document.querySelector("video").src = "";
+      updateJoinList();
+      break;
     }
   }
 }
@@ -381,6 +382,25 @@ function blackwhite(){
 socket.on('fromPythonBlackWhite', (data) => {
   console.log("Hello after BlackAndWhite");
   replaceAfterFilter('bw');
+});
+
+function brightness(){
+  document.getElementById("brightnessOptions").style.display = "flex";
+  document.getElementById("trimOptions").style.display = "none";
+  document.getElementById("joinOptions").style.display = "none";
+}
+function brightnessSend(){
+  name = activeObjects[activeObjects.length - 1];
+  brightnessValue = document.getElementById("brightnessInput").value;
+  let data = {name: name, bv: brightnessValue};
+  console.log("brData: " + data.name + " " + data.bv);
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('brightness', data);
+}
+
+socket.on('fromPythonBrightness', (data) => {
+  console.log("Hello after Brightness");
+  replaceAfterFilter('br');
 });
 
 function save(){
