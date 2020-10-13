@@ -68,7 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
-let filtersNames = ["trim", "join", "luminosity", "gamma", "brightness", "fade"];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "brightness", "fade", "mirror"];
 let videoDuration = 0;
 var slider = new Slider('#timeSlider', {
     id: "slider",
@@ -430,7 +430,6 @@ function brightnessSend(){
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('brightness', data);
 }
-
 socket.on('fromPythonBrightness', (data) => {
   console.log("Hello after Brightness");
   replaceAfterFilter('br');
@@ -448,7 +447,6 @@ function fadeSend(){
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('fade', data);
 }
-
 socket.on('fromPythonFade', (data) => {
   console.log("Hello after Fade");
   replaceAfterFilter('f');
@@ -458,6 +456,25 @@ $('.btn-group').on('click', '.button', function() {
   $(this).addClass('active').siblings().removeClass('active');
 });
 
+function mirror(){
+  displayOptions("mirror");
+}
+function mirrorSendX(){
+  name = activeObjects[activeObjects.length - 1];
+  let data = {name: name, xy: "X"};
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('mirror', data);
+}
+function mirrorSendY(){
+  name = activeObjects[activeObjects.length - 1];
+  let data = {name: name, xy: "Y"};
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('mirror', data);
+}
+socket.on('fromPythonMirror', (data) => {
+  console.log("Hello after Mirror");
+  replaceAfterFilter('m');
+});
 
 function save(){
   console.log("Save click!");

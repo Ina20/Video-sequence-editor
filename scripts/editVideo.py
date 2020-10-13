@@ -97,6 +97,22 @@ def fade():
     print("FadeOK")
     sys.stdout.flush()
 
+def mirror():
+    print("Hello from Python M")
+    video_name = sys.argv[2]
+    xy = sys.argv[3]
+    video = VideoFileClip("./videos/" + video_name)
+    if xy == "X":
+        print("hello from X")
+        newclip = (video.fx( vfx.mirror_x, apply_to='mask'))
+        newclip.write_videofile("./videos/m_" + video_name)
+    elif xy == "Y":
+        print("hello from Y")
+        newclip = (video.fx( vfx.mirror_y, apply_to='mask'))
+        newclip.write_videofile("./videos/m_" + video_name)
+    print("MirrorOK")
+    sys.stdout.flush()
+
 
 #lines = read_in()
 #print('Python')
@@ -115,6 +131,7 @@ def filters(argument):
         'brightness': brightness,
         'gamma': gamma,
         'fade': fade,
+        'mirror': mirror,
     }
     func = switcher.get(argument, lambda: "Invalid argument")
     return func()

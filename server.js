@@ -188,6 +188,19 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on('mirror', (data) => {
+    console.log("mirrorFromServer: " + data);
+    let name = data.name;
+    let xy = data.xy;
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "mirror", name, xy]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonMirror', data.toString());
+    });
+  });
+
 
 });
 
