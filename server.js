@@ -135,6 +135,19 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on('gamma', (data) => {
+    console.log("gammaFromServer: " + data);
+    name = data.name;
+    gv = data.gv;
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "gamma", name, gv]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonGamma', data.toString());
+    });
+  });
+
   socket.on('blackwhite', (data) => {
     console.log("blackWhiteFromServer: " + data);
     const spawn = require("child_process").spawn;
@@ -157,6 +170,21 @@ io.on("connection", (socket) => {
       // Do something with the data returned from python script
       console.log(data.toString());
       socket.emit('fromPythonBrightness', data.toString());
+    });
+  });
+
+  socket.on('fade', (data) => {
+    console.log("fadeFromServer: " + data);
+    let name = data.name;
+    let inOut = data.inOut;
+    let fd = data.fd;
+    console.log(name + " " + inOut + " " + fd);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "fade", name, inOut, fd]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonFade', data.toString());
     });
   });
 

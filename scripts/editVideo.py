@@ -44,6 +44,17 @@ def luminosity():
     print("LuminosityOK")
     sys.stdout.flush()
 
+def gamma():
+    print("Hello from Python G")
+    video_name = sys.argv[2]
+    gv = float(sys.argv[3])
+    print(video_name)
+    video = VideoFileClip("./videos/" + video_name)
+    newclip = (video.fx( vfx.gamma_corr, gv))
+    newclip.write_videofile("./videos/g_" + video_name)
+    print("gammaOK")
+    sys.stdout.flush()
+
 def blackwhite():
     print("Hello from Python BW")
     video_name = sys.argv[2]
@@ -66,6 +77,26 @@ def brightness():
     print("BrightnessOK")
     sys.stdout.flush()
 
+def fade():
+    print("Hello from Python F")
+    video_name = sys.argv[2]
+    inOut = sys.argv[3]
+    dur = float(sys.argv[4])
+    print(video_name)
+    print(inOut)
+    print(dur)
+    video = VideoFileClip("./videos/" + video_name)
+    if inOut == "fadeIn":
+        print("hello from fadeIn")
+        newclip = (video.fx( vfx.fadein, dur, initial_color=None))
+        newclip.write_videofile("./videos/f_" + video_name)
+    elif inOut == "fadeOut":
+        print("hello from fadeout")
+        newclip = (video.fx( vfx.fadeout, dur, final_color=None))
+        newclip.write_videofile("./videos/f_" + video_name)
+    print("FadeOK")
+    sys.stdout.flush()
+
 
 #lines = read_in()
 #print('Python')
@@ -82,6 +113,8 @@ def filters(argument):
         'luminosity': luminosity,
         'blackwhite': blackwhite,
         'brightness': brightness,
+        'gamma': gamma,
+        'fade': fade,
     }
     func = switcher.get(argument, lambda: "Invalid argument")
     return func()

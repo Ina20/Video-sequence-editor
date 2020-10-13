@@ -43,6 +43,10 @@ button {
 button:hover {
   background: #A54861;
 }
+button.active {
+  background: #430011;
+  border-color: #430011;
+}
 #editButtons {
   border-radius: 5px;
   display: flex;
@@ -244,6 +248,14 @@ span {
   display: none;
   margin: 20px 100px 0 0;
 }
+#gammaOptions {
+  display: none;
+  margin: 20px 100px 0 0;
+}
+#fadeOptions {
+  display: none;
+  margin: 20px 100px 0 0;
+}
 #joinOptions > p {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
@@ -257,6 +269,18 @@ span {
   margin: 5px;
 }
 #luminosityOptions > label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #000;
+  margin: 5px;
+}
+#gammaOptions > label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #000;
+  margin: 5px;
+}
+#fadeOptions > label {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
   color: #000;

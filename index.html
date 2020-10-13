@@ -45,8 +45,10 @@
         </div>
         <div id="editButtons2">
           <button type="button" onclick="luminosity()" class="button">Luminosity-contrast</button>
+          <button type="button" onclick="gamma()" class="button">Gamma-correction</button>
           <button type="button" onclick="blackwhite()" class="button">Black and white</button>
           <button type="button" onclick="brightness()" class="button">Brightness</button>
+          <button type="button" onclick="fade()" class="button">Fade</button>
         </div>
         <div id="videoTag" class="col-sm-5 d-flex align-items-center">
           <video width="100%" height="100%" controls></video>
@@ -63,15 +65,29 @@
       </div>
       <div id="brightnessOptions" class="row col-sm-5 options">
         <label for="brightnessValue">Enter a brightness value between 0 and 2:</label>
-        <input type="text" id="brightnessInput" name="brightnessValue"><br><br>
+        <input type="text" id="brightnessInput" name="brightnessValue"><br>
         <button type="button" onclick="brightnessSend()" class="sendButton button" id="brightnessSendButton">Change Brightness</button>
       </div>
       <div id="luminosityOptions" class="row col-sm-5 options">
         <label for="lumiBrightnessValue">Enter a brightness value:</label>
-        <input type="text" id="lumiBrightnessInput" name="lumiBrightnessValue"><br><br>
+        <input type="text" id="lumiBrightnessInput" name="lumiBrightnessValue">
         <label for="lumiContrastValue">Enter a contrast value:</label>
-        <input type="text" id="lumiContrastInput" name="lumiContrastValue"><br><br>
-        <button type="button" onclick="luminositySend()" class="sendButton button" id="luminositySendButton">Luminosity-contrast correction</button>
+        <input type="text" id="lumiContrastInput" name="lumiContrastValue"><br>
+        <button type="button" onclick="luminositySend()" class="sendButton button" id="luminositySendButton">Luminosity-contrast<br>correction</button>
+      </div>
+      <div id="gammaOptions" class="row col-sm-5 options">
+        <label for="gammaValue">Enter a gamma value:</label>
+        <input type="text" id="gammaInput" name="gammaValue"><br>
+        <button type="button" onclick="gammaSend()" class="sendButton button" id="gammaSendButton">Gamma correction</button>
+      </div>
+      <div id="fadeOptions" class="row col-sm-5 options">
+        <div class="btn-group btn-group-toggle">
+          <button type="button" class="button" id="fadeIn">Fade In</button>
+          <button type="button" class="button" id="fadeOut">Fade Out</button>
+        </div>
+        <label for="fadeValue">Enter a fade duration:</label>
+        <input type="text" id="fadeInput" name="fadeValue"><br>
+        <button type="button" onclick="fadeSend()" class="sendButton button" id="fadeSendButton">Fade</button>
       </div>
       <div class="row">
         <div class="col-sm-10 d-flex align-items-center fixed-bottom" id="videoBar">

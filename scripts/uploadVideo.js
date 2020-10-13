@@ -68,6 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "brightness", "fade"];
 let videoDuration = 0;
 var slider = new Slider('#timeSlider', {
     id: "slider",
@@ -184,10 +185,7 @@ function addVideo(file) {
 
 function trim(){
   let vid = document.getElementById("videoBar");
-  document.getElementById("trimOptions").style.display = "flex";
-  document.getElementById("joinOptions").style.display = "none";
-  document.getElementById("brightnessOptions").style.display = "none";
-  document.getElementById("luminosityOptions").style.display = "none";
+  displayOptions("trim");
   slider.setAttribute("max", Math.round(videoDuration));
 }
 
@@ -205,10 +203,7 @@ function trimSend(){
 }
 
 function join(){
-  document.getElementById("joinOptions").style.display = "flex";
-  document.getElementById("trimOptions").style.display = "none";
-  document.getElementById("brightnessOptions").style.display = "none";
-  document.getElementById("luminosityOptions").style.display = "none";
+  displayOptions("join");
   updateJoinList();
   console.log("join click: " + activeObjects);
 }
@@ -321,6 +316,16 @@ socket.on('fromPythonJoin', (data) => {
 });
 
 
+function displayOptions(option){
+  for(i=0; i<filtersNames.length; i++){
+    id = filtersNames[i] + "Options";
+    document.getElementById(id).style.display = "none";
+    if(filtersNames[i] == option){
+      document.getElementById(id).style.display = "flex";
+    }
+  }
+}
+
 function replaceAfterFilter(filterName){
   console.log("Filter Here: " + filterName);
   document.getElementById("loadingDiv").style.display = "none";
@@ -375,10 +380,7 @@ function replaceAfterFilter(filterName){
   }
 }
 function luminosity(){
-  document.getElementById("luminosityOptions").style.display = "flex";
-  document.getElementById("brightnessOptions").style.display = "none";
-  document.getElementById("trimOptions").style.display = "none";
-  document.getElementById("joinOptions").style.display = "none";
+  displayOptions("luminosity");
 }
 function luminositySend(){
   name = activeObjects[activeObjects.length - 1];
@@ -392,6 +394,20 @@ socket.on('fromPythonLuminosity', (data) => {
   console.log("Hello after Luminosity");
   replaceAfterFilter('lm');
 });
+function gamma(){
+  displayOptions("gamma");
+}
+function gammaSend(){
+  name = activeObjects[activeObjects.length - 1];
+  gammaValue = document.getElementById("gammaInput").value;
+  let data = {name: name, gv: gammaValue};
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('gamma', data);
+}
+socket.on('fromPythonGamma', (data) => {
+  console.log("Hello after Gamma");
+  replaceAfterFilter('g');
+});
 
 function blackwhite(){
   name = activeObjects[activeObjects.length - 1];
@@ -404,10 +420,7 @@ socket.on('fromPythonBlackWhite', (data) => {
 });
 
 function brightness(){
-  document.getElementById("brightnessOptions").style.display = "flex";
-  document.getElementById("trimOptions").style.display = "none";
-  document.getElementById("joinOptions").style.display = "none";
-  document.getElementById("luminosityOptions").style.display = "none";
+  displayOptions("brightness");
 }
 function brightnessSend(){
   name = activeObjects[activeObjects.length - 1];
@@ -422,6 +435,29 @@ socket.on('fromPythonBrightness', (data) => {
   console.log("Hello after Brightness");
   replaceAfterFilter('br');
 });
+
+function fade(){
+  displayOptions("fade");
+}
+function fadeSend(){
+  name = activeObjects[activeObjects.length - 1];
+  inOut = document.getElementsByClassName("active")[0].id;
+  fadeDuration = document.getElementById("fadeInput").value;
+  console.log(inOut);
+  let data = {name: name, inOut: inOut, fd: fadeDuration};
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('fade', data);
+}
+
+socket.on('fromPythonFade', (data) => {
+  console.log("Hello after Fade");
+  replaceAfterFilter('f');
+});
+
+$('.btn-group').on('click', '.button', function() {
+  $(this).addClass('active').siblings().removeClass('active');
+});
+
 
 function save(){
   console.log("Save click!");
