@@ -68,7 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
-let filtersNames = ["trim", "join", "luminosity", "gamma", "brightness", "fade", "mirror", "loop", "rotate"];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "brightness", "fade", "mirror", "loop", "rotate", "speed"];
 let videoDuration = 0;
 var slider = new Slider('#timeSlider', {
     id: "slider",
@@ -518,6 +518,32 @@ function rotateSend(){
 socket.on('fromPythonRotate', (data) => {
   console.log("Hello after Rotate");
   replaceAfterFilter('r');
+});
+
+function backwards(){
+  name = activeObjects[activeObjects.length - 1];
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('backwards', name);
+}
+socket.on('fromPythonBackwards', (data) => {
+  console.log("Hello after Backwards");
+  replaceAfterFilter('back');
+});
+
+function speed(){
+  displayOptions("speed");
+}
+function speedSend(){
+  name = activeObjects[activeObjects.length - 1];
+  speedxValue = document.getElementById("speedxInput").value;
+  //speedfinaldurValue = document.getElementById("speedfinaldurInput").value;
+  let data = {name: name, sx: speedxValue/*, sfd: speedfinaldurValue*/};
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('speed', data);
+}
+socket.on('fromPythonSpeed', (data) => {
+  console.log("Hello after Speed");
+  replaceAfterFilter('s');
 });
 
 function save(){

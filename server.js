@@ -229,6 +229,33 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on('backwards', (data) => {
+    console.log("backwardsFromServer: " + data);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "backwards", data]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonBackwards', data.toString());
+    });
+  });
+
+  socket.on('speed', (data) => {
+    console.log("speedFromServer: " + data);
+    name = data.name;
+    sx = data.sx;
+    //sfd = data.sfd;
+    //console.log('name: ' + name + " sx: " + sx + " sfd: " + sfd);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "speed", name, sx]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonSpeed', data.toString());
+    });
+  });
+
+
 });
 
 http.listen(3000, () => {

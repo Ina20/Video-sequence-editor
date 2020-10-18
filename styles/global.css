@@ -268,43 +268,17 @@ span {
   display: none;
   margin: 20px 100px 0 0;
 }
+#speedOptions {
+  display: none;
+  margin: 20px 100px 0 0;
+}
+.options > label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #000;
+  margin: 5px;
+}
 #joinOptions > p {
-  font-family: 'Nunito', sans-serif;
-  font-size: 18px;
-  color: #000;
-  margin: 5px;
-}
-#brightnessOptions > label {
-  font-family: 'Nunito', sans-serif;
-  font-size: 18px;
-  color: #000;
-  margin: 5px;
-}
-#luminosityOptions > label {
-  font-family: 'Nunito', sans-serif;
-  font-size: 18px;
-  color: #000;
-  margin: 5px;
-}
-#gammaOptions > label {
-  font-family: 'Nunito', sans-serif;
-  font-size: 18px;
-  color: #000;
-  margin: 5px;
-}
-#fadeOptions > label {
-  font-family: 'Nunito', sans-serif;
-  font-size: 18px;
-  color: #000;
-  margin: 5px;
-}
-#loopOptions > label {
-  font-family: 'Nunito', sans-serif;
-  font-size: 18px;
-  color: #000;
-  margin: 5px;
-}
-#rotateOptions > label {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
   color: #000;

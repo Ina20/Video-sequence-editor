@@ -153,6 +153,30 @@ def rotate():
     print("rotateOK")
     sys.stdout.flush()
 
+def backwards():
+    print("Hello from Python Back")
+    video_name = sys.argv[2]
+    print(video_name)
+    clip = VideoFileClip("./videos/" + video_name)
+    newclip = (clip.fx( vfx.time_mirror ))
+    newclip.write_videofile("./videos/back_" + video_name)
+    print("BackwardsOK")
+    sys.stdout.flush()
+
+def speed():
+    print("Hello from Python S")
+    video_name = sys.argv[2]
+    sx = float(sys.argv[3])
+    #sfd = float(sys.argv[4])
+    print(video_name)
+    print(sx)
+    #print(sfd)
+    video = VideoFileClip("./videos/" + video_name)
+    newclip = (video.fx( vfx.speedx, factor=sx))
+    newclip.write_videofile("./videos/s_" + video_name)
+    print("speedOK")
+    sys.stdout.flush()
+
 #lines = read_in()
 #print('Python')
 #print(lines["name"])
@@ -173,6 +197,8 @@ def filters(argument):
         'mirror': mirror,
         'loop': loop,
         'rotate': rotate,
+        'backwards': backwards,
+        'speed': speed,
     }
     func = switcher.get(argument, lambda: "Invalid argument")
     return func()
