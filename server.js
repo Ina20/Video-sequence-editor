@@ -201,6 +201,33 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on('loop', (data) => {
+    console.log("loopFromServer: " + data);
+    name = data.name;
+    ts = data.ts;
+    te = data.te;
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "loop", name, ts, te]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonLoop', data.toString());
+    });
+  });
+
+  socket.on('rotate', (data) => {
+    console.log("rotateFromServer: " + data);
+    name = data.name;
+    rv = data.rv;
+    console.log("angle: " + rv);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "rotate", name, rv]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonRotate', data.toString());
+    });
+  });
 
 });
 

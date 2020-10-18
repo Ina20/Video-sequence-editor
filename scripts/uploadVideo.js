@@ -68,7 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
-let filtersNames = ["trim", "join", "luminosity", "gamma", "brightness", "fade", "mirror"];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "brightness", "fade", "mirror", "loop", "rotate"];
 let videoDuration = 0;
 var slider = new Slider('#timeSlider', {
     id: "slider",
@@ -330,7 +330,16 @@ function replaceAfterFilter(filterName){
   console.log("Filter Here: " + filterName);
   document.getElementById("loadingDiv").style.display = "none";
   let active = false;
-  fileSrc = "./videos/" + filterName + '_' + activeObjects[activeObjects.length - 1];
+  if(filterName == "loop"){
+    tmpName = activeObjects[activeObjects.length - 1];
+    console.log(tmpName.substring(0,tmpName.lastIndexOf('.')));
+    fileName = tmpName.substring(0,tmpName.lastIndexOf('.')) + '.gif';
+    fileSrc = "./videos/" + fileName;
+    console.log(fileSrc);
+  }else {
+    fileSrc = "./videos/" + filterName + '_' + activeObjects[activeObjects.length - 1];
+  }
+  console.log("fileSRC: " + fileSrc);
   let fileDisplay = document.createElement('video');
   fileDisplay.classList.add("fileListDisplay");
   document.getElementById("videoBar").appendChild(fileDisplay);
@@ -394,6 +403,7 @@ socket.on('fromPythonLuminosity', (data) => {
   console.log("Hello after Luminosity");
   replaceAfterFilter('lm');
 });
+
 function gamma(){
   displayOptions("gamma");
 }
@@ -474,6 +484,40 @@ function mirrorSendY(){
 socket.on('fromPythonMirror', (data) => {
   console.log("Hello after Mirror");
   replaceAfterFilter('m');
+});
+
+function loop(){
+  displayOptions("loop");
+}
+function loopSend(){
+  name = activeObjects[activeObjects.length - 1];
+  timeStart = document.getElementById("timeStartInput").value;
+  timeEnd = document.getElementById("timeEndInput").value;
+  let data = {name: name, ts: timeStart, te: timeEnd};
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('loop', data);
+}
+socket.on('fromPythonLoop', (data) => {
+  console.log("Hello after Loop");
+  name = activeObjects[activeObjects.length - 1];
+  console.log(name.substring(0,name.lastIndexOf('.')));
+  replaceAfterFilter('loop');
+});
+
+function rotate(){
+  displayOptions("rotate");
+}
+function rotateSend(){
+  name = activeObjects[activeObjects.length - 1];
+  rotateValue = document.getElementById("rotateInput").value;
+  let data = {name: name, rv: rotateValue};
+  console.log("angle: " + data.rv);
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('rotate', data);
+}
+socket.on('fromPythonRotate', (data) => {
+  console.log("Hello after Rotate");
+  replaceAfterFilter('r');
 });
 
 function save(){

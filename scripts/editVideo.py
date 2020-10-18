@@ -114,6 +114,45 @@ def mirror():
     sys.stdout.flush()
 
 
+def time_symetrize(clip):
+    """ Returns the clip played forwards then backwards. In case
+    you are wondering, vfx (short for Video FX) is loaded by
+    >>> from moviepy.editor import * """
+    return concatenate([clip, clip.fx( vfx.time_mirror )])
+
+def loop():
+    print("Hello from Python Loop")
+    video_name = sys.argv[2]
+    ts = float(sys.argv[3])
+    te = float(sys.argv[4])
+    print(video_name)
+    print(ts)
+    print(te)
+
+    split_string = video_name.split(".", 1)
+    output_name = split_string[0]
+    print(output_name)
+
+    clip = (VideoFileClip("./videos/" + video_name, audio=False)
+        .subclip(ts,te)
+        .resize(0.5)
+        .fx( time_symetrize ))
+    clip.write_gif("./videos/" + output_name + ".gif", fps=15, fuzz=2)
+    print("LoopOK")
+    sys.stdout.flush()
+
+def rotate():
+    print("Hello from Python R")
+    video_name = sys.argv[2]
+    angle = float(sys.argv[3])
+    print(video_name)
+    print(angle)
+    video = VideoFileClip("./videos/" + video_name)
+    newclip = (video.fx( vfx.rotate, angle, unit='deg', resample='bicubic', expand=True))
+    newclip.write_videofile("./videos/r_" + video_name)
+    print("rotateOK")
+    sys.stdout.flush()
+
 #lines = read_in()
 #print('Python')
 #print(lines["name"])
@@ -132,6 +171,8 @@ def filters(argument):
         'gamma': gamma,
         'fade': fade,
         'mirror': mirror,
+        'loop': loop,
+        'rotate': rotate,
     }
     func = switcher.get(argument, lambda: "Invalid argument")
     return func()

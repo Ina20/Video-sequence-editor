@@ -260,6 +260,14 @@ span {
   display: none;
   margin: 20px 100px 0 0;
 }
+#loopOptions {
+  display: none;
+  margin: 20px 100px 0 0;
+}
+#rotateOptions {
+  display: none;
+  margin: 20px 100px 0 0;
+}
 #joinOptions > p {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
@@ -285,6 +293,18 @@ span {
   margin: 5px;
 }
 #fadeOptions > label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #000;
+  margin: 5px;
+}
+#loopOptions > label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #000;
+  margin: 5px;
+}
+#rotateOptions > label {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
   color: #000;
