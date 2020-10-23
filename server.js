@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 let http = require('http').Server(app);
 let io = require('socket.io')(http);
 let fs = require("fs");
+const path = require('path');
 
 
 
@@ -59,6 +60,20 @@ app.post('/upload', (req, res) => {
 
 io.on("connection", (socket) => {
   console.log('a user connected');
+
+  socket.on('disconnect', () => {
+    console.log('diconect!!!');
+    fs.readdir('./videos', (err, files) => {
+      if (err) {
+        throw err;
+      }
+      for (const file of files) {
+        fs.unlink(path.join('./videos', file), err => {
+          if (err) throw err;
+        });
+      }
+    });
+  })
 
 
   socket.on('trim', (data) => {
