@@ -36,12 +36,22 @@ button {
   color: #fff;
   background: #731937;
   border: none;
+  outline: none;
   border-radius: 5px;
   display: block;
   margin: 30px auto 0 auto;
 }
+button:focus{
+  background: rgba(115, 25, 55, 0.76);
+  outline: none !important;
+}
 button:hover {
-  background: #A54861;
+  background: rgba(115, 25, 55, 0.92);
+  outline: none !important;
+}
+button:active {
+  background: rgba(115, 25, 55, 0.84);
+  outline: none !important;
 }
 button.active {
   background: #430011;
@@ -53,10 +63,10 @@ button.active {
   flex-direction: column;
   align-items: center;
   float: left;
-  width: 20%;
-  margin: 20px auto 0 100px;
+  width: 10%;
+  margin: 20px 5px 0 100px;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.20);
+  //background: rgba(0, 0, 0, 0.20);
 }
 #editButtons2 {
   border-radius: 5px;
@@ -64,10 +74,10 @@ button.active {
   flex-direction: column;
   align-items: center;
   float: left;
-  width: 20%;
-  margin: 20px auto 0 auto;
+  width: 30%;
+  margin: 20px auto 0 5px;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.20);
+  //background: rgba(0, 0, 0, 0.20);
 }
 .button {
   font-family: 'Nunito', sans-serif;
@@ -76,7 +86,9 @@ button.active {
   border-radius: 5px;
   text-align: center;
   margin: 5px;
+  outline: none;
 }
+
 .SendButton {
   text-align: center;
   margin: 15px auto;
@@ -214,7 +226,7 @@ span {
   float: right;
   justify-content: center;
   margin: 20px 100px 0 auto;
-  background: rgba(0, 0, 0, 0.20);
+  //background: rgba(0, 0, 0, 0.20);
   height: 50%;
   border-radius: 5px;
 }
@@ -229,7 +241,7 @@ span {
   margin: 20px 100px 0 0;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.20);
+  //background: rgba(0, 0, 0, 0.20);
   text-align: center;
 }
 #joinOptions {
@@ -293,7 +305,24 @@ span {
 #slider .slider-handle {
 	background: #430011;
 }
+#slider {
+  width: 98%;
+}
 #joinVideoList {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
+}
+input{
+  border: 2px solid rgb(0, 0, 0, 0.2);
+  border-radius: 5px;
+  height: 40px;
+  width: 190px;
+  outline: none !important;
+}
+input:focus{
+  border: 2px solid #430011;
+  border-radius: 5px;
+  height: 40px;
+  width: 190px;
+  outline: none !important;
 }
