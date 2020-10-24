@@ -37,30 +37,27 @@
         <i class="fas fa-save" onclick="save()"></i>
         <i class="fas fa-spinner fa-xs fa-pulse"></i>
       </nav>
-      <div class="row center">
-        <div id="editButtons">
-          <button type="button" onclick="trim()" class="button">Trim</button>
-          <button type="button" onclick="join()" class="button">Join</button>
-          <button type="button" onclick="filters()" class="button">Filters</button>
+      <div id="subNav" class="row">
+        <div class="btn-group">
+          <button id="editNavButton" class="subNavButton" onclick="toggleClick(this.id)">EDIT</button>
+          <button id="filtersNavButton" class="subNavButton" onclick="toggleClick(this.id)">FILTERS</button>
         </div>
-        <div id="editButtons2">
-          <div class="row">
-            <button type="button" onclick="luminosity()" class="button">Luminosity-contrast<br>correction</button>
-            <button type="button" onclick="gamma()" class="button">Gamma-correction</button>
+      </div>
+      <div id="main" class="row">
+        <div id="sideBar">
+          <div id="editButtons">
+            <button type="button" onclick="trim()" class="button">Trim</button>
+            <button type="button" onclick="join()" class="button">Join</button>
           </div>
-          <div class="row">
+          <div id="editButtons2">
+            <button type="button" onclick="luminosity()" class="button">Luminosity-contrast correction</button>
+            <button type="button" onclick="gamma()" class="button">Gamma-correction</button>
             <button type="button" onclick="blackwhite()" class="button">Black and white</button>
             <button type="button" onclick="brightness()" class="button">Brightness</button>
-          </div>
-          <div class="row">
             <button type="button" onclick="fade()" class="button">Fade</button>
             <button type="button" onclick="mirror()" class="button">Mirror</button>
-          </div>
-          <div class="row">
             <button type="button" onclick="loop()" class="button">Make Gif</button>
             <button type="button" onclick="rotate()" class="button">Rotate</button>
-          </div>
-          <div class="row">
             <button type="button" onclick="backwards()" class="button">Play Backwards</button>
             <button type="button" onclick="speed()" class="button">Speed</button>
           </div>
@@ -69,6 +66,19 @@
           <video width="100%" height="100%" controls></video>
         </div>
       </div>
+      <div class="row">
+        <div class="col-sm-8 d-flex align-items-center fixed-bottom" id="videoBar">
+          <form method="POST" action="/upload" enctype="multipart/form-data" id="uploadForm2">
+            <div class="drop-zone drop-zone-sm">
+              <span class="drop-zone-prompt drop-zone-prompt-sm">+</span>
+              <input type="file" name="myVideo" class="drop-zone-input" id="nextUpload" onchange="addMoreVideo()">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
       <div id="trimOptions" class="row col-sm-5 options">
           <input id="timeSlider" type="text" value="" data-slider-value="[250,450]"/>
           <button type="button" onclick="trimSend()" class="sendButton button" id="trimSendButton">Trim</button>
@@ -129,16 +139,7 @@
         <input type="text" id="speedfinaldurInput" name="speedfinaldurValue"><br>-->
         <button type="button" onclick="speedSend()" class="sendButton button" id="speedSendButton">Apply</button>
       </div>
-      <div class="row">
-        <div class="col-sm-10 d-flex align-items-center fixed-bottom" id="videoBar">
-          <form method="POST" action="/upload" enctype="multipart/form-data" id="uploadForm2">
-            <div class="drop-zone drop-zone-sm">
-              <span class="drop-zone-prompt drop-zone-prompt-sm">+</span>
-              <input type="file" name="myVideo" class="drop-zone-input" id="nextUpload" onchange="addMoreVideo()">
-            </div>
-          </form>
-        </div>
-      </div>
+
     </div>
 
 

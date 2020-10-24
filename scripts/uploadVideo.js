@@ -183,6 +183,27 @@ function addVideo(file) {
   }
 }
 
+$('.btn-group').on('click', '.subNavButton', function() {
+  $(this).addClass('clicked').siblings().removeClass('clicked');
+});
+
+function toggleClick(id){
+  console.log('Clicked!!');
+  console.log('id: ' + id);
+  //console.log(document.getElementById(id).classList[1]);
+  if(id == "editNavButton"){
+    console.log('display edit');
+    document.getElementById("editButtons").style.display = "flex";
+    document.getElementById("editButtons2").style.display = "none";
+  }else if(id == "filtersNavButton"){
+    console.log('display filter');
+    document.getElementById("editButtons2").style.display = "flex";
+    document.getElementById("editButtons").style.display = "none";
+  }
+}
+
+
+
 function trim(){
   let vid = document.getElementById("videoBar");
   displayOptions("trim");
@@ -223,9 +244,7 @@ function updateJoinList(){
   }
 }
 
-function filters(){
-  document.getElementById("editButtons2").style.display = "flex";
-}
+
 
 socket.on('fromPythonTrim', (data) => {
   document.getElementById("loadingDiv").style.display = "none";
