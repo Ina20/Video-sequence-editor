@@ -42,7 +42,6 @@ button {
   outline: none !important;
   display: block;
   //margin: 30px auto 0 auto;
-  margin-right: 5px;
 }
 //button:focus{
 //  background: rgba(115, 25, 55, 0.76);
@@ -116,8 +115,9 @@ button.active {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 4px dashed #EDEBD7;
+  border: 4px dashed #bbae9c;
   border-radius: 5px;
+  color: #bbae9c;
 }
 .drop-zone-over{
   opacity: 70%;
@@ -136,7 +136,8 @@ button.active {
   font-size: 50px;
   font-weight: 600;
   font-family: 'Nunito', sans-serif;
-  color: #EDEBD7;
+  //color: #EDEBD7;
+  color: #bbae9c;
 }
 .drop-zone-input {
   display: none;
@@ -194,16 +195,17 @@ button.active {
   border-radius: 5px;
 }
 #videoBar {
-  background: rgba(0, 0, 0, 0.20);
+  //background: rgba(0, 0, 0, 0.20);
+  background: #e5eaed;
   position: fixed;
   z-index: 2;
   height: 150px;
   margin-left: 29%;
   margin-bottom: 20px;
-  border-radius: 5px;
+  //border-radius: 5px;
 }
 nav {
-  background: #430011;
+  background: #5e2c49;
   color: #fff;
   height: 50px;
   font-family: 'Nunito', sans-serif;
@@ -231,6 +233,7 @@ span {
   height: 35px;
   width: fit-content;
   color: #000;
+  font-weight: 500;
   font-family: 'Nunito', sans-serif;
   font-size: 20px;
 }
@@ -242,12 +245,29 @@ span {
   width: 25%;
   height: 100%;
 }
+#optionsSideBar {
+  background: #e5eaed;
+  width: calc(100% - 5px);
+  height: fit-content;
+  margin: 0 10px 0 0;
+}
+#sideBar p {
+  background-color: #e5eaed;
+  line-height:35px;
+  width: fit-content;
+  padding: 0 5px 0 5px;
+  margin: 5px 0 0 15px;
+  height: 35px;
+  color: #000;
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+}
 #videoTag {
   display: flex;
   float: center;
   justify-content: center;
   margin: 40px auto 0 auto;
-  background: rgba(0, 0, 0, 0.20);
+  //background: rgba(0, 0, 0, 0.20);
   height: 50%;
 }
 .active {
@@ -255,54 +275,55 @@ span {
   border-radius: 5px;
 }
 .options {
-  border-radius: 5px;
   flex-direction: column;
-  float: right;
-  margin: 20px 100px 0 0;
-  justify-content: center;
+  //float: center;
+  width: 100%;
+  height: fit-content;
+  padding-top: 20px;
+  //justify-content: center;
   align-items: center;
   //background: rgba(0, 0, 0, 0.20);
   text-align: center;
 }
 #joinOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #trimOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #brightnessOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #luminosityOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #gammaOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #fadeOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #mirrorOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #loopOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #rotateOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 #speedOptions {
   display: none;
-  margin: 20px 100px 0 0;
+  margin: auto;
 }
 .options > label {
   font-family: 'Nunito', sans-serif;
