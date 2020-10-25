@@ -1,5 +1,6 @@
 html, body {
-  background-image: linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(321deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44, 44, 44,0.05) 53%, rgba(44, 44, 44,0.05) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(334deg, rgb(115,25,55),rgb(115,25,55));
+  //background-image: linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(321deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44, 44, 44,0.05) 53%, rgba(44, 44, 44,0.05) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(334deg, rgb(115,25,55),rgb(115,25,55));
+  background-image: linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(321deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44, 44, 44,0.05) 53%, rgba(44, 44, 44,0.05) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(334deg, rgb(94,44,73),rgb(94,44,73));
   height: 100%;
   background-attachment: fixed;
   //overflow: hidden;
@@ -89,10 +90,19 @@ button.active {
 .clicked {
   background: #e5eaed !important;
 }
+.clicked2{
+  background: rgb(229, 234, 237, 0.84) !important;
+}
+
 .SendButton {
   text-align: center;
   margin: 15px auto;
   align-items: center;
+}
+#applyButton {
+  display: none;
+  margin: 20px auto 0 auto;
+  width: 50%;
 }
 .drop-zone {
   cursor: pointer;
@@ -104,7 +114,6 @@ button.active {
   align-items: center;
   justify-content: center;
   border: 4px dashed #EDEBD7;
-  border-radius: 5px;
 }
 .drop-zone-sm {
   cursor: pointer;
@@ -116,7 +125,6 @@ button.active {
   align-items: center;
   justify-content: center;
   border: 4px dashed #bbae9c;
-  border-radius: 5px;
   color: #bbae9c;
 }
 .drop-zone-over{
@@ -241,6 +249,7 @@ span {
   display: none;
 }
 #sideBar {
+  //display: none;
   background: #bbae9c;
   width: 25%;
   height: 100%;
@@ -262,6 +271,9 @@ span {
   font-family: 'Nunito', sans-serif;
   font-size: 20px;
 }
+#optionsTxt {
+  display: none;
+}
 #videoTag {
   display: flex;
   float: center;
@@ -271,7 +283,7 @@ span {
   height: 50%;
 }
 .active {
-  border: 2px solid #731937;
+  border: 2px solid #5e2c49;
   border-radius: 5px;
 }
 .options {
@@ -302,6 +314,10 @@ span {
   margin: auto;
 }
 #gammaOptions {
+  display: none;
+  margin: auto;
+}
+#blackwhiteOptions {
   display: none;
   margin: auto;
 }
@@ -337,6 +353,12 @@ span {
   color: #000;
   margin: 5px;
 }
+#blackwhiteOptions > p {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: rgb(0, 0, 0, 0.62);
+  margin-bottom: 20px;
+}
 .center {
   justify-content: center;
 }
@@ -348,6 +370,7 @@ span {
 }
 #slider {
   width: 98%;
+  margin-bottom: 20px;
 }
 #joinVideoList {
   font-family: 'Nunito', sans-serif;
@@ -355,14 +378,12 @@ span {
 }
 input{
   border: 2px solid rgb(0, 0, 0, 0.2);
-  border-radius: 5px;
   height: 40px;
   width: 190px;
   outline: none !important;
 }
 input:focus{
-  border: 2px solid #430011;
-  border-radius: 5px;
+  border: 2px solid #5e2c49;
   height: 40px;
   width: 190px;
   outline: none !important;

@@ -68,8 +68,9 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
-let filtersNames = ["trim", "join", "luminosity", "gamma", "brightness", "fade", "mirror", "loop", "rotate", "speed"];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "rotate", "speed"];
 let videoDuration = 0;
+let clicked;
 var slider = new Slider('#timeSlider', {
     id: "slider",
     min: 0,
@@ -188,11 +189,15 @@ function addVideo(file) {
 $('.btn-group').on('click', '.subNavButton', function() {
   $(this).addClass('clicked').siblings().removeClass('clicked');
 });
+$('.btn-group-sideBar').on('click', '.button', function() {
+  $(this).addClass('clicked2').siblings().removeClass('clicked2');
+});
 
 function toggleClick(id){
   console.log('Clicked!!');
   console.log('id: ' + id);
   //console.log(document.getElementById(id).classList[1]);
+  //document.getElementById('sideBar').style.display = "block";
   if(id == "editNavButton"){
     console.log('display edit');
     document.getElementById("editButtons").style.display = "flex";
@@ -209,6 +214,7 @@ function toggleClick(id){
 function trim(){
   let vid = document.getElementById("videoBar");
   displayOptions("trim");
+  clicked = "trim";
   slider.setAttribute("max", Math.round(videoDuration));
 }
 
@@ -227,6 +233,7 @@ function trimSend(){
 
 function join(){
   displayOptions("join");
+  clicked = "join";
   updateJoinList();
   console.log("join click: " + activeObjects);
 }
@@ -338,6 +345,8 @@ socket.on('fromPythonJoin', (data) => {
 
 
 function displayOptions(option){
+  document.getElementById('optionsTxt').style.display = "flex";
+  document.getElementById('applyButton').style.display = "flex";
   for(i=0; i<filtersNames.length; i++){
     id = filtersNames[i] + "Options";
     document.getElementById(id).style.display = "none";
@@ -411,6 +420,7 @@ function replaceAfterFilter(filterName){
 }
 function luminosity(){
   displayOptions("luminosity");
+  clicked = "luminosity";
 }
 function luminositySend(){
   name = activeObjects[activeObjects.length - 1];
@@ -427,6 +437,7 @@ socket.on('fromPythonLuminosity', (data) => {
 
 function gamma(){
   displayOptions("gamma");
+  clicked = "gamma";
 }
 function gammaSend(){
   name = activeObjects[activeObjects.length - 1];
@@ -441,6 +452,10 @@ socket.on('fromPythonGamma', (data) => {
 });
 
 function blackwhite(){
+  displayOptions("blackwhite");
+  clicked = "blackwhite";
+}
+function blackwhiteSend(){
   name = activeObjects[activeObjects.length - 1];
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('blackwhite', name);
@@ -452,6 +467,7 @@ socket.on('fromPythonBlackWhite', (data) => {
 
 function brightness(){
   displayOptions("brightness");
+  clicked = "brightness";
 }
 function brightnessSend(){
   name = activeObjects[activeObjects.length - 1];
@@ -468,6 +484,7 @@ socket.on('fromPythonBrightness', (data) => {
 
 function fade(){
   displayOptions("fade");
+  clicked = "fade";
 }
 function fadeSend(){
   name = activeObjects[activeObjects.length - 1];
@@ -489,6 +506,7 @@ $('.btn-group').on('click', '.button', function() {
 
 function mirror(){
   displayOptions("mirror");
+  clicked = "mirror";
 }
 function mirrorSendX(){
   name = activeObjects[activeObjects.length - 1];
@@ -509,6 +527,7 @@ socket.on('fromPythonMirror', (data) => {
 
 function loop(){
   displayOptions("loop");
+  clicked = "loop";
 }
 function loopSend(){
   name = activeObjects[activeObjects.length - 1];
@@ -527,6 +546,7 @@ socket.on('fromPythonLoop', (data) => {
 
 function rotate(){
   displayOptions("rotate");
+  clicked = "rotate";
 }
 function rotateSend(){
   name = activeObjects[activeObjects.length - 1];
@@ -542,6 +562,7 @@ socket.on('fromPythonRotate', (data) => {
 });
 
 function backwards(){
+  clicked = "backward";
   name = activeObjects[activeObjects.length - 1];
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('backwards', name);
@@ -553,6 +574,7 @@ socket.on('fromPythonBackwards', (data) => {
 
 function speed(){
   displayOptions("speed");
+  clicked = "speed";
 }
 function speedSend(){
   name = activeObjects[activeObjects.length - 1];
@@ -566,6 +588,47 @@ socket.on('fromPythonSpeed', (data) => {
   console.log("Hello after Speed");
   replaceAfterFilter('s');
 });
+
+
+function apply(){
+  console.log("apply: " + clicked);
+  switch(clicked){
+    case 'trim':
+      trimSend();
+      console.log('Hello trim');
+      break;
+    case 'join':
+      joinSend();
+      break;
+    case 'luminosity':
+      luminositySend();
+      break;
+    case 'gamma':
+      gammaSend();
+      break;
+    case 'blackwhite':
+      blackwhiteSend();
+      break;
+    case 'brightness':
+      brightnessSend();
+      break;
+    case 'fade':
+      fadeSend();
+      break;
+    case 'mirror':
+      console.log('Hello mirror');
+      break;
+    case 'loop':
+      loopSend();
+      break;
+    case 'rotate':
+      rotateSend();
+      break;
+    case 'speed':
+      speedSend();
+      break;
+  }
+}
 
 function save(){
   console.log("Save click!");

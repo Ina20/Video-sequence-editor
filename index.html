@@ -45,11 +45,11 @@
       </div>
       <div id="main" class="row">
         <div id="sideBar">
-          <div id="editButtons">
+          <div id="editButtons" class="btn-group-sideBar">
             <button type="button" onclick="trim()" class="button">Trim</button>
             <button type="button" onclick="join()" class="button">Join</button>
           </div>
-          <div id="editButtons2">
+          <div id="editButtons2" class="btn-group-sideBar">
             <button type="button" onclick="luminosity()" class="button">Luminosity-contrast correction</button>
             <button type="button" onclick="gamma()" class="button">Gamma-correction</button>
             <button type="button" onclick="blackwhite()" class="button">Black and white</button>
@@ -61,33 +61,31 @@
             <button type="button" onclick="backwards()" class="button">Play Backwards</button>
             <button type="button" onclick="speed()" class="button">Speed</button>
           </div>
-          <p>OPTIONS</p>
+          <p id="optionsTxt">OPTIONS</p>
           <div id="optionsSideBar">
             <div id="trimOptions" class="row col-sm-8 options">
               <input id="timeSlider" type="text" value="" data-slider-value="[250,450]"/>
-              <button type="button" onclick="trimSend()" class="sendButton button" id="trimSendButton">Trim</button>
             </div>
             <div id="joinOptions" class="row col-sm-12 options">
               <p>Join Order:</p>
               <ol id="joinVideoList"></ol>
-              <button type="button" onclick="joinSend()" class="sendButton button" id="joinSendButton">Join</button>
             </div>
             <div id="brightnessOptions" class="row col-sm-12 options">
               <label for="brightnessValue">Enter a brightness value between 0 and 2:</label>
               <input type="text" id="brightnessInput" name="brightnessValue"><br>
-              <button type="button" onclick="brightnessSend()" class="sendButton button" id="brightnessSendButton">Apply</button>
             </div>
             <div id="luminosityOptions" class="row col-sm-12 options">
               <label for="lumiBrightnessValue">Enter a brightness value:</label>
               <input type="text" id="lumiBrightnessInput" name="lumiBrightnessValue">
               <label for="lumiContrastValue">Enter a contrast value:</label>
               <input type="text" id="lumiContrastInput" name="lumiContrastValue"><br>
-              <button type="button" onclick="luminositySend()" class="sendButton button" id="luminositySendButton">Apply</button>
             </div>
             <div id="gammaOptions" class="row col-sm-12 options">
               <label for="gammaValue">Enter a gamma value:</label>
               <input type="text" id="gammaInput" name="gammaValue"><br>
-              <button type="button" onclick="gammaSend()" class="sendButton button" id="gammaSendButton">Apply</button>
+            </div>
+            <div id="blackwhiteOptions" class="row col-sm-12 options">
+              <p>No options available</p>
             </div>
             <div id="fadeOptions" class="row col-sm-12 options">
               <div class="btn-group btn-group-toggle">
@@ -96,7 +94,6 @@
               </div>
               <label for="fadeValue">Enter a fade duration:</label>
               <input type="text" id="fadeInput" name="fadeValue"><br>
-              <button type="button" onclick="fadeSend()" class="sendButton button" id="fadeSendButton">Apply</button>
             </div>
             <div id="mirrorOptions" class="row col-sm-12 options">
               <div class="row">
@@ -109,20 +106,20 @@
               <input type="text" id="timeStartInput" name="timeStart">
               <label for="timeEnd">Time end:</label>
               <input type="text" id="timeEndInput" name="timeEnd"><br>
-              <button type="button" onclick="loopSend()" class="sendButton button" id="loopSendButton">Apply</button>
             </div>
             <div id="rotateOptions" class="row col-sm-12 options">
               <label for="rotateValue">Enter an Angle value:</label>
               <input type="text" id="rotateInput" name="rotateValue"><br>
-              <button type="button" onclick="rotateSend()" class="sendButton button" id="rotateSendButton">Apply</button>
             </div>
             <div id="speedOptions" class="row col-sm-12 options">
               <label for="speedxValue">Enter a speed mnożnik:</label>
               <input type="text" id="speedxInput" name="speedxValue"><br>
               <!--<label for="speedfinaldurValue">Enter a final duration:</label>
               <input type="text" id="speedfinaldurInput" name="speedfinaldurValue"><br>-->
-              <button type="button" onclick="speedSend()" class="sendButton button" id="speedSendButton">Apply</button>
             </div>
+          </div>
+          <div id="applyButton">
+            <button type="button" onclick="apply()" class="button">APPLY</button>
           </div>
         </div>
         <div id="videoTag" class="col-sm-5 d-flex align-items-center">
