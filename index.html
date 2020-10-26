@@ -87,16 +87,16 @@
             <div id="blackwhiteOptions" class="row col-sm-12 options">
               <p>No options available</p>
             </div>
-            <div id="fadeOptions" class="row col-sm-12 options">
-              <div class="btn-group btn-group-toggle">
-                <button type="button" class="button" id="fadeIn">Fade In</button>
-                <button type="button" class="button" id="fadeOut">Fade Out</button>
-              </div>
+            <div id="fadeOptions" class="row btn-group-fade">
+              <button type="button" class="button" id="fadeIn">Fade In</button>
+              <button type="button" class="button" id="fadeOut">Fade Out</button>
+            </div>
+            <div id="insideFadeOptions" class="row col-sm-12 options">
               <label for="fadeValue">Enter a fade duration:</label>
               <input type="text" id="fadeInput" name="fadeValue"><br>
             </div>
             <div id="mirrorOptions" class="row col-sm-12 options">
-              <div class="row">
+              <div class="row btn-group-mirror">
                 <button type="button" class="button" id="mirrorX" onclick="mirrorSendX()">Mirror Horizontally</button>
                 <button type="button" class="button" id="mirrorY" onclick="mirrorSendY()">Mirror Vertically</button>
               </div>

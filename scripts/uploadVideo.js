@@ -82,7 +82,7 @@ var slider = new Slider('#timeSlider', {
     }
 });
 
-
+document.getElementsByClassName("fa-spinner")[0].style.display = "none";
 
 function openEditor(){
     //document.getElementById("uploadForm").submit();
@@ -488,7 +488,7 @@ function fade(){
 }
 function fadeSend(){
   name = activeObjects[activeObjects.length - 1];
-  inOut = document.getElementsByClassName("active")[0].id;
+  inOut = document.getElementsByClassName("clicked3")[0].id;
   fadeDuration = document.getElementById("fadeInput").value;
   console.log(inOut);
   let data = {name: name, inOut: inOut, fd: fadeDuration};
@@ -500,8 +500,8 @@ socket.on('fromPythonFade', (data) => {
   replaceAfterFilter('f');
 });
 
-$('.btn-group').on('click', '.button', function() {
-  $(this).addClass('active').siblings().removeClass('active');
+$('.btn-group-fade').on('click', '.button', function() {
+  $(this).addClass('clicked3').siblings().removeClass('clicked3');
 });
 
 function mirror(){
@@ -520,6 +520,11 @@ function mirrorSendY(){
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('mirror', data);
 }
+
+$('.btn-group-mirror').on('click', '.button', function() {
+  $(this).addClass('clicked4').siblings().removeClass('clicked4');
+});
+
 socket.on('fromPythonMirror', (data) => {
   console.log("Hello after Mirror");
   replaceAfterFilter('m');

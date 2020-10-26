@@ -56,10 +56,7 @@ button:hover {
 //  background: rgba(115, 25, 55, 0.84);
 //  outline: none !important;
 //}
-button.active {
-  background: #430011;
-  border-color: #430011;
-}
+
 #editButtons {
   display: none;
   flex-direction: column;
@@ -91,6 +88,9 @@ button.active {
   background: #e5eaed !important;
 }
 .clicked2{
+  background: rgb(229, 234, 237, 0.84) !important;
+}
+.clicked3 {
   background: rgb(229, 234, 237, 0.84) !important;
 }
 
@@ -255,11 +255,12 @@ span {
   height: 100%;
 }
 #optionsSideBar {
-  background: #e5eaed;
+  //background: #e5eaed;
   width: calc(100% - 5px);
   height: fit-content;
   margin: 0 10px 0 0;
 }
+
 #sideBar p {
   background-color: #e5eaed;
   line-height:35px;
@@ -282,10 +283,6 @@ span {
   //background: rgba(0, 0, 0, 0.20);
   height: 50%;
 }
-.active {
-  border: 2px solid #5e2c49;
-  border-radius: 5px;
-}
 .options {
   flex-direction: column;
   //float: center;
@@ -294,8 +291,8 @@ span {
   padding-top: 20px;
   //justify-content: center;
   align-items: center;
-  //background: rgba(0, 0, 0, 0.20);
   text-align: center;
+  background: #e5eaed;
 }
 #joinOptions {
   display: none;
@@ -323,7 +320,14 @@ span {
 }
 #fadeOptions {
   display: none;
+  flex-direction: column;
+  align-items: center;
   margin: auto;
+}
+#insideFadeOptions {
+  width:100%;
+  margin: auto;
+  background: pink;
 }
 #mirrorOptions {
   display: none;
