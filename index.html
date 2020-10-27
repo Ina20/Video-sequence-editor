@@ -48,6 +48,7 @@
           <div id="editButtons" class="btn-group-sideBar">
             <button type="button" onclick="trim()" class="button">Trim</button>
             <button type="button" onclick="join()" class="button">Join</button>
+            <button type="button" onclick="loop()" class="button">Make Gif</button>
           </div>
           <div id="editButtons2" class="btn-group-sideBar">
             <button type="button" onclick="luminosity()" class="button">Luminosity-contrast correction</button>
@@ -56,7 +57,6 @@
             <button type="button" onclick="brightness()" class="button">Brightness</button>
             <button type="button" onclick="fade()" class="button">Fade</button>
             <button type="button" onclick="mirror()" class="button">Mirror</button>
-            <button type="button" onclick="loop()" class="button">Make Gif</button>
             <button type="button" onclick="rotate()" class="button">Rotate</button>
             <button type="button" onclick="backwards()" class="button">Play Backwards</button>
             <button type="button" onclick="speed()" class="button">Speed</button>
@@ -92,8 +92,8 @@
               <button type="button" class="button" id="fadeOut">Fade Out</button>
             </div>
             <div id="insideFadeOptions" class="row col-sm-12 options">
-              <label for="fadeValue">Enter a fade duration:</label>
-              <input type="text" id="fadeInput" name="fadeValue"><br>
+              <label for="fadeValue">Fade duration:</label>
+              <input id="fadeSlider" type="text" data-slider-step="1" data-slider-value="0"/>
             </div>
             <div id="mirrorOptions" class="row btn-group-mirror">
               <button type="button" class="button" id="mirrorX">Mirror Horizontally</button>
@@ -106,15 +106,15 @@
               <input type="text" id="timeEndInput" name="timeEnd"><br>
             </div>
             <div id="rotateOptions" class="row col-sm-12 options">
-              <label for="rotateValue">Enter an Angle value:</label>
-              <input type="text" id="rotateInput" name="rotateValue"><br>
+              <label for="rotateValue">Rotate angle:</label>
+              <input id="rotSlider" type="text" data-slider-min="0" data-slider-max="360" data-slider-step="1" data-slider-value="0"/>
             </div>
             <div id="backwardOptions" class="row col-sm-12 options">
               <p>No options available</p>
             </div>
             <div id="speedOptions" class="row col-sm-12 options">
               <label for="speedxValue">Enter a speed mnożnik:</label>
-              <input type="text" id="speedxInput" name="speedxValue"><br>
+              <input type="text" id="speedxInput" name="speedxValue" onkeypress="return isNumberKey(event)"><br>
               <!--<label for="speedfinaldurValue">Enter a final duration:</label>
               <input type="text" id="speedfinaldurInput" name="speedfinaldurValue"><br>-->
             </div>

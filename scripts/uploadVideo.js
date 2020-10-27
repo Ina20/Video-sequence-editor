@@ -109,6 +109,22 @@ var brightnessSlider = new Slider('#brightSlider', {
     },
     rangeHighlights: [{ "start": 0, "end": 2 }]
 });
+var fadeInOutSlider = new Slider('#fadeSlider', {
+    id: "fSlider",
+    min: 0,
+    max: 0,
+    step: 1,
+    formatter: function (value) {
+      let val = Math.floor(value / 60) + ":" + (value % 60 ? value % 60 : '00');
+      return val;
+    }
+});
+var rotateSlider = new Slider('#rotSlider', {
+    id: "rSlider",
+    formatter: function (value) {
+      return value + String.fromCharCode(176);
+    }
+});
 
 document.getElementsByClassName("fa-spinner")[0].style.display = "none";
 
@@ -194,6 +210,7 @@ function addVideo(file) {
       }
       console.log("vidDur: " + videoDuration);
       slider.setAttribute("max", Math.round(videoDuration));
+      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       console.log("join: " + activeObjects);
     }else {
       videoDuration = fileDisplay.duration;
@@ -201,6 +218,7 @@ function addVideo(file) {
       active = true;
       console.log("join: " + activeObjects);
       slider.setAttribute("max", Math.round(videoDuration));
+      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = blobURL;
         activeObjects.push(file.name);
@@ -340,6 +358,7 @@ socket.on('fromPythonJoin', (data) => {
       }
       console.log("vidDur: " + videoDuration);
       slider.setAttribute("max", Math.round(videoDuration));
+      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       console.log("join: " + activeObjects);
     }else {
       videoDuration = fileDisplay.duration;
@@ -347,6 +366,7 @@ socket.on('fromPythonJoin', (data) => {
       active = true;
       console.log("join: " + activeObjects);
       slider.setAttribute("max", Math.round(videoDuration));
+      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = fileSrc;
         activeObjects.push(fileDisplay.name);
@@ -430,11 +450,13 @@ function replaceAfterFilter(filterName){
         }
       }
       slider.setAttribute("max", Math.round(videoDuration));
+      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
     }else {
       videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
       active = true;
       slider.setAttribute("max", Math.round(videoDuration));
+      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = fileSrc;
         activeObjects.push(fileDisplay.name);
@@ -526,11 +548,12 @@ socket.on('fromPythonBrightness', (data) => {
 function fade(){
   displayOptions("fade");
   clicked = "fade";
+  fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
 }
 function fadeSend(){
   name = activeObjects[activeObjects.length - 1];
   inOut = document.getElementsByClassName("clicked3")[0].id;
-  fadeDuration = document.getElementById("fadeInput").value;
+  fadeDuration = fadeInOutSlider.getValue();
   console.log(inOut);
   let data = {name: name, inOut: inOut, fd: fadeDuration};
   document.getElementById("loadingDiv").style.display = "flex";
@@ -594,7 +617,7 @@ function rotate(){
 }
 function rotateSend(){
   name = activeObjects[activeObjects.length - 1];
-  rotateValue = document.getElementById("rotateInput").value;
+  rotateValue = rotateSlider.getValue();
   let data = {name: name, rv: rotateValue};
   console.log("angle: " + data.rv);
   document.getElementById("loadingDiv").style.display = "flex";
@@ -678,6 +701,14 @@ function apply(){
       speedSend();
       break;
   }
+}
+
+function isNumberKey(evt){
+  var charCode = (evt.which) ? evt.which : evt.keyCode;
+  if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)){
+	   return false;
+  }
+	return true;
 }
 
 function save(){
