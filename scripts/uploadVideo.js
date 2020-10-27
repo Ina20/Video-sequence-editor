@@ -351,7 +351,13 @@ function displayOptions(option){
     id = filtersNames[i] + "Options";
     document.getElementById(id).style.display = "none";
     if(filtersNames[i] == option){
-      document.getElementById(id).style.display = "flex";
+      if(filtersNames[i] == "fade"){
+        document.getElementById(id).style.display = "flex";
+        document.getElementById('insideFadeOptions').style.display = "flex";
+      }else {
+        document.getElementById(id).style.display = "flex";
+        document.getElementById('insideFadeOptions').style.display = "none";
+      }
     }
   }
 }

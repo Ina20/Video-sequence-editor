@@ -324,10 +324,13 @@ span {
   align-items: center;
   margin: auto;
 }
+.btn-group-fade {
+  width: 100%;
+}
 #insideFadeOptions {
+  display: none;
   width:100%;
   margin: auto;
-  background: pink;
 }
 #mirrorOptions {
   display: none;
