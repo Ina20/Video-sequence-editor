@@ -286,6 +286,8 @@ span {
   justify-content: center;
   margin: 40px auto 0 auto;
   //background: rgba(0, 0, 0, 0.20);
+  outline: none !important;
+  border: none;
   height: 50%;
 }
 .options {
@@ -320,6 +322,10 @@ span {
   margin: auto;
 }
 #blackwhiteOptions {
+  display: none;
+  margin: auto;
+}
+#backwardOptions {
   display: none;
   margin: auto;
 }
@@ -369,6 +375,12 @@ span {
   margin: 5px;
 }
 #blackwhiteOptions > p {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: rgb(0, 0, 0, 0.62);
+  margin-bottom: 20px;
+}
+#backwardOptions > p {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
   color: rgb(0, 0, 0, 0.62);

@@ -68,7 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
-let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "rotate", "speed"];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "rotate", "backward", "speed"];
 let videoDuration = 0;
 let clicked;
 var slider = new Slider('#timeSlider', {
@@ -196,6 +196,9 @@ $('.btn-group-sideBar').on('click', '.button', function() {
 function toggleClick(id){
   console.log('Clicked!!');
   console.log('id: ' + id);
+  document.getElementById("optionsSideBar").style.display = "none";
+  document.getElementById('optionsTxt').style.display = "none";
+  document.getElementById('applyButton').style.display = "none";
   //console.log(document.getElementById(id).classList[1]);
   //document.getElementById('sideBar').style.display = "block";
   if(id == "editNavButton"){
@@ -206,6 +209,7 @@ function toggleClick(id){
     console.log('display filter');
     document.getElementById("editButtons2").style.display = "flex";
     document.getElementById("editButtons").style.display = "none";
+
   }
 }
 
@@ -347,6 +351,7 @@ socket.on('fromPythonJoin', (data) => {
 function displayOptions(option){
   document.getElementById('optionsTxt').style.display = "flex";
   document.getElementById('applyButton').style.display = "flex";
+  document.getElementById("optionsSideBar").style.display = "block";
   for(i=0; i<filtersNames.length; i++){
     id = filtersNames[i] + "Options";
     document.getElementById(id).style.display = "none";
@@ -430,9 +435,16 @@ function luminosity(){
 }
 function luminositySend(){
   name = activeObjects[activeObjects.length - 1];
-  lumiBrightnessValue = document.getElementById("lumiBrightnessInput").value;
-  lumiContrastValue = document.getElementById("lumiContrastInput").value;
+  lumiBrightnessValue = 0;
+  lumiContrastValue = 0;
+  if (document.getElementById("lumiBrightnessInput").value !== ""){
+    lumiBrightnessValue = document.getElementById("lumiBrightnessInput").value;
+  }
+  if (document.getElementById("lumiContrastInput").value !== ""){
+    lumiContrastValue = document.getElementById("lumiContrastInput").value;
+  }
   let data = {name: name, lbv: lumiBrightnessValue, lcv: lumiContrastValue};
+  console.log(data.lbv + " / " + data.lcv);
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('luminosity', data);
 }
@@ -571,7 +583,10 @@ socket.on('fromPythonRotate', (data) => {
 });
 
 function backwards(){
+  displayOptions("backward");
   clicked = "backward";
+}
+function backwardSend(){
   name = activeObjects[activeObjects.length - 1];
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('backwards', name);
@@ -632,6 +647,9 @@ function apply(){
       break;
     case 'rotate':
       rotateSend();
+      break;
+    case 'backward':
+      backwardSend();
       break;
     case 'speed':
       speedSend();
