@@ -70,22 +70,22 @@
               <p>Join Order:</p>
               <ol id="joinVideoList"></ol>
             </div>
-            <div id="brightnessOptions" class="row col-sm-12 options">
-              <label for="brightnessValue">Enter a brightness value between 0 and 2:</label>
-              <input type="text" id="brightnessInput" name="brightnessValue"><br>
-            </div>
             <div id="luminosityOptions" class="row col-sm-12 options">
-              <label for="lumiBrightnessValue">Enter a brightness value:</label>
-              <input type="text" id="lumiBrightnessInput" name="lumiBrightnessValue">
-              <label for="lumiContrastValue">Enter a contrast value:</label>
-              <input type="text" id="lumiContrastInput" name="lumiContrastValue"><br>
+              <label for="lumiBrightnessValue">Luminosity value:</label>
+              <input id="lumSlider" type="text" data-slider-min="-255" data-slider-max="255" data-slider-step="1" data-slider-value="0"/>
+              <label for="lumiContrastValue">Contrast value:</label>
+              <input id="contrastSlider" type="text" data-slider-min="-1" data-slider-max="1" data-slider-step="0.1" data-slider-value="0"/>
             </div>
             <div id="gammaOptions" class="row col-sm-12 options">
-              <label for="gammaValue">Enter a gamma value:</label>
-              <input type="text" id="gammaInput" name="gammaValue"><br>
+              <label for="gammaValue">Gamma value:</label>
+              <input id="gamSlider" type="text" data-slider-min="0" data-slider-max="2" data-slider-step="0.1" data-slider-value="1"/>
             </div>
             <div id="blackwhiteOptions" class="row col-sm-12 options">
               <p>No options available</p>
+            </div>
+            <div id="brightnessOptions" class="row col-sm-12 options">
+              <label for="brightnessValue">Brightness value:</label>
+              <input id="brightSlider" type="text" data-slider-min="0" data-slider-max="2" data-slider-step="0.1" data-slider-value="1"/>
             </div>
             <div id="fadeOptions" class="row btn-group-fade">
               <button type="button" class="button" id="fadeIn">Fade In</button>

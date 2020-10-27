@@ -290,6 +290,9 @@ span {
   border: none;
   height: 50%;
 }
+video {
+  outline: none !important;
+}
 .options {
   flex-direction: column;
   //float: center;
@@ -398,6 +401,46 @@ span {
 #slider {
   width: 90%;
   margin: 0 0 20px 16px;
+}
+#lSlider .slider-handle {
+	background: #5e2c49;
+}
+#lSlider {
+  width: 90%;
+  margin: 0 0 20px 16px;
+}
+#lSlider .slider-rangeHighlight {
+	background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 100%);
+}
+#cSlider .slider-handle {
+	background: #5e2c49;
+}
+#cSlider {
+  width: 90%;
+  margin: 0 0 20px 16px;
+}
+#cSlider .slider-rangeHighlight {
+	background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 100%);
+}
+#gSlider .slider-handle {
+	background: #5e2c49;
+}
+#gSlider {
+  width: 90%;
+  margin: 0 0 20px 16px;
+}
+#gSlider .slider-rangeHighlight {
+	background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(0,0,0,1) 100%);
+}
+#bSlider .slider-handle {
+	background: #5e2c49;
+}
+#bSlider {
+  width: 90%;
+  margin: 0 0 20px 16px;
+}
+#bSlider .slider-rangeHighlight {
+	background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(255,255,255,1) 100%);
 }
 #joinVideoList {
   font-family: 'Nunito', sans-serif;

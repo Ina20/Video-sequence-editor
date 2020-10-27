@@ -81,6 +81,34 @@ var slider = new Slider('#timeSlider', {
       return val;
     }
 });
+var luminositySlider = new Slider('#lumSlider', {
+    id: "lSlider",
+    formatter: function(value) {
+      return value;
+    },
+    rangeHighlights: [{ "start": -255, "end": 255 }]
+});
+var lumContrastSlider = new Slider('#contrastSlider', {
+    id: "cSlider",
+    formatter: function(value) {
+		  return value;
+    },
+    rangeHighlights: [{ "start": -1, "end": 1 }]
+});
+var gammaSlider = new Slider('#gamSlider', {
+    id: "gSlider",
+    formatter: function(value) {
+		  return value;
+    },
+    rangeHighlights: [{ "start": 0, "end": 2 }]
+});
+var brightnessSlider = new Slider('#brightSlider', {
+    id: "bSlider",
+    formatter: function(value) {
+		  return value;
+    },
+    rangeHighlights: [{ "start": 0, "end": 2 }]
+});
 
 document.getElementsByClassName("fa-spinner")[0].style.display = "none";
 
@@ -89,7 +117,7 @@ function openEditor(){
 
     let file = document.getElementById("startUpload").files[0];
 
-    document.body.style.backgroundImage = "linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(321deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44, 44, 44,0.05) 53%, rgba(44, 44, 44,0.05) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(334deg, rgb(229,234,237),rgb(229,234,237))";
+    document.body.style.backgroundImage = "linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(334deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44,44,44, 0.050980392156862744) 53%, rgba(44,44,44, 0.050980392156862744) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(321deg, rgb(255,255,255),rgb(255,255,255))";
 
     //document.body.style.backgroundImage = "linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(321deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44, 44, 44,0.05) 53%, rgba(44, 44, 44,0.05) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(334deg, rgb(237,235,215),rgb(237,235,215))";
 
@@ -435,14 +463,9 @@ function luminosity(){
 }
 function luminositySend(){
   name = activeObjects[activeObjects.length - 1];
-  lumiBrightnessValue = 0;
-  lumiContrastValue = 0;
-  if (document.getElementById("lumiBrightnessInput").value !== ""){
-    lumiBrightnessValue = document.getElementById("lumiBrightnessInput").value;
-  }
-  if (document.getElementById("lumiContrastInput").value !== ""){
-    lumiContrastValue = document.getElementById("lumiContrastInput").value;
-  }
+  lumiBrightnessValue = luminositySlider.getValue();
+  lumiContrastValue = lumContrastSlider.getValue();
+  console.log("slider from lum: " + lumiBrightnessValue + " / " + lumiContrastValue);
   let data = {name: name, lbv: lumiBrightnessValue, lcv: lumiContrastValue};
   console.log(data.lbv + " / " + data.lcv);
   document.getElementById("loadingDiv").style.display = "flex";
@@ -459,7 +482,7 @@ function gamma(){
 }
 function gammaSend(){
   name = activeObjects[activeObjects.length - 1];
-  gammaValue = document.getElementById("gammaInput").value;
+  gammaValue = gammaSlider.getValue();
   let data = {name: name, gv: gammaValue};
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('gamma', data);
@@ -489,7 +512,7 @@ function brightness(){
 }
 function brightnessSend(){
   name = activeObjects[activeObjects.length - 1];
-  brightnessValue = document.getElementById("brightnessInput").value;
+  brightnessValue = brightnessSlider.getValue();
   let data = {name: name, bv: brightnessValue};
   console.log("brData: " + data.name + " " + data.bv);
   document.getElementById("loadingDiv").style.display = "flex";
