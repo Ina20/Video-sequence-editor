@@ -378,14 +378,14 @@ span {
   justify-content: center;
 }
 #slider .slider-selection {
-  background: #731937;
+  background: #5e2c49;
 }
 #slider .slider-handle {
-	background: #430011;
+	background: #5e2c49;
 }
 #slider {
-  width: 98%;
-  margin-bottom: 20px;
+  width: 90%;
+  margin: 0 0 20px 16px;
 }
 #joinVideoList {
   font-family: 'Nunito', sans-serif;
