@@ -514,15 +514,13 @@ function mirror(){
   displayOptions("mirror");
   clicked = "mirror";
 }
-function mirrorSendX(){
+function mirrorSend(){
   name = activeObjects[activeObjects.length - 1];
-  let data = {name: name, xy: "X"};
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('mirror', data);
-}
-function mirrorSendY(){
-  name = activeObjects[activeObjects.length - 1];
-  let data = {name: name, xy: "Y"};
+  mirrorXY = document.getElementsByClassName("clicked4")[0].id;
+  console.log('xy: ' + mirrorXY);
+  console.log(mirrorXY .split("mirror")[1]);
+  xy = mirrorXY .split("mirror")[1]
+  let data = {name: name, xy: xy};
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('mirror', data);
 }
@@ -627,7 +625,7 @@ function apply(){
       fadeSend();
       break;
     case 'mirror':
-      console.log('Hello mirror');
+      mirrorSend();
       break;
     case 'loop':
       loopSend();

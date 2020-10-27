@@ -56,7 +56,9 @@ button:hover {
 //  background: rgba(115, 25, 55, 0.84);
 //  outline: none !important;
 //}
-
+.active {
+  border: 2px solid #bbae9c;
+}
 #editButtons {
   display: none;
   flex-direction: column;
@@ -91,6 +93,9 @@ button:hover {
   background: rgb(229, 234, 237, 0.84) !important;
 }
 .clicked3 {
+  background: rgb(229, 234, 237, 0.84) !important;
+}
+.clicked4 {
   background: rgb(229, 234, 237, 0.84) !important;
 }
 
@@ -334,6 +339,9 @@ span {
 }
 #mirrorOptions {
   display: none;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
   margin: auto;
 }
 #loopOptions {
