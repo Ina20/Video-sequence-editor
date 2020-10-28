@@ -141,15 +141,23 @@ function openEditor(){
     document.getElementById("home").style.display = "none";
     document.getElementById("editor").style.display = "block";
 
-    addVideo(file);
+    if(file.type == "video/mp4"){
+      addVideo(file);
+    }else{
+      console.log("błąd - zły format");
+    }
 }
 
 function addMoreVideo(){
     //document.getElementById("uploadForm2").submit();
 
     let file = document.getElementById("nextUpload").files[0];
+    if(file.type == "video/mp4"){
+      addVideo(file);
+    }else{
+      console.log("błąd - zły format");
+    }
 
-    addVideo(file);
 }
 
 function addVideo(file) {
@@ -395,6 +403,51 @@ socket.on('fromPythonJoin', (data) => {
   }
 });
 
+function loop(){
+  displayOptions("loop");
+  clicked = "loop";
+}
+function loopSend(){
+  name = activeObjects[activeObjects.length - 1];
+  timeStart = document.getElementById("timeStartInput").value;
+  timeEnd = document.getElementById("timeEndInput").value;
+  let data = {name: name, ts: timeStart, te: timeEnd};
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('loop', data);
+}
+socket.on('fromPythonLoop', (data) => {
+  console.log("Hello after Loop");
+  document.getElementById("loadingDiv").style.display = "none";
+  let active = false;
+  name = activeObjects[activeObjects.length - 1];
+  console.log("loop name: " + name);
+  console.log(name.substring(0,name.lastIndexOf('.')));
+  fileSrc = "./videos/" + name.substring(0,name.lastIndexOf('.')) + '.gif';
+  console.log("fileSrc: " + fileSrc);
+
+  let fileDisplay = document.createElement('IMG');
+  fileDisplay.classList.add("fileListDisplay");
+  document.getElementById("videoBar").appendChild(fileDisplay);
+  fileDisplay.src = fileSrc;
+  fileDisplay.onclick = function() {
+    if(active){
+      fileDisplay.classList.remove("active");
+      active = false;
+      document.getElementsByTagName("video")[0].style.display = "flex";
+      document.getElementById('gifDisplay').style.display = "none";
+      gifDisplay.src = "";
+    }else {
+      fileDisplay.classList.add("active");
+      active = true;
+      document.getElementsByTagName("video")[0].style.display = "none";
+      document.getElementById('gifDisplay').style.display = "block";
+      gifDisplay.src = fileSrc;
+    }
+  }
+
+  //replaceAfterFilter('loop');
+});
+
 
 function displayOptions(option){
   document.getElementById('optionsTxt').style.display = "flex";
@@ -419,15 +472,7 @@ function replaceAfterFilter(filterName){
   console.log("Filter Here: " + filterName);
   document.getElementById("loadingDiv").style.display = "none";
   let active = false;
-  if(filterName == "loop"){
-    tmpName = activeObjects[activeObjects.length - 1];
-    console.log(tmpName.substring(0,tmpName.lastIndexOf('.')));
-    fileName = tmpName.substring(0,tmpName.lastIndexOf('.')) + '.gif';
-    fileSrc = "./videos/" + fileName;
-    console.log(fileSrc);
-  }else {
-    fileSrc = "./videos/" + filterName + '_' + activeObjects[activeObjects.length - 1];
-  }
+  fileSrc = "./videos/" + filterName + '_' + activeObjects[activeObjects.length - 1];
   console.log("fileSRC: " + fileSrc);
   let fileDisplay = document.createElement('video');
   fileDisplay.classList.add("fileListDisplay");
@@ -590,25 +635,6 @@ $('.btn-group-mirror').on('click', '.button', function() {
 socket.on('fromPythonMirror', (data) => {
   console.log("Hello after Mirror");
   replaceAfterFilter('m');
-});
-
-function loop(){
-  displayOptions("loop");
-  clicked = "loop";
-}
-function loopSend(){
-  name = activeObjects[activeObjects.length - 1];
-  timeStart = document.getElementById("timeStartInput").value;
-  timeEnd = document.getElementById("timeEndInput").value;
-  let data = {name: name, ts: timeStart, te: timeEnd};
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('loop', data);
-}
-socket.on('fromPythonLoop', (data) => {
-  console.log("Hello after Loop");
-  name = activeObjects[activeObjects.length - 1];
-  console.log(name.substring(0,name.lastIndexOf('.')));
-  replaceAfterFilter('loop');
 });
 
 function rotate(){
