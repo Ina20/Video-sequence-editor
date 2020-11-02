@@ -81,6 +81,16 @@ var slider = new Slider('#timeSlider', {
       return val;
     }
 });
+var GIFSlider = new Slider('#gifSlider', {
+    id: "GIFSlider",
+    min: 0,
+    max: 0,
+    step: 1,
+    formatter: function (value) {
+      let val = Math.floor(value[0] / 60) + ":" + (value[0] % 60 ? value[0] % 60 : '00') + ',' + Math.floor(value[1] / 60) + ":" + (value[1] % 60 ? value[1] % 60 : '00');
+      return val;
+    }
+});
 var luminositySlider = new Slider('#lumSlider', {
     id: "lSlider",
     formatter: function(value) {
@@ -221,6 +231,7 @@ function addVideo(file) {
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       console.log("join: " + activeObjects);
     }else {
+      document.getElementById("error").style.display = "none";
       videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
       active = true;
@@ -253,6 +264,7 @@ function toggleClick(id){
   document.getElementById("optionsSideBar").style.display = "none";
   document.getElementById('optionsTxt').style.display = "none";
   document.getElementById('applyButton').style.display = "none";
+  document.getElementById("error").style.display = "none";
   //console.log(document.getElementById(id).classList[1]);
   //document.getElementById('sideBar').style.display = "block";
   if(id == "editNavButton"){
@@ -369,6 +381,7 @@ socket.on('fromPythonJoin', (data) => {
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       console.log("join: " + activeObjects);
     }else {
+      document.getElementById("error").style.display = "none";
       videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
       active = true;
@@ -406,11 +419,12 @@ socket.on('fromPythonJoin', (data) => {
 function loop(){
   displayOptions("loop");
   clicked = "loop";
+  GIFSlider.setAttribute("max", Math.round(videoDuration));
 }
 function loopSend(){
   name = activeObjects[activeObjects.length - 1];
-  timeStart = document.getElementById("timeStartInput").value;
-  timeEnd = document.getElementById("timeEndInput").value;
+  timeStart = GIFSlider.getValue()[0];
+  timeEnd = GIFSlider.getValue()[1];
   let data = {name: name, ts: timeStart, te: timeEnd};
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('loop', data);
@@ -453,6 +467,7 @@ function displayOptions(option){
   document.getElementById('optionsTxt').style.display = "flex";
   document.getElementById('applyButton').style.display = "flex";
   document.getElementById("optionsSideBar").style.display = "block";
+  document.getElementById("error").style.display = "none";
   for(i=0; i<filtersNames.length; i++){
     id = filtersNames[i] + "Options";
     document.getElementById(id).style.display = "none";
@@ -497,6 +512,7 @@ function replaceAfterFilter(filterName){
       slider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
     }else {
+      document.getElementById("error").style.display = "none";
       videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
       active = true;
@@ -597,12 +613,20 @@ function fade(){
 }
 function fadeSend(){
   name = activeObjects[activeObjects.length - 1];
-  inOut = document.getElementsByClassName("clicked3")[0].id;
+  let inOut;
   fadeDuration = fadeInOutSlider.getValue();
-  console.log(inOut);
-  let data = {name: name, inOut: inOut, fd: fadeDuration};
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('fade', data);
+  console.log("inout lenght: " + document.getElementsByClassName("clicked3").length);
+  if(document.getElementsByClassName("clicked3").length == 0){
+    console.log("pusto inOut");
+    document.getElementById('error').innerHTML = "No In/Out selected";
+    document.getElementById('error').style.display = "block";
+  }else{
+    inOut = document.getElementsByClassName("clicked3")[0].id;
+    document.getElementById('error').style.display = "none";
+    let data = {name: name, inOut: inOut, fd: fadeDuration};
+    document.getElementById("loadingDiv").style.display = "flex";
+    socket.emit('fade', data);
+  }
 }
 socket.on('fromPythonFade', (data) => {
   console.log("Hello after Fade");
@@ -611,6 +635,7 @@ socket.on('fromPythonFade', (data) => {
 
 $('.btn-group-fade').on('click', '.button', function() {
   $(this).addClass('clicked3').siblings().removeClass('clicked3');
+  document.getElementById('error').style.display = "none";
 });
 
 function mirror(){
@@ -619,17 +644,23 @@ function mirror(){
 }
 function mirrorSend(){
   name = activeObjects[activeObjects.length - 1];
-  mirrorXY = document.getElementsByClassName("clicked4")[0].id;
-  console.log('xy: ' + mirrorXY);
-  console.log(mirrorXY .split("mirror")[1]);
-  xy = mirrorXY .split("mirror")[1]
-  let data = {name: name, xy: xy};
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('mirror', data);
+  if(document.getElementsByClassName("clicked4").length == 0){
+    document.getElementById('error').innerHTML = "No direction selected";
+    document.getElementById('error').style.display = "block";
+  }else{
+    mirrorXY = document.getElementsByClassName("clicked4")[0].id;
+    console.log('xy: ' + mirrorXY);
+    console.log(mirrorXY .split("mirror")[1]);
+    xy = mirrorXY .split("mirror")[1]
+    let data = {name: name, xy: xy};
+    document.getElementById("loadingDiv").style.display = "flex";
+    socket.emit('mirror', data);
+  }
 }
 
 $('.btn-group-mirror').on('click', '.button', function() {
   $(this).addClass('clicked4').siblings().removeClass('clicked4');
+  document.getElementById('error').style.display = "none";
 });
 
 socket.on('fromPythonMirror', (data) => {
@@ -675,10 +706,16 @@ function speed(){
 function speedSend(){
   name = activeObjects[activeObjects.length - 1];
   speedxValue = document.getElementById("speedxInput").value;
+  if(speedxValue == ""){
+    document.getElementById('error').innerHTML = "No mnożnik";
+    document.getElementById('error').style.display = "block";
+  }else{
+    let data = {name: name, sx: speedxValue/*, sfd: speedfinaldurValue*/};
+    document.getElementById('error').style.display = "none";
+    document.getElementById("loadingDiv").style.display = "flex";
+    socket.emit('speed', data);
+  }
   //speedfinaldurValue = document.getElementById("speedfinaldurInput").value;
-  let data = {name: name, sx: speedxValue/*, sfd: speedfinaldurValue*/};
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('speed', data);
 }
 socket.on('fromPythonSpeed', (data) => {
   console.log("Hello after Speed");
@@ -688,44 +725,54 @@ socket.on('fromPythonSpeed', (data) => {
 
 function apply(){
   console.log("apply: " + clicked);
-  switch(clicked){
-    case 'trim':
-      trimSend();
-      console.log('Hello trim');
-      break;
-    case 'join':
-      joinSend();
-      break;
-    case 'luminosity':
-      luminositySend();
-      break;
-    case 'gamma':
-      gammaSend();
-      break;
-    case 'blackwhite':
-      blackwhiteSend();
-      break;
-    case 'brightness':
-      brightnessSend();
-      break;
-    case 'fade':
-      fadeSend();
-      break;
-    case 'mirror':
-      mirrorSend();
-      break;
-    case 'loop':
-      loopSend();
-      break;
-    case 'rotate':
-      rotateSend();
-      break;
-    case 'backward':
-      backwardSend();
-      break;
-    case 'speed':
-      speedSend();
-      break;
+  if(activeObjects == ""){
+    console.log('pusto');
+    document.getElementById("error").innerHTML = "No video selected";
+    document.getElementById("error").style.display = "block";
+    console.log('active now: ' + activeObjects.length);
+    //if(clicked == "join"){
+    //  document.getElementById("errorNoVideo").innerHTML = "At least two videos must be selected";
+    //}
+  }else{
+    switch(clicked){
+      case 'trim':
+        trimSend();
+        console.log('Hello trim');
+        break;
+      case 'join':
+        joinSend();
+        break;
+      case 'luminosity':
+        luminositySend();
+        break;
+      case 'gamma':
+        gammaSend();
+        break;
+      case 'blackwhite':
+        blackwhiteSend();
+        break;
+      case 'brightness':
+        brightnessSend();
+        break;
+      case 'fade':
+        fadeSend();
+        break;
+      case 'mirror':
+        mirrorSend();
+        break;
+      case 'loop':
+        loopSend();
+        break;
+      case 'rotate':
+        rotateSend();
+        break;
+      case 'backward':
+        backwardSend();
+        break;
+      case 'speed':
+        speedSend();
+        break;
+    }
   }
 }
 

@@ -408,6 +408,16 @@ video {
   width: 90%;
   margin: 0 0 20px 16px;
 }
+#GIFSlider .slider-selection {
+  background: #5e2c49;
+}
+#GIFSlider .slider-handle {
+	background: #5e2c49;
+}
+#GIFSlider {
+  width: 90%;
+  margin: 0 0 20px 16px;
+}
 #lSlider .slider-handle {
 	background: #5e2c49;
 }
@@ -484,4 +494,11 @@ input:focus{
   height: 40px;
   width: 190px;
   outline: none !important;
+}
+#sideBar #error {
+  display: none;
+  color: #E50000;
+  font-size: 18px;
+  background: none;
+  margin: auto;
 }

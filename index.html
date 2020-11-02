@@ -100,10 +100,7 @@
               <button type="button" class="button" id="mirrorY">Mirror Vertically</button>
             </div>
             <div id="loopOptions" class="row col-sm-12 options">
-              <label for="timeStart">Time start:</label>
-              <input type="text" id="timeStartInput" name="timeStart">
-              <label for="timeEnd">Time end:</label>
-              <input type="text" id="timeEndInput" name="timeEnd"><br>
+              <input id="gifSlider" type="text" value="" data-slider-value="[250,450]"/>
             </div>
             <div id="rotateOptions" class="row col-sm-12 options">
               <label for="rotateValue">Rotate angle:</label>
@@ -122,6 +119,7 @@
           <div id="applyButton">
             <button type="button" onclick="apply()" class="button">APPLY</button>
           </div>
+          <p id="error">No video selected</p>
         </div>
         <div id="videoTag" class="col-sm-5 d-flex align-items-center">
           <video width="100%" height="100%" controls></video>
