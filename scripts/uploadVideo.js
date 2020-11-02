@@ -68,7 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
-let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "rotate", "backward", "speed"];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "rotate", "speed"];
 let videoDuration = 0;
 let clicked;
 var slider = new Slider('#timeSlider', {
@@ -685,20 +685,6 @@ socket.on('fromPythonRotate', (data) => {
   replaceAfterFilter('r');
 });
 
-function backwards(){
-  displayOptions("backward");
-  clicked = "backward";
-}
-function backwardSend(){
-  name = activeObjects[activeObjects.length - 1];
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('backwards', name);
-}
-socket.on('fromPythonBackwards', (data) => {
-  console.log("Hello after Backwards");
-  replaceAfterFilter('back');
-});
-
 function speed(){
   displayOptions("speed");
   clicked = "speed";
@@ -765,9 +751,6 @@ function apply(){
         break;
       case 'rotate':
         rotateSend();
-        break;
-      case 'backward':
-        backwardSend();
         break;
       case 'speed':
         speedSend();
