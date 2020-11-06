@@ -48,9 +48,9 @@ app.post('/upload', (req, res) => {
      //save file
     file.mv('./videos/' + filename, function (err) {
       if(err) {
-        //res.send(err);
+        res.send(err);
       }else {
-        //res.send("File Uploaded");
+        res.send("File Uploaded");
         console.log("success");
       }
     })
@@ -254,6 +254,31 @@ io.on("connection", (socket) => {
       socket.emit('fromPythonBackwards', data.toString());
     });
   });
+
+  socket.on('crop', (data) => {
+    console.log("cropFromServer: " + data);
+    name = data.name;
+    x1 = data.x1;
+    x2 = data.x2;
+    y1 = data.y1;
+    y2 = data.y2;
+    width = data.width;
+    height = data.height;
+    //xcenter = data.xcenter;
+    //ycenter = data.ycenter;
+    //sfd = data.sfd;
+    //console.log('name: ' + name + " sx: " + sx + " sfd: " + sfd);
+    //console.log("center: " + xcenter + " " + ycenter);
+    console.log('x2: ' + x2);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "crop", name, x1, x2, y1, y2, width, height]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      console.log(data.toString());
+      socket.emit('fromPythonCrop', data.toString());
+    });
+  });
+
 
   socket.on('speed', (data) => {
     console.log("speedFromServer: " + data);

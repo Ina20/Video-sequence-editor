@@ -153,6 +153,24 @@ def rotate():
     print("rotateOK")
     sys.stdout.flush()
 
+def crop():
+    print("Hello from Python C")
+    video_name = sys.argv[2]
+    x1 = int(sys.argv[3])
+    x2 = int(sys.argv[4])
+    y1 = int(sys.argv[5])
+    y2 = int(sys.argv[6])
+    width = int(sys.argv[7])
+    height = int(sys.argv[8])
+    #xcenter = int(sys.argv[9])
+    #ycenter = int(sys.argv[10])
+    print(x2)
+    video = VideoFileClip("./videos/" + video_name)
+    newclip = (video.fx( vfx.crop, x1=x1, y1=y1, x2=x2, y2=y2, width=width, height=height))
+    newclip.write_videofile("./videos/c_" + video_name)
+    print("cropOK")
+    sys.stdout.flush()
+
 def speed():
     print("Hello from Python S")
     video_name = sys.argv[2]
@@ -187,6 +205,7 @@ def filters(argument):
         'mirror': mirror,
         'loop': loop,
         'rotate': rotate,
+        'crop': crop,
         'speed': speed,
     }
     func = switcher.get(argument, lambda: "Invalid argument")

@@ -68,9 +68,14 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
-let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "rotate", "speed"];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "rotate", "crop", "speed"];
 let videoDuration = 0;
 let clicked;
+//for crop
+let x1, x2, y1, y2;
+let scaleX;
+let scaleY;
+
 var slider = new Slider('#timeSlider', {
     id: "slider",
     min: 0,
@@ -79,6 +84,26 @@ var slider = new Slider('#timeSlider', {
     formatter: function (value) {
       let val = Math.floor(value[0] / 60) + ":" + (value[0] % 60 ? value[0] % 60 : '00') + ',' + Math.floor(value[1] / 60) + ":" + (value[1] % 60 ? value[1] % 60 : '00');
       return val;
+    }
+});
+var cropXSlider = new Slider('#cropxSlider', {
+    id: "cxSlider",
+    min: 0,
+    max: 0,
+    step: 1,
+    formatter: function (value) {
+      return value;
+    }
+});
+var cropYSlider = new Slider('#cropySlider', {
+    id: "cySlider",
+    min: 0,
+    max: 0,
+    step: 1,
+    orientation: 'vertical',
+	  tooltip_position:'left',
+    formatter: function (value) {
+      return value;
     }
 });
 var GIFSlider = new Slider('#gifSlider', {
@@ -187,7 +212,8 @@ function addVideo(file) {
           processData: false,
           contentType: false,
           success: function (data) {
-              alert(data)
+              //alert(data)
+              console.log(data);
           },
           //error: function (jqXHR, textStatus, err) {
           //    alert('text status ' + textStatus + ', err ' + err)
@@ -224,6 +250,13 @@ function addVideo(file) {
       for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
         if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
           videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
+          vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
+          vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
+          console.log("dimensions: " + vWidth + " " + vHeight);
+          document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+          cropXSlider.setAttribute("max", vWidth);
+          cropYSlider.setAttribute("max", vHeight);
+          drawCanvas(vHeight, vWidth);
         }
       }
       console.log("vidDur: " + videoDuration);
@@ -231,6 +264,12 @@ function addVideo(file) {
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       console.log("join: " + activeObjects);
     }else {
+
+      //vid = document.querySelector("video");
+      vHeight = fileDisplay.videoHeight;
+      vWidth = fileDisplay.videoWidth;
+      console.log("dimensions: " + vWidth + " " + vHeight);
+      document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
       document.getElementById("error").style.display = "none";
       videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
@@ -238,6 +277,9 @@ function addVideo(file) {
       console.log("join: " + activeObjects);
       slider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
+      cropXSlider.setAttribute("max", vWidth);
+      cropYSlider.setAttribute("max", vHeight);
+      drawCanvas(vHeight, vWidth);
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = blobURL;
         activeObjects.push(file.name);
@@ -374,6 +416,12 @@ socket.on('fromPythonJoin', (data) => {
       for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
         if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
           videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
+          vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
+          vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
+          document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+          cropXSlider.setAttribute("max", vWidth);
+          cropYSlider.setAttribute("max", vHeight);
+          drawCanvas(vHeight, vWidth);
         }
       }
       console.log("vidDur: " + videoDuration);
@@ -381,6 +429,9 @@ socket.on('fromPythonJoin', (data) => {
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       console.log("join: " + activeObjects);
     }else {
+      vHeight = fileDisplay.videoHeight;
+      vWidth = fileDisplay.videoWidth;
+      document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
       document.getElementById("error").style.display = "none";
       videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
@@ -388,6 +439,9 @@ socket.on('fromPythonJoin', (data) => {
       console.log("join: " + activeObjects);
       slider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
+      cropXSlider.setAttribute("max", vWidth);
+      cropYSlider.setAttribute("max", vHeight);
+      drawCanvas(vHeight, vWidth);
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = fileSrc;
         activeObjects.push(fileDisplay.name);
@@ -507,17 +561,30 @@ function replaceAfterFilter(filterName){
       for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
         if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
           videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
+          vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
+          vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
+          console.log("dimensions: " + vWidth + " " + vHeight);
+          document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+          cropXSlider.setAttribute("max", vWidth);
+          cropYSlider.setAttribute("max", vHeight);
+          drawCanvas(vHeight, vWidth);
         }
       }
       slider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
     }else {
+      vHeight = fileDisplay.videoHeight;
+      vWidth = fileDisplay.videoWidth;
+      document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
       document.getElementById("error").style.display = "none";
       videoDuration = fileDisplay.duration;
       fileDisplay.classList.add("active");
       active = true;
       slider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
+      cropXSlider.setAttribute("max", vWidth);
+      cropYSlider.setAttribute("max", vHeight);
+      drawCanvas(vHeight, vWidth);
       if(!fileDisplay.isTrimed){
         document.querySelector("video").src = fileSrc;
         activeObjects.push(fileDisplay.name);
@@ -685,6 +752,80 @@ socket.on('fromPythonRotate', (data) => {
   replaceAfterFilter('r');
 });
 
+function crop(){
+  displayOptions("crop");
+  clicked = "crop";
+  vid = document.querySelector("video");
+  console.log('vid: ' + vid);
+  vHeight = vid.videoHeight;
+  vWidth = vid.videoWidth;
+  drawCanvas(vHeight, vWidth);
+/*  canvas = document.getElementById('cropCanvas');
+  var ctx = canvas.getContext("2d");
+
+  let x1, x2, y1, y2;
+  let scaleX;
+  let scaleY;
+
+  vid = document.querySelector("video");
+  console.log('vid: ' + vid);
+  vHeight = vid.videoHeight;
+  vWidth = vid.videoWidth;
+  cropXSlider.setValue([0, vWidth]);
+  cropYSlider.setValue([0, vHeight]);
+  console.log('Dimensions: ' + vHeight + " " + vWidth);
+  document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+  ctx.fillStyle = "#5e2c49";
+  scaleX = vWidth/225;
+  scaleY = vHeight/125;
+  x1 = 0;
+  y1 = 0;
+  x2 = vWidth/scaleX;
+  y2 = vHeight/scaleY;
+  ctx.fillRect(x1,y1,x2-x1,y2-y1);
+  cropXSlider.on("slide", function(sliderValue) {
+	   //console.log(sliderValue[0]);
+     x1 = Math.round(sliderValue[0]/scaleX);
+     x2 = Math.round(sliderValue[1]/scaleX);
+     ctx.fillRect(x1,y1,x2-x1,y2-y1);
+     ctx.clearRect(0,y1,x1,y2-y1);
+     ctx.clearRect(x2,y1,225-x2,y2-y1);
+  });
+  cropYSlider.on("slide", function(sliderValue) {
+	   //console.log(sliderValue[0]);
+     y1 = Math.round(sliderValue[0]/scaleY);
+     y2 = Math.round(sliderValue[1]/scaleY);
+     ctx.fillRect(x1,y1,x2-x1,y2-y1);
+     ctx.clearRect(x1,0,x2-x1,y1);
+     ctx.clearRect(x1,y2,x2-x1,225-y2);
+  }); */
+}
+function cropSend(){
+  name = activeObjects[activeObjects.length - 1];
+  x1Value = cropXSlider.getValue()[0];
+  x2Value = cropXSlider.getValue()[1];
+  y1Value = cropYSlider.getValue()[0];
+  y2Value = cropYSlider.getValue()[1];
+  widthValue = document.getElementById("cropWidthInput").value;
+  heightValue = document.getElementById("cropHeightInput").value;
+  //xcenterValue = document.getElementById("cropXcenterInput").value;
+  //ycenterValue = document.getElementById("cropYcenterInput").value;
+
+  console.log('crop: ' + x1Value + " " + x2Value + " " + y1Value + " " + y2Value + " // " + widthValue + " " + heightValue);
+
+  let data = {name: name, x1: x1Value, x2: x2Value, y1: y1Value, y2: y2Value, width: widthValue, height: heightValue};
+  console.log('crop data: ' + data.x1 + " " + data.x2 + " " + data.y1 + " " + data.y2);
+  //document.getElementById('error').style.display = "none";
+  document.getElementById("loadingDiv").style.display = "flex";
+  socket.emit('crop', data);
+
+  //speedfinaldurValue = document.getElementById("speedfinaldurInput").value;
+}
+socket.on('fromPythonCrop', (data) => {
+  console.log("Hello after Crop");
+  replaceAfterFilter('c');
+});
+
 function speed(){
   displayOptions("speed");
   clicked = "speed";
@@ -708,6 +849,42 @@ socket.on('fromPythonSpeed', (data) => {
   replaceAfterFilter('s');
 });
 
+function drawCanvas(height, width){
+  canvas = document.getElementById('cropCanvas');
+  let ctx = canvas.getContext("2d");
+
+  console.log('dimensions: ' + height + "x" + width);
+  vHeight = height;
+  vWidth = width;
+  cropXSlider.setValue([0, vWidth]);
+  cropYSlider.setValue([0, vHeight]);
+  console.log('Dimensions: ' + vHeight + " " + vWidth);
+  document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+  ctx.fillStyle = "#5e2c49";
+  scaleX = vWidth/225;
+  scaleY = vHeight/125;
+  x1 = 0;
+  y1 = 0;
+  x2 = vWidth/scaleX;
+  y2 = vHeight/scaleY;
+  ctx.fillRect(x1,y1,x2-x1,y2-y1);
+  cropXSlider.on("slide", function(sliderValue) {
+	   //console.log(sliderValue[0]);
+     x1 = Math.round(sliderValue[0]/scaleX);
+     x2 = Math.round(sliderValue[1]/scaleX);
+     ctx.fillRect(x1,y1,x2-x1,y2-y1);
+     ctx.clearRect(0,y1,x1,y2-y1);
+     ctx.clearRect(x2,y1,225-x2,y2-y1);
+  });
+  cropYSlider.on("slide", function(sliderValue) {
+	   //console.log(sliderValue[0]);
+     y1 = Math.round(sliderValue[0]/scaleY);
+     y2 = Math.round(sliderValue[1]/scaleY);
+     ctx.fillRect(x1,y1,x2-x1,y2-y1);
+     ctx.clearRect(x1,0,x2-x1,y1);
+     ctx.clearRect(x1,y2,x2-x1,225-y2);
+  });
+}
 
 function apply(){
   console.log("apply: " + clicked);
@@ -751,6 +928,9 @@ function apply(){
         break;
       case 'rotate':
         rotateSend();
+        break;
+      case 'crop':
+        cropSend();
         break;
       case 'speed':
         speedSend();
