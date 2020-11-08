@@ -369,104 +369,116 @@ function updateJoinList(){
 
 socket.on('fromPythonTrim', (data) => {
   document.getElementById("loadingDiv").style.display = "none";
-  console.log(data);
-  let name = "trim_" + activeObjects[activeObjects.length - 1];
-  let trimResult = "./videos/" + name;
-  console.log("trimResult: " + trimResult);
-  console.log("./videos/" + name);
-  console.log("children: " + document.getElementById("videoBar").childNodes);
 
-  for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
-    console.log(i + " " + document.getElementById("videoBar").childNodes.item(i).name);
-    if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
-      console.log("Found it! " + document.getElementById("videoBar").childNodes.item(i).name);
-      document.getElementById("videoBar").childNodes.item(i).src = trimResult;
-      document.getElementById("videoBar").childNodes.item(i).name = "trim_" + document.getElementById("videoBar").childNodes.item(i).name;
-      document.querySelector("video").src = trimResult;
-      document.getElementById("videoBar").childNodes.item(i).isTrimed = true;
+  if(data == "OK"){
+    replaceAfterFilter('trim');
+/*
+    console.log(data);
+    let name = "trim_" + activeObjects[activeObjects.length - 1];
+    let trimResult = "./videos/" + name;
+    console.log("trimResult: " + trimResult);
+    console.log("./videos/" + name);
+    console.log("children: " + document.getElementById("videoBar").childNodes);
+    for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
+      console.log(i + " " + document.getElementById("videoBar").childNodes.item(i).name);
+      if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
+        console.log("Found it! " + document.getElementById("videoBar").childNodes.item(i).name);
+        document.getElementById("videoBar").childNodes.item(i).src = trimResult;
+        document.getElementById("videoBar").childNodes.item(i).name = "trim_" + document.getElementById("videoBar").childNodes.item(i).name;
+        document.querySelector("video").src = trimResult;
+        document.getElementById("videoBar").childNodes.item(i).isTrimed = true;
+      }
     }
+    */
+  }else{
+    console.log("Oops, something went wrong");
   }
+
 });
 
 socket.on('fromPythonJoin', (data) => {
   console.log("Hello after join");
   document.getElementById("loadingDiv").style.display = "none";
-  let active = false;
-  console.log('fromPythonJoin: ' + data);
-  fileSrc = "./videos/join_" + activeObjects[0];
-  console.log("fileSRC: " + fileSrc);
-  let fileDisplay = document.createElement('video');
-  fileDisplay.classList.add("fileListDisplay");
-  document.getElementById("videoBar").appendChild(fileDisplay);
-  fileDisplay.src = fileSrc;
-  fileDisplay.name = "join_" + activeObjects[0];
-  fileDisplay.onclick = function() {
-    console.log("hello, i'm a video");
-    console.log("duration: " + fileDisplay.duration);
-    if(active) {
-      fileDisplay.classList.remove("active");
-      active = false;
-      for(var i = 0; i < activeObjects.length; i++){
-        console.log("for, " + activeObjects[i] + ", " + fileDisplay.name);
-        if (activeObjects[i] === fileDisplay.name || activeObjects[i] === "trim_" + fileDisplay.name){
-          activeObjects.splice(i, 1);
+  if(data == "OK"){
+    let active = false;
+    console.log('fromPythonJoin: ' + data);
+    fileSrc = "./videos/join_" + activeObjects[0];
+    console.log("fileSRC: " + fileSrc);
+    let fileDisplay = document.createElement('video');
+    fileDisplay.classList.add("fileListDisplay");
+    document.getElementById("videoBar").appendChild(fileDisplay);
+    fileDisplay.src = fileSrc;
+    fileDisplay.name = "join_" + activeObjects[0];
+    fileDisplay.onclick = function() {
+      console.log("hello, i'm a video");
+      console.log("duration: " + fileDisplay.duration);
+      if(active) {
+        fileDisplay.classList.remove("active");
+        active = false;
+        for(var i = 0; i < activeObjects.length; i++){
+          console.log("for, " + activeObjects[i] + ", " + fileDisplay.name);
+          if (activeObjects[i] === fileDisplay.name || activeObjects[i] === "trim_" + fileDisplay.name){
+            activeObjects.splice(i, 1);
+          }
         }
-      }
-      document.querySelector("video").src = "./videos/" + activeObjects[activeObjects.length - 1];
-      for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
-        if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
-          videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
-          vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
-          vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
-          document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
-          cropXSlider.setAttribute("max", vWidth);
-          cropYSlider.setAttribute("max", vHeight);
-          drawCanvas(vHeight, vWidth);
+        document.querySelector("video").src = "./videos/" + activeObjects[activeObjects.length - 1];
+        for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
+          if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
+            videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
+            vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
+            vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
+            document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+            cropXSlider.setAttribute("max", vWidth);
+            cropYSlider.setAttribute("max", vHeight);
+            drawCanvas(vHeight, vWidth);
+          }
         }
-      }
-      console.log("vidDur: " + videoDuration);
-      slider.setAttribute("max", Math.round(videoDuration));
-      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
-      console.log("join: " + activeObjects);
-    }else {
-      vHeight = fileDisplay.videoHeight;
-      vWidth = fileDisplay.videoWidth;
-      document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
-      document.getElementById("error").style.display = "none";
-      videoDuration = fileDisplay.duration;
-      fileDisplay.classList.add("active");
-      active = true;
-      console.log("join: " + activeObjects);
-      slider.setAttribute("max", Math.round(videoDuration));
-      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
-      cropXSlider.setAttribute("max", vWidth);
-      cropYSlider.setAttribute("max", vHeight);
-      drawCanvas(vHeight, vWidth);
-      if(!fileDisplay.isTrimed){
-        document.querySelector("video").src = fileSrc;
-        activeObjects.push(fileDisplay.name);
+        console.log("vidDur: " + videoDuration);
+        slider.setAttribute("max", Math.round(videoDuration));
+        fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
+        console.log("join: " + activeObjects);
       }else {
-        document.querySelector("video").src = "./videos/trim_" + fileDisplay.name;
-        activeObjects.push("trim_" + fileDisplay.name);
+        vHeight = fileDisplay.videoHeight;
+        vWidth = fileDisplay.videoWidth;
+        document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+        document.getElementById("error").style.display = "none";
+        videoDuration = fileDisplay.duration;
+        fileDisplay.classList.add("active");
+        active = true;
+        console.log("join: " + activeObjects);
+        slider.setAttribute("max", Math.round(videoDuration));
+        fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
+        cropXSlider.setAttribute("max", vWidth);
+        cropYSlider.setAttribute("max", vHeight);
+        drawCanvas(vHeight, vWidth);
+        if(!fileDisplay.isTrimed){
+          document.querySelector("video").src = fileSrc;
+          activeObjects.push(fileDisplay.name);
+        }else {
+          document.querySelector("video").src = "./videos/trim_" + fileDisplay.name;
+          activeObjects.push("trim_" + fileDisplay.name);
+        }
+      }
+      updateJoinList();
+    }
+    console.log("active " + activeObjects);
+    for(j=0; j<activeObjects.length; j++){
+      for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
+        console.log("active before slice: " + activeObjects[j] + "/// " + document.getElementById("videoBar").childNodes.item(i).name);
+        if(document.getElementById("videoBar").childNodes.item(i).name == activeObjects[j]){
+          console.log("delete: " + document.getElementById("videoBar").childNodes.item(i).name + activeObjects[j])
+          document.getElementById("videoBar").childNodes.item(i).classList.remove("active");
+          activeObjects.splice(j, 1);
+          console.log("active after slice: " + activeObjects);
+          document.getElementById("videoBar").removeChild(document.getElementById("videoBar").childNodes.item(i));
+          document.querySelector("video").src = "";
+          updateJoinList();
+          i--;
+        }
       }
     }
-    updateJoinList();
-  }
-  console.log("active " + activeObjects);
-  for(j=0; j<activeObjects.length; j++){
-    for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
-      console.log("active before slice: " + activeObjects[j] + "/// " + document.getElementById("videoBar").childNodes.item(i).name);
-      if(document.getElementById("videoBar").childNodes.item(i).name == activeObjects[j]){
-        console.log("delete: " + document.getElementById("videoBar").childNodes.item(i).name + activeObjects[j])
-        document.getElementById("videoBar").childNodes.item(i).classList.remove("active");
-        activeObjects.splice(j, 1);
-        console.log("active after slice: " + activeObjects);
-        document.getElementById("videoBar").removeChild(document.getElementById("videoBar").childNodes.item(i));
-        document.querySelector("video").src = "";
-        updateJoinList();
-        i--;
-      }
-    }
+  }else{
+    console.log("Oops, something went wrong");
   }
 });
 
@@ -486,32 +498,37 @@ function loopSend(){
 socket.on('fromPythonLoop', (data) => {
   console.log("Hello after Loop");
   document.getElementById("loadingDiv").style.display = "none";
-  let active = false;
-  name = activeObjects[activeObjects.length - 1];
-  console.log("loop name: " + name);
-  console.log(name.substring(0,name.lastIndexOf('.')));
-  fileSrc = "./videos/" + name.substring(0,name.lastIndexOf('.')) + '.gif';
-  console.log("fileSrc: " + fileSrc);
+  if(data == "OK"){
+    let active = false;
+    name = activeObjects[activeObjects.length - 1];
+    console.log("loop name: " + name);
+    console.log(name.substring(0,name.lastIndexOf('.')));
+    fileSrc = "./videos/" + name.substring(0,name.lastIndexOf('.')) + '.gif';
+    console.log("fileSrc: " + fileSrc);
 
-  let fileDisplay = document.createElement('IMG');
-  fileDisplay.classList.add("fileListDisplay");
-  document.getElementById("videoBar").appendChild(fileDisplay);
-  fileDisplay.src = fileSrc;
-  fileDisplay.onclick = function() {
-    if(active){
-      fileDisplay.classList.remove("active");
-      active = false;
-      document.getElementsByTagName("video")[0].style.display = "flex";
-      document.getElementById('gifDisplay').style.display = "none";
-      gifDisplay.src = "";
-    }else {
-      fileDisplay.classList.add("active");
-      active = true;
-      document.getElementsByTagName("video")[0].style.display = "none";
-      document.getElementById('gifDisplay').style.display = "block";
-      gifDisplay.src = fileSrc;
+    let fileDisplay = document.createElement('IMG');
+    fileDisplay.classList.add("fileListDisplay");
+    document.getElementById("videoBar").appendChild(fileDisplay);
+    fileDisplay.src = fileSrc;
+    fileDisplay.onclick = function() {
+      if(active){
+        fileDisplay.classList.remove("active");
+        active = false;
+        document.getElementsByTagName("video")[0].style.display = "flex";
+        document.getElementById('gifDisplay').style.display = "none";
+        gifDisplay.src = "";
+      }else {
+        fileDisplay.classList.add("active");
+        active = true;
+        document.getElementsByTagName("video")[0].style.display = "none";
+        document.getElementById('gifDisplay').style.display = "block";
+        gifDisplay.src = fileSrc;
+      }
     }
+  }else{
+    console.log("Oops, something went wrong");
   }
+
 
   //replaceAfterFilter('loop');
 });
@@ -623,7 +640,13 @@ function luminositySend(){
 }
 socket.on('fromPythonLuminosity', (data) => {
   console.log("Hello after Luminosity");
-  replaceAfterFilter('lm');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('lm');
+  }else{
+    console.log("Oops, something went wrong");
+  }
+
 });
 
 function gamma(){
@@ -639,7 +662,12 @@ function gammaSend(){
 }
 socket.on('fromPythonGamma', (data) => {
   console.log("Hello after Gamma");
-  replaceAfterFilter('g');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('g');
+  }else{
+    console.log("Oops, something went wrong");
+  }
 });
 
 function blackwhite(){
@@ -653,7 +681,13 @@ function blackwhiteSend(){
 }
 socket.on('fromPythonBlackWhite', (data) => {
   console.log("Hello after BlackAndWhite");
-  replaceAfterFilter('bw');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('bw');
+  }else{
+    console.log("Oops, something went wrong");
+  }
+
 });
 
 function brightness(){
@@ -670,7 +704,13 @@ function brightnessSend(){
 }
 socket.on('fromPythonBrightness', (data) => {
   console.log("Hello after Brightness");
-  replaceAfterFilter('br');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('br');
+  }else{
+    console.log("Oops, something went wrong");
+  }
+
 });
 
 function fade(){
@@ -697,7 +737,12 @@ function fadeSend(){
 }
 socket.on('fromPythonFade', (data) => {
   console.log("Hello after Fade");
-  replaceAfterFilter('f');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('f');
+  }else{
+    console.log("Oops, something went wrong");
+  }
 });
 
 $('.btn-group-fade').on('click', '.button', function() {
@@ -732,7 +777,13 @@ $('.btn-group-mirror').on('click', '.button', function() {
 
 socket.on('fromPythonMirror', (data) => {
   console.log("Hello after Mirror");
-  replaceAfterFilter('m');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('m');
+  }else{
+    console.log("Oops, something went wrong");
+  }
+
 });
 
 function rotate(){
@@ -749,7 +800,13 @@ function rotateSend(){
 }
 socket.on('fromPythonRotate', (data) => {
   console.log("Hello after Rotate");
-  replaceAfterFilter('r');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('r');
+  }else{
+    console.log("Oops, something went wrong");
+  }
+
 });
 
 function crop(){
@@ -823,7 +880,12 @@ function cropSend(){
 }
 socket.on('fromPythonCrop', (data) => {
   console.log("Hello after Crop");
-  replaceAfterFilter('c');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('c');
+  }else{
+    console.log("Oops, something went wrong");
+  }
 });
 
 function speed(){
@@ -846,7 +908,13 @@ function speedSend(){
 }
 socket.on('fromPythonSpeed', (data) => {
   console.log("Hello after Speed");
-  replaceAfterFilter('s');
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('s');
+  }else{
+    console.log("Oops, something went wrong");
+  }
+
 });
 
 function drawCanvas(height, width){
