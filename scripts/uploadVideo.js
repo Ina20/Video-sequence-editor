@@ -198,98 +198,117 @@ function addMoreVideo(){
 function addVideo(file) {
 
   let active = false;
+  let canUpload = true;
 
-  var data = new FormData();
-  //data = document.getElementById("startUpload").files[0];
-  data.append('myVideo', file)
-  console.log(data);
-      $.ajax({
-          url: '/upload',
-          method: 'POST',
-          type: 'POST',
-          cache: false,
-          data: data,
-          processData: false,
-          contentType: false,
-          success: function (data) {
-              //alert(data)
-              console.log(data);
-          },
-          //error: function (jqXHR, textStatus, err) {
-          //    alert('text status ' + textStatus + ', err ' + err)
-          //}
-      });
+  console.log("new file name: " + file.name);
+
+  for(i=3; i<document.getElementById("videoBar").childNodes.length; i++){
+    console.log('Hello!!!');
+    console.log(document.getElementById("videoBar").childNodes.item(i).name);
+    if(document.getElementById("videoBar").childNodes.item(i).name == file.name){
+      console.log('Hello2!!!');
+      console.log(document.getElementById("videoBar").childNodes.item(i).name + " // " + file.name);
+      console.log("This video already exist!!");
+      canUpload = false;
+    }
+  }
+
+  console.log("can upload or not: " + canUpload);
+
+  if(canUpload){
+    var data = new FormData();
+    //data = document.getElementById("startUpload").files[0];
+    data.append('myVideo', file)
+    console.log(data);
+        $.ajax({
+            url: '/upload',
+            method: 'POST',
+            type: 'POST',
+            cache: false,
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                //alert(data)
+                console.log(data);
+            },
+            //error: function (jqXHR, textStatus, err) {
+            //    alert('text status ' + textStatus + ', err ' + err)
+            //}
+        });
 
 
-  console.log(file);
+    console.log(file);
 
-  let fileDisplay = document.createElement('video');
-  fileDisplay.classList.add("fileListDisplay");
-  document.getElementById("videoBar").appendChild(fileDisplay);
-  let blobURL = URL.createObjectURL(file);
-  console.log(blobURL);
-  fileDisplay.src = blobURL;
-  console.log(fileDisplay.src);
-  fileDisplay.name = file.name;
-  fileDisplay.isTrimed = false;
-  console.log(fileDisplay.isTrimed)
-  fileDisplay.onclick = function() {
-    console.log("children: " + document.getElementById("videoBar").childNodes.item(3).name);
-    console.log("hello, i'm a video");
-    console.log("name: " + file.name);
-    console.log("duration: " + fileDisplay.duration);
-    if(active) {
-      fileDisplay.classList.remove("active");
-      active = false;
-      for(var i = 0; i < activeObjects.length; i++){
-        if (activeObjects[i] === file.name || activeObjects[i] === "trim_" + file.name){
-          activeObjects.splice(i, 1);
+    let fileDisplay = document.createElement('video');
+    fileDisplay.classList.add("fileListDisplay");
+    document.getElementById("videoBar").appendChild(fileDisplay);
+    let blobURL = URL.createObjectURL(file);
+    console.log(blobURL);
+    fileDisplay.src = blobURL;
+    console.log(fileDisplay.src);
+    fileDisplay.name = file.name;
+    fileDisplay.onclick = function() {
+      console.log("children: " + document.getElementById("videoBar").childNodes.item(3).name);
+      console.log("hello, i'm a video");
+      console.log("name: " + file.name);
+      console.log("duration: " + fileDisplay.duration);
+      if(active) {
+        fileDisplay.classList.remove("active");
+        active = false;
+        for(var i = 0; i < activeObjects.length; i++){
+          if (activeObjects[i] === file.name){
+            activeObjects.splice(i, 1);
+          }
         }
-      }
-      document.querySelector("video").src = "./videos/" + activeObjects[activeObjects.length - 1];
-      for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
-        if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
-          videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
-          vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
-          vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
-          console.log("dimensions: " + vWidth + " " + vHeight);
-          document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
-          cropXSlider.setAttribute("max", vWidth);
-          cropYSlider.setAttribute("max", vHeight);
-          drawCanvas(vHeight, vWidth);
+        document.querySelector("video").src = "./videos/" + activeObjects[activeObjects.length - 1];
+        for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
+          if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
+            videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
+            if(activeObjects.length > 0){
+              vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
+              vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
+              console.log("dimensions: " + vWidth + " " + vHeight);
+              document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+              cropXSlider.setAttribute("max", vWidth);
+              cropYSlider.setAttribute("max", vHeight);
+              drawCanvas(vHeight, vWidth);
+            }else{
+              cropXSlider.setAttribute("max", 0);
+              cropYSlider.setAttribute("max", 0);
+              drawCanvas(0, 0);
+            }
+          }
         }
-      }
-      console.log("vidDur: " + videoDuration);
-      slider.setAttribute("max", Math.round(videoDuration));
-      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
-      console.log("join: " + activeObjects);
-    }else {
+        console.log("vidDur: " + videoDuration);
+        slider.setAttribute("max", Math.round(videoDuration));
+        fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
+        console.log("join: " + activeObjects);
+      }else {
 
-      //vid = document.querySelector("video");
-      vHeight = fileDisplay.videoHeight;
-      vWidth = fileDisplay.videoWidth;
-      console.log("dimensions: " + vWidth + " " + vHeight);
-      document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
-      document.getElementById("error").style.display = "none";
-      videoDuration = fileDisplay.duration;
-      fileDisplay.classList.add("active");
-      active = true;
-      console.log("join: " + activeObjects);
-      slider.setAttribute("max", Math.round(videoDuration));
-      fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
-      cropXSlider.setAttribute("max", vWidth);
-      cropYSlider.setAttribute("max", vHeight);
-      drawCanvas(vHeight, vWidth);
-      if(!fileDisplay.isTrimed){
+        //vid = document.querySelector("video");
+        vHeight = fileDisplay.videoHeight;
+        vWidth = fileDisplay.videoWidth;
+        console.log("dimensions: " + vWidth + " " + vHeight);
+        document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+        document.getElementById("error").style.display = "none";
+        videoDuration = fileDisplay.duration;
+        fileDisplay.classList.add("active");
+        active = true;
+        console.log("join: " + activeObjects);
+        slider.setAttribute("max", Math.round(videoDuration));
+        fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
+        cropXSlider.setAttribute("max", vWidth);
+        cropYSlider.setAttribute("max", vHeight);
+        drawCanvas(vHeight, vWidth);
         document.querySelector("video").src = blobURL;
         activeObjects.push(file.name);
-      }else {
-        document.querySelector("video").src = "./videos/trim_" + file.name;
-        activeObjects.push("trim_" + file.name);
       }
+      console.log("join active: " + activeObjects[activeObjects.length - 1])
+      updateJoinList();
     }
-    console.log("join active: " + activeObjects[activeObjects.length - 1])
-    updateJoinList();
+  }else{
+    console.log("cannot upload file already exist :<");
   }
 }
 
@@ -342,6 +361,16 @@ function trimSend(){
   console.log(data.name);
   socket.emit('trim', data);
 }
+socket.on('fromPythonTrim', (data) => {
+  document.getElementById("loadingDiv").style.display = "none";
+
+  if(data == "OK"){
+    replaceAfterFilter('trim');
+  }else{
+    console.log("Oops, something went wrong");
+    $('.toast').toast('show');
+  }
+});
 
 function join(){
   displayOptions("join");
@@ -365,38 +394,6 @@ function updateJoinList(){
   }
 }
 
-
-
-socket.on('fromPythonTrim', (data) => {
-  document.getElementById("loadingDiv").style.display = "none";
-
-  if(data == "OK"){
-    replaceAfterFilter('trim');
-/*
-    console.log(data);
-    let name = "trim_" + activeObjects[activeObjects.length - 1];
-    let trimResult = "./videos/" + name;
-    console.log("trimResult: " + trimResult);
-    console.log("./videos/" + name);
-    console.log("children: " + document.getElementById("videoBar").childNodes);
-    for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
-      console.log(i + " " + document.getElementById("videoBar").childNodes.item(i).name);
-      if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
-        console.log("Found it! " + document.getElementById("videoBar").childNodes.item(i).name);
-        document.getElementById("videoBar").childNodes.item(i).src = trimResult;
-        document.getElementById("videoBar").childNodes.item(i).name = "trim_" + document.getElementById("videoBar").childNodes.item(i).name;
-        document.querySelector("video").src = trimResult;
-        document.getElementById("videoBar").childNodes.item(i).isTrimed = true;
-      }
-    }
-    */
-  }else{
-    console.log("Oops, something went wrong");
-    $('.toast').toast('show');
-  }
-
-});
-
 socket.on('fromPythonJoin', (data) => {
   console.log("Hello after join");
   document.getElementById("loadingDiv").style.display = "none";
@@ -418,7 +415,7 @@ socket.on('fromPythonJoin', (data) => {
         active = false;
         for(var i = 0; i < activeObjects.length; i++){
           console.log("for, " + activeObjects[i] + ", " + fileDisplay.name);
-          if (activeObjects[i] === fileDisplay.name || activeObjects[i] === "trim_" + fileDisplay.name){
+          if (activeObjects[i] === fileDisplay.name){
             activeObjects.splice(i, 1);
           }
         }
@@ -426,12 +423,19 @@ socket.on('fromPythonJoin', (data) => {
         for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
           if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
             videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
-            vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
-            vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
-            document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
-            cropXSlider.setAttribute("max", vWidth);
-            cropYSlider.setAttribute("max", vHeight);
-            drawCanvas(vHeight, vWidth);
+            if(activeObjects.length > 0){
+              vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
+              vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
+              console.log("dimensions: " + vWidth + " " + vHeight);
+              document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+              cropXSlider.setAttribute("max", vWidth);
+              cropYSlider.setAttribute("max", vHeight);
+              drawCanvas(vHeight, vWidth);
+            }else{
+              cropXSlider.setAttribute("max", 0);
+              cropYSlider.setAttribute("max", 0);
+              drawCanvas(0, 0);
+            }
           }
         }
         console.log("vidDur: " + videoDuration);
@@ -452,13 +456,8 @@ socket.on('fromPythonJoin', (data) => {
         cropXSlider.setAttribute("max", vWidth);
         cropYSlider.setAttribute("max", vHeight);
         drawCanvas(vHeight, vWidth);
-        if(!fileDisplay.isTrimed){
-          document.querySelector("video").src = fileSrc;
-          activeObjects.push(fileDisplay.name);
-        }else {
-          document.querySelector("video").src = "./videos/trim_" + fileDisplay.name;
-          activeObjects.push("trim_" + fileDisplay.name);
-        }
+        document.querySelector("video").src = fileSrc;
+        activeObjects.push(fileDisplay.name);
       }
       updateJoinList();
     }
@@ -573,7 +572,7 @@ function replaceAfterFilter(filterName){
       fileDisplay.classList.remove("active");
       active = false;
       for(var i = 0; i < activeObjects.length; i++){
-        if (activeObjects[i] === fileDisplay.name || activeObjects[i] === "trim_" + fileDisplay.name){
+        if (activeObjects[i] === fileDisplay.name){
           activeObjects.splice(i, 1);
         }
       }
@@ -581,13 +580,19 @@ function replaceAfterFilter(filterName){
       for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
         if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
           videoDuration = document.getElementById("videoBar").childNodes.item(i).duration;
-          vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
-          vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
-          console.log("dimensions: " + vWidth + " " + vHeight);
-          document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
-          cropXSlider.setAttribute("max", vWidth);
-          cropYSlider.setAttribute("max", vHeight);
-          drawCanvas(vHeight, vWidth);
+          if(activeObjects.length > 0){
+            vHeight = document.getElementById("videoBar").childNodes.item(i).videoHeight;
+            vWidth = document.getElementById("videoBar").childNodes.item(i).videoWidth;
+            console.log("dimensions: " + vWidth + " " + vHeight);
+            document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
+            cropXSlider.setAttribute("max", vWidth);
+            cropYSlider.setAttribute("max", vHeight);
+            drawCanvas(vHeight, vWidth);
+          }else{
+            cropXSlider.setAttribute("max", 0);
+            cropYSlider.setAttribute("max", 0);
+            drawCanvas(0, 0);
+          }
         }
       }
       slider.setAttribute("max", Math.round(videoDuration));
@@ -605,13 +610,8 @@ function replaceAfterFilter(filterName){
       cropXSlider.setAttribute("max", vWidth);
       cropYSlider.setAttribute("max", vHeight);
       drawCanvas(vHeight, vWidth);
-      if(!fileDisplay.isTrimed){
-        document.querySelector("video").src = fileSrc;
-        activeObjects.push(fileDisplay.name);
-      }else {
-        document.querySelector("video").src = "./videos/trim_" + fileDisplay.name;
-        activeObjects.push("trim_" + fileDisplay.name);
-      }
+      document.querySelector("video").src = fileSrc;
+      activeObjects.push(fileDisplay.name);
     }
     updateJoinList();
   }
@@ -932,6 +932,7 @@ socket.on('fromPythonSpeed', (data) => {
 function drawCanvas(height, width){
   canvas = document.getElementById('cropCanvas');
   let ctx = canvas.getContext("2d");
+  ctx.clearRect(0,0,255,125);
 
   console.log('dimensions: ' + height + "x" + width);
   vHeight = height;
