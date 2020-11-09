@@ -556,3 +556,21 @@ input:focus{
 #cropCanvas {
   border: 2px solid #5e2c49;
 }
+.toast {
+  margin-top: 20px;
+  position: fixed;
+  top: 2rem;
+  right: 1rem;
+}
+.toast-header {
+  background: #e5eaed;
+}
+.toast-header > button {
+  width: 20px;
+  margin-left: 10px;
+}
+.toastHeadTxt {
+  color: #000;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+}

@@ -74,7 +74,7 @@ def blackwhite():
     print(video_name)
     try:
         video = VideoFileClip("./videos/" + video_name)
-        newclip = (video.fx( vfx.blackwhite, RGB=None, preserve_luminosity=True))
+        #newclip = (video.fx( vfx.blackwhite, RGB=None, preserve_luminosity=True))
         newclip.write_videofile("./videos/bw_" + video_name)
         print("BlackWhite_OK")
     except Exception:

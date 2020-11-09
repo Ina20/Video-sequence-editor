@@ -7,8 +7,10 @@
     <link rel="stylesheet" type="text/css" href="styles/global.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital@0;1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <link href="styles/bootstrap-slider.css" rel="stylesheet" />
     <script src="bootstrap-slider.js"></script>
     <script src="jszip.js"></script>
@@ -31,6 +33,12 @@
     <div id="loadingDiv">
       <img src="./images/loadingOctopus.gif" id="loadingImage">
     </div>
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+      <div class="toast-header">
+        <strong class="mr-auto toastHeadTxt">Oops, something went wrong</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">&times;</button>
+      </div>
+    </div>
     <div id="editor" class="container-fluid vw-100">
       <nav class="navbar navbar-expand-lg">
         CoVideo |
@@ -52,7 +60,7 @@
           </div>
           <div id="editButtons2" class="btn-group-sideBar">
             <button type="button" onclick="luminosity()" class="button">Luminosity-contrast correction</button>
-            <button type="button" onclick="gamma()" class="button">Gamma-correction</button>
+            <button type="button" onclick="gamma()" class="button">Gamma correction</button>
             <button type="button" onclick="blackwhite()" class="button">Black and white</button>
             <button type="button" onclick="brightness()" class="button">Brightness</button>
             <button type="button" onclick="fade()" class="button">Fade</button>

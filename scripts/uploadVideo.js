@@ -392,6 +392,7 @@ socket.on('fromPythonTrim', (data) => {
     */
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 
 });
@@ -479,6 +480,7 @@ socket.on('fromPythonJoin', (data) => {
     }
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 });
 
@@ -527,6 +529,7 @@ socket.on('fromPythonLoop', (data) => {
     }
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 
 
@@ -645,6 +648,7 @@ socket.on('fromPythonLuminosity', (data) => {
     replaceAfterFilter('lm');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 
 });
@@ -667,6 +671,7 @@ socket.on('fromPythonGamma', (data) => {
     replaceAfterFilter('g');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 });
 
@@ -686,6 +691,7 @@ socket.on('fromPythonBlackWhite', (data) => {
     replaceAfterFilter('bw');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 
 });
@@ -709,6 +715,7 @@ socket.on('fromPythonBrightness', (data) => {
     replaceAfterFilter('br');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 
 });
@@ -742,6 +749,7 @@ socket.on('fromPythonFade', (data) => {
     replaceAfterFilter('f');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 });
 
@@ -782,6 +790,7 @@ socket.on('fromPythonMirror', (data) => {
     replaceAfterFilter('m');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 
 });
@@ -805,6 +814,7 @@ socket.on('fromPythonRotate', (data) => {
     replaceAfterFilter('r');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 
 });
@@ -885,6 +895,7 @@ socket.on('fromPythonCrop', (data) => {
     replaceAfterFilter('c');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 });
 
@@ -913,6 +924,7 @@ socket.on('fromPythonSpeed', (data) => {
     replaceAfterFilter('s');
   }else{
     console.log("Oops, something went wrong");
+    $('.toast').toast('show');
   }
 
 });
@@ -1014,6 +1026,7 @@ function isNumberKey(evt){
   }
 	return true;
 }
+
 
 function save(){
   console.log("Save click!");
