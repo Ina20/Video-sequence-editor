@@ -68,6 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
+let gifList = [];
 let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "fps", "rotate", "crop", "speed"];
 let videoDuration = 0;
 let clicked;
@@ -282,6 +283,7 @@ function addVideo(file) {
         }
         console.log("vidDur: " + videoDuration);
         slider.setAttribute("max", Math.round(videoDuration));
+        GIFSlider.setAttribute("max", Math.round(videoDuration));
         fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
         console.log("join: " + activeObjects);
       }else {
@@ -297,6 +299,7 @@ function addVideo(file) {
         active = true;
         console.log("join: " + activeObjects);
         slider.setAttribute("max", Math.round(videoDuration));
+        GIFSlider.setAttribute("max", Math.round(videoDuration));
         fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
         cropXSlider.setAttribute("max", vWidth);
         cropYSlider.setAttribute("max", vHeight);
@@ -440,6 +443,7 @@ socket.on('fromPythonJoin', (data) => {
         }
         console.log("vidDur: " + videoDuration);
         slider.setAttribute("max", Math.round(videoDuration));
+        GIFSlider.setAttribute("max", Math.round(videoDuration));
         fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
         console.log("join: " + activeObjects);
       }else {
@@ -452,6 +456,7 @@ socket.on('fromPythonJoin', (data) => {
         active = true;
         console.log("join: " + activeObjects);
         slider.setAttribute("max", Math.round(videoDuration));
+        GIFSlider.setAttribute("max", Math.round(videoDuration));
         fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
         cropXSlider.setAttribute("max", vWidth);
         cropYSlider.setAttribute("max", vHeight);
@@ -501,15 +506,18 @@ socket.on('fromPythonLoop', (data) => {
   document.getElementById("loadingDiv").style.display = "none";
   if(data == "OK"){
     let active = false;
-    name = activeObjects[activeObjects.length - 1];
-    console.log("loop name: " + name);
-    console.log(name.substring(0,name.lastIndexOf('.')));
-    fileSrc = "./videos/" + name.substring(0,name.lastIndexOf('.')) + '.gif';
-    console.log("fileSrc: " + fileSrc);
-
     let fileDisplay = document.createElement('IMG');
     fileDisplay.classList.add("fileListDisplay");
     document.getElementById("videoBar").appendChild(fileDisplay);
+
+    name = activeObjects[activeObjects.length - 1];
+    console.log("loop name: " + name);
+    console.log(name.substring(0,name.lastIndexOf('.')));
+    let gifName = name.substring(0,name.lastIndexOf('.')) + '.gif';
+    let fileSrc = "./videos/" + gifName;
+    console.log("fileSrc: " + fileSrc);
+    gifList.push(gifName);
+
     fileDisplay.src = fileSrc;
     fileDisplay.onclick = function() {
       if(active){
@@ -517,13 +525,14 @@ socket.on('fromPythonLoop', (data) => {
         active = false;
         document.getElementsByTagName("video")[0].style.display = "flex";
         document.getElementById('gifDisplay').style.display = "none";
-        gifDisplay.src = "";
+        document.getElementById('gifDisplay').src = "";
       }else {
         fileDisplay.classList.add("active");
         active = true;
         document.getElementsByTagName("video")[0].style.display = "none";
         document.getElementById('gifDisplay').style.display = "block";
-        gifDisplay.src = fileSrc;
+        console.log('gif fileSrc: ' + fileSrc);
+        document.getElementById('gifDisplay').src = fileSrc;
       }
     }
   }else{
@@ -626,6 +635,7 @@ function replaceAfterFilter(filterName){
         }
       }
       slider.setAttribute("max", Math.round(videoDuration));
+      GIFSlider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
     }else {
       vHeight = fileDisplay.videoHeight;
@@ -636,6 +646,7 @@ function replaceAfterFilter(filterName){
       fileDisplay.classList.add("active");
       active = true;
       slider.setAttribute("max", Math.round(videoDuration));
+      GIFSlider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
       cropXSlider.setAttribute("max", vWidth);
       cropYSlider.setAttribute("max", vHeight);
@@ -1073,6 +1084,10 @@ function save(){
     fileURL.push({url: "./videos/" + document.getElementById("videoBar").childNodes.item(i).name, name: document.getElementById("videoBar").childNodes.item(i).name});
   }
   console.log(fileURL[0].url);
+  for (i=0; i<gifList.length; i++){
+    console.log(gifList[i]);
+    fileURL.push({url: "./videos/" + gifList[i], name: gifList[i]});
+  }
 
   fileURL.forEach(function(url){
     console.log("url: " + url.url);
