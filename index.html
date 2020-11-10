@@ -57,6 +57,7 @@
             <button type="button" onclick="trim()" class="button">Trim</button>
             <button type="button" onclick="join()" class="button">Join</button>
             <button type="button" onclick="loop()" class="button">Make Gif</button>
+            <button type="button" onclick="fps()" class="button">Change FPS</button>
           </div>
           <div id="editButtons2" class="btn-group-sideBar">
             <button type="button" onclick="luminosity()" class="button">Luminosity-contrast correction</button>
@@ -67,7 +68,7 @@
             <button type="button" onclick="mirror()" class="button">Mirror</button>
             <button type="button" onclick="rotate()" class="button">Rotate</button>
             <button type="button" onclick="crop()" class="button">Crop</button>
-            <button type="button" onclick="speed()" class="button">Speed</button>
+            <button type="button" onclick="speed()" class="button">Speed up</button>
           </div>
           <p id="optionsTxt">OPTIONS</p>
           <div id="optionsSideBar">
@@ -110,6 +111,11 @@
             <div id="loopOptions" class="row col-sm-12 options">
               <input id="gifSlider" type="text" value="" data-slider-value="[250,450]"/>
             </div>
+            <div id="fpsOptions" class="row col-sm-12 options">
+              <label for="fpsValue">FPS value:</label>
+              <input type="text" id="fpsInput" name="fpsValue" onkeypress="return isNumberKey(event)">
+              <p class="errorEmpty" id="fpsErrorEmpty"></p>
+            </div>
             <div id="rotateOptions" class="row col-sm-12 options">
               <label for="rotateValue">Rotate angle:</label>
               <input id="rotSlider" type="text" data-slider-min="0" data-slider-max="360" data-slider-step="1" data-slider-value="0"/>
@@ -124,19 +130,18 @@
               <div class="row">
                 <div class="row cropInput">
                   <label for="cropWidthValue">Width:</label>
-                  <input type="text" id="cropWidthInput" value="0" name="cropWidthValue">
+                  <input type="text" id="cropWidthInput" value="0" name="cropWidthValue" onkeypress="return isNumberKey(event)">
                 </div>
                 <div class="row cropInput">
                   <label for="cropHeightValue">Height:</label>
-                  <input type="text" id="cropHeightInput" value="0" name="cropHeightValue">
+                  <input type="text" id="cropHeightInput" value="0" name="cropHeightValue" onkeypress="return isNumberKey(event)">
                 </div>
               </div>
             </div>
             <div id="speedOptions" class="row col-sm-12 options">
               <label for="speedxValue">Speed up video x times:</label>
-              <input type="text" id="speedxInput" name="speedxValue" onkeypress="return isNumberKey(event)"><br>
-              <!--<label for="speedfinaldurValue">Enter a final duration:</label>
-              <input type="text" id="speedfinaldurInput" name="speedfinaldurValue"><br>-->
+              <input type="text" id="speedxInput" name="speedxValue" onkeypress="return isNumberKey(event)">
+              <p class="errorEmpty" id="speedErrorEmpty"></p>
             </div>
           </div>
           <div id="applyButton">

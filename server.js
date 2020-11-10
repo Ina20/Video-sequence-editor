@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
+  console.log("statusCode: ", res.statusCode);
 });
 
 app.post('/upload', (req, res) => {
@@ -80,6 +81,7 @@ io.on("connection", (socket) => {
     let name = data.name;
     let t1 = data.t1;
     let t2 = data.t2;
+    console.log(name + t1 + t2);
     const spawn = require("child_process").spawn;
     const pythonProcess = spawn('python', ["./scripts/editVideo.py", "trim", name, t1, t2]);
     pythonProcess.stdout.on('data', (data) => {
@@ -263,6 +265,24 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonLoop', ok);
+    });
+  });
+
+  socket.on('fps', (data) => {
+    console.log("FPSFromServer: " + data);
+    name = data.name;
+    fps = data.fps;
+    console.log("fps: " + fps);
+    const spawn = require("child_process").spawn;
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "fps", name, fps]);
+    pythonProcess.stdout.on('data', (data) => {
+      // Do something with the data returned from python script
+      data = data.toString().split(/\r?\n/);
+      console.log(data);
+      ok = data[data.length-2].split('_')[1];
+      console.log(ok);
+
+      socket.emit('fromPythonFPS', ok);
     });
   });
 

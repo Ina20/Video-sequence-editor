@@ -3,8 +3,7 @@ from moviepy.editor import *
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 import moviepy.video.fx.all as vfx
-
-
+import cv2
 
 
 def read_in():
@@ -169,6 +168,23 @@ def loop():
         print("Loop_NotOK")
     #sys.stdout.flush()
 
+def fps():
+    print("Hello from Python FPS")
+    video_name = sys.argv[2]
+    fps = int(sys.argv[3])
+    try:
+        video = VideoFileClip("./videos/" + video_name)
+        videoCV = cv2.VideoCapture("./videos/" + video_name)
+        fpsCV = videoCV.get(cv2.CAP_PROP_FPS)
+        print(fpsCV)
+        video.write_videofile("./videos/fps_" + video_name, fps=fps);
+        videoCVAfter = cv2.VideoCapture("./videos/fps_" + video_name)
+        fpsCV2 = videoCVAfter.get(cv2.CAP_PROP_FPS)
+        print(fpsCV2)
+        print("FPS_OK")
+    except Exception:
+        print("FPS_NotOK")
+
 def rotate():
     print("Hello from Python R")
     video_name = sys.argv[2]
@@ -241,6 +257,7 @@ def filters(argument):
         'fade': fade,
         'mirror': mirror,
         'loop': loop,
+        'fps': fps,
         'rotate': rotate,
         'crop': crop,
         'speed': speed,

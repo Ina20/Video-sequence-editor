@@ -68,7 +68,7 @@ function updateThumbnails(dropZoneElement, file) {
 
 let socket = io();
 let activeObjects = [];
-let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "rotate", "crop", "speed"];
+let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "fps", "rotate", "crop", "speed"];
 let videoDuration = 0;
 let clicked;
 //for crop
@@ -535,6 +535,36 @@ socket.on('fromPythonLoop', (data) => {
   //replaceAfterFilter('loop');
 });
 
+function fps(){
+  displayOptions("fps");
+  clicked = "fps";
+}
+function fpsSend(){
+  name = activeObjects[activeObjects.length - 1];
+  fpsValue = document.getElementById("fpsInput").value;
+  console.log("fpsValue: " + fpsValue);
+  if(fpsValue == ""){
+    document.getElementById('fpsErrorEmpty').innerHTML = "This field cannot be empty";
+  }else{
+    let data = {name: name, fps: fpsValue};
+    console.log("fps: " + data.fps);
+    document.getElementById('fpsErrorEmpty').innerHTML = "";
+    document.getElementById("loadingDiv").style.display = "flex";
+    socket.emit('fps', data);
+  }
+  //speedfinaldurValue = document.getElementById("speedfinaldurInput").value;
+}
+socket.on('fromPythonFPS', (data) => {
+  console.log("Hello after FPS");
+  document.getElementById("loadingDiv").style.display = "none";
+  if(data == "OK"){
+    replaceAfterFilter('fps');
+  }else{
+    console.log("Oops, something went wrong");
+    $('.toast').toast('show');
+  }
+});
+
 
 function displayOptions(option){
   document.getElementById('optionsTxt').style.display = "flex";
@@ -907,11 +937,10 @@ function speedSend(){
   name = activeObjects[activeObjects.length - 1];
   speedxValue = document.getElementById("speedxInput").value;
   if(speedxValue == ""){
-    document.getElementById('error').innerHTML = "No mnożnik";
-    document.getElementById('error').style.display = "block";
+    document.getElementById('speedErrorEmpty').innerHTML = "This field cannot be empty";
   }else{
     let data = {name: name, sx: speedxValue/*, sfd: speedfinaldurValue*/};
-    document.getElementById('error').style.display = "none";
+    document.getElementById('speedErrorEmpty').innerHTML = "";
     document.getElementById("loadingDiv").style.display = "flex";
     socket.emit('speed', data);
   }
@@ -926,7 +955,6 @@ socket.on('fromPythonSpeed', (data) => {
     console.log("Oops, something went wrong");
     $('.toast').toast('show');
   }
-
 });
 
 function drawCanvas(height, width){
@@ -1006,6 +1034,9 @@ function apply(){
         break;
       case 'loop':
         loopSend();
+        break;
+      case 'fps':
+        fpsSend();
         break;
       case 'rotate':
         rotateSend();
