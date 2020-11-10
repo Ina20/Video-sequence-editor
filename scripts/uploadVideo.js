@@ -599,7 +599,7 @@ function replaceAfterFilter(filterName){
   console.log("Filter Here: " + filterName);
   document.getElementById("loadingDiv").style.display = "none";
   let active = false;
-  fileSrc = "./videos/" + filterName + '_' + activeObjects[activeObjects.length - 1];
+  let fileSrc = "./videos/" + filterName + '_' + activeObjects[activeObjects.length - 1];
   console.log("fileSRC: " + fileSrc);
   let fileDisplay = document.createElement('video');
   fileDisplay.classList.add("fileListDisplay");
