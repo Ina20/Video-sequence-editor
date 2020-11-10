@@ -13,6 +13,10 @@ const path = require('path');
 
 let fromPython = '';
 //let arg1 = 'Hello';
+let dir = './videos';
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
 
 app.use(express.static(__dirname + '/scripts'));
 app.use('/styles', express.static(__dirname + '/styles'));
