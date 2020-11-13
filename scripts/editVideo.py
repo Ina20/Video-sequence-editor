@@ -271,5 +271,3 @@ elif sys.argv[1] == "join":
     join()
 else:
     filters(sys.argv[1])
-#elif sys.argv[1] == "blackwhite":
-#    blackwhite()

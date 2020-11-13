@@ -181,6 +181,8 @@ function openEditor(){
       addVideo(file);
     }else{
       console.log("błąd - zły format");
+      document.getElementById('thead').innerHTML = "This format is not supported";
+      $('.toast').toast('show');
     }
 }
 
@@ -192,6 +194,8 @@ function addMoreVideo(){
       addVideo(file);
     }else{
       console.log("błąd - zły format");
+      document.getElementById('thead').innerHTML = "This format is not supported";
+      $('.toast').toast('show');
     }
 
 }
@@ -312,6 +316,8 @@ function addVideo(file) {
     }
   }else{
     console.log("cannot upload file already exist :<");
+    document.getElementById('thead').innerHTML = "Cannot upload file";
+    $('.toast').toast('show');
   }
 }
 
@@ -371,6 +377,7 @@ socket.on('fromPythonTrim', (data) => {
     replaceAfterFilter('trim');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 });
@@ -484,6 +491,7 @@ socket.on('fromPythonJoin', (data) => {
     }
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 });
@@ -537,6 +545,7 @@ socket.on('fromPythonLoop', (data) => {
     }
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 
@@ -570,6 +579,7 @@ socket.on('fromPythonFPS', (data) => {
     replaceAfterFilter('fps');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 });
@@ -689,6 +699,7 @@ socket.on('fromPythonLuminosity', (data) => {
     replaceAfterFilter('lm');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 
@@ -712,6 +723,7 @@ socket.on('fromPythonGamma', (data) => {
     replaceAfterFilter('g');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 });
@@ -732,6 +744,7 @@ socket.on('fromPythonBlackWhite', (data) => {
     replaceAfterFilter('bw');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 
@@ -756,6 +769,7 @@ socket.on('fromPythonBrightness', (data) => {
     replaceAfterFilter('br');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 
@@ -790,6 +804,7 @@ socket.on('fromPythonFade', (data) => {
     replaceAfterFilter('f');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 });
@@ -831,6 +846,7 @@ socket.on('fromPythonMirror', (data) => {
     replaceAfterFilter('m');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 
@@ -855,6 +871,7 @@ socket.on('fromPythonRotate', (data) => {
     replaceAfterFilter('r');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 
@@ -936,6 +953,7 @@ socket.on('fromPythonCrop', (data) => {
     replaceAfterFilter('c');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 });
@@ -964,6 +982,7 @@ socket.on('fromPythonSpeed', (data) => {
     replaceAfterFilter('s');
   }else{
     console.log("Oops, something went wrong");
+    document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
 });
