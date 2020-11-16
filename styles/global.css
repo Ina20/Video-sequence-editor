@@ -28,6 +28,9 @@ h1 {
 p {
   margin-bottom: 30px;
 }
+ol {
+  margin-right: 15px;
+}
 img {
   margin: 40px auto 0 auto;
   height: 160px;
@@ -79,6 +82,15 @@ button:hover {
   //padding: 20px;
   //background: rgba(0, 0, 0, 0.20);
 }
+#editList {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 95%;
+  height: fit-content;
+  background: #e5eaed;
+  margin-left: 16px;
+}
 .button {
   font-family: 'Nunito', sans-serif;
   font-size: 20px;
@@ -109,6 +121,17 @@ button:hover {
   display: none;
   margin: 20px auto 0 auto;
   width: 50%;
+}
+#listButtons {
+  display: none;
+  margin: 20px auto 0 auto;
+  width: 50%;
+}
+#addToListButton {
+  margin-bottom: 10px;
+}
+#clearListButton {
+  margin-bottom: 10px;
 }
 .drop-zone {
   cursor: pointer;
@@ -266,7 +289,6 @@ span {
   height: fit-content;
   margin: 0 10px 0 0;
 }
-
 #sideBar p {
   background-color: #e5eaed;
   line-height:35px;
@@ -418,7 +440,6 @@ video {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
   color: #000;
-  margin: 5px;
 }
 #loopOptions > p {
   font-family: 'Nunito', sans-serif;
@@ -436,6 +457,12 @@ video {
   font-family: 'Nunito', sans-serif;
   font-size: 18px;
   margin-bottom: 20px;
+}
+#editList > p {
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: rgb(0, 0, 0, 0.62);
+  margin-right: 16px;
 }
 .center {
   justify-content: center;
@@ -590,4 +617,15 @@ input:focus{
   color: #000;
   font-family: 'Nunito', sans-serif;
   font-size: 14px;
+}
+.listElements {
+  //background: pink;
+  width: 100%;
+  font-family: 'Nunito', sans-serif;
+  font-size: 18px;
+  color: #000;
+  padding-left: 10px;
+}
+.listElement:hover {
+  background: pink;
 }

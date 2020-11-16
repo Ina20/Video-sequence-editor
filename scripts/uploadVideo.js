@@ -70,7 +70,12 @@ let socket = io();
 let activeObjects = [];
 let gifList = [];
 let filtersNames = ["trim", "join", "luminosity", "gamma", "blackwhite", "brightness", "fade", "mirror", "loop", "fps", "rotate", "crop", "speed"];
+let filterList = [];
 let videoDuration = 0;
+let filterListLoop = 0;
+let isList = false;
+//Detail ID
+let detailIDNumber = 0;
 let clicked;
 //for crop
 let x1, x2, y1, y2;
@@ -335,17 +340,25 @@ function toggleClick(id){
   document.getElementById('optionsTxt').style.display = "none";
   document.getElementById('applyButton').style.display = "none";
   document.getElementById("error").style.display = "none";
+  document.getElementById("listButtons").style.display = "none";
   //console.log(document.getElementById(id).classList[1]);
   //document.getElementById('sideBar').style.display = "block";
   if(id == "editNavButton"){
     console.log('display edit');
     document.getElementById("editButtons").style.display = "flex";
     document.getElementById("editButtons2").style.display = "none";
+    document.getElementById("editList").style.display = "none";
   }else if(id == "filtersNavButton"){
     console.log('display filter');
     document.getElementById("editButtons2").style.display = "flex";
     document.getElementById("editButtons").style.display = "none";
-
+    document.getElementById("editList").style.display = "none";
+  }else if(id == "listNavButton"){
+    console.log('display list');
+    document.getElementById("editList").style.display = "flex";
+    document.getElementById("listButtons").style.display = "flex";
+    document.getElementById("editButtons2").style.display = "none";
+    document.getElementById("editButtons").style.display = "none";
   }
 }
 
@@ -359,21 +372,16 @@ function trim(){
 }
 
 function trimSend(){
-  document.getElementById("loadingDiv").style.display = "flex";
-  name = activeObjects[activeObjects.length - 1];
   let t1 = slider.getValue()[0];
   let t2 = slider.getValue()[1];
-  console.log("trim: " + name + " " + t1 + " " + t2);
-  //console.log("value: " + slider.getValue()[1])
-  let data = {name: name, t1: t1, t2: t2} ;
-  console.log(data);
-  console.log(data.name);
-  socket.emit('trim', data);
+  let data = {name: "", t1: t1, t2: t2} ;
+  return data;
 }
 socket.on('fromPythonTrim', (data) => {
   document.getElementById("loadingDiv").style.display = "none";
 
   if(data == "OK"){
+    console.log('Hello after Trim!!!!');
     replaceAfterFilter('trim');
   }else{
     console.log("Oops, something went wrong");
@@ -384,6 +392,7 @@ socket.on('fromPythonTrim', (data) => {
 
 function join(){
   displayOptions("join");
+  document.getElementById("addToListButton").style.display = "none";
   clicked = "join";
   updateJoinList();
   console.log("join click: " + activeObjects);
@@ -589,6 +598,7 @@ function displayOptions(option){
   document.getElementById('optionsTxt').style.display = "flex";
   document.getElementById('applyButton').style.display = "flex";
   document.getElementById("optionsSideBar").style.display = "block";
+  document.getElementById("addToListButton").style.display = "block";
   document.getElementById("error").style.display = "none";
   for(i=0; i<filtersNames.length; i++){
     id = filtersNames[i] + "Options";
@@ -677,20 +687,19 @@ function replaceAfterFilter(filterName){
       break;
     }
   }
+  activeObjects.push(fileDisplay.name);
+  console.log("aktywne teraz: " + activeObjects[activeObjects.length - 1]);
 }
+
 function luminosity(){
   displayOptions("luminosity");
   clicked = "luminosity";
 }
 function luminositySend(){
-  name = activeObjects[activeObjects.length - 1];
-  lumiBrightnessValue = luminositySlider.getValue();
-  lumiContrastValue = lumContrastSlider.getValue();
-  console.log("slider from lum: " + lumiBrightnessValue + " / " + lumiContrastValue);
-  let data = {name: name, lbv: lumiBrightnessValue, lcv: lumiContrastValue};
-  console.log(data.lbv + " / " + data.lcv);
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('luminosity', data);
+  let lumiBrightnessValue = luminositySlider.getValue();
+  let lumiContrastValue = lumContrastSlider.getValue();
+  let data = {name: "", lbv: lumiBrightnessValue, lcv: lumiContrastValue};
+  return data;
 }
 socket.on('fromPythonLuminosity', (data) => {
   console.log("Hello after Luminosity");
@@ -702,7 +711,6 @@ socket.on('fromPythonLuminosity', (data) => {
     document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
-
 });
 
 function gamma(){
@@ -710,11 +718,9 @@ function gamma(){
   clicked = "gamma";
 }
 function gammaSend(){
-  name = activeObjects[activeObjects.length - 1];
-  gammaValue = gammaSlider.getValue();
-  let data = {name: name, gv: gammaValue};
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('gamma', data);
+  let gammaValue = gammaSlider.getValue();
+  let data = {name: "", gv: gammaValue};
+  return data;
 }
 socket.on('fromPythonGamma', (data) => {
   console.log("Hello after Gamma");
@@ -733,7 +739,7 @@ function blackwhite(){
   clicked = "blackwhite";
 }
 function blackwhiteSend(){
-  name = activeObjects[activeObjects.length - 1];
+  let name = activeObjects[activeObjects.length - 1];
   document.getElementById("loadingDiv").style.display = "flex";
   socket.emit('blackwhite', name);
 }
@@ -755,12 +761,9 @@ function brightness(){
   clicked = "brightness";
 }
 function brightnessSend(){
-  name = activeObjects[activeObjects.length - 1];
-  brightnessValue = brightnessSlider.getValue();
-  let data = {name: name, bv: brightnessValue};
-  console.log("brData: " + data.name + " " + data.bv);
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('brightness', data);
+  let brightnessValue = brightnessSlider.getValue();
+  let data = {name: "", bv: brightnessValue};
+  return data;
 }
 socket.on('fromPythonBrightness', (data) => {
   console.log("Hello after Brightness");
@@ -772,7 +775,6 @@ socket.on('fromPythonBrightness', (data) => {
     document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
-
 });
 
 function fade(){
@@ -781,20 +783,19 @@ function fade(){
   fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
 }
 function fadeSend(){
-  name = activeObjects[activeObjects.length - 1];
   let inOut;
-  fadeDuration = fadeInOutSlider.getValue();
+  let fadeDuration = fadeInOutSlider.getValue();
   console.log("inout lenght: " + document.getElementsByClassName("clicked3").length);
   if(document.getElementsByClassName("clicked3").length == 0){
+    document.getElementById("loadingDiv").style.display = "none";
     console.log("pusto inOut");
     document.getElementById('error').innerHTML = "No In/Out selected";
     document.getElementById('error').style.display = "block";
   }else{
     inOut = document.getElementsByClassName("clicked3")[0].id;
     document.getElementById('error').style.display = "none";
-    let data = {name: name, inOut: inOut, fd: fadeDuration};
-    document.getElementById("loadingDiv").style.display = "flex";
-    socket.emit('fade', data);
+    let data = {name: "", inOut: inOut, fd: fadeDuration};
+    return data;
   }
 }
 socket.on('fromPythonFade', (data) => {
@@ -819,8 +820,8 @@ function mirror(){
   clicked = "mirror";
 }
 function mirrorSend(){
-  name = activeObjects[activeObjects.length - 1];
   if(document.getElementsByClassName("clicked4").length == 0){
+    document.getElementById("loadingDiv").style.display = "none";
     document.getElementById('error').innerHTML = "No direction selected";
     document.getElementById('error').style.display = "block";
   }else{
@@ -828,9 +829,8 @@ function mirrorSend(){
     console.log('xy: ' + mirrorXY);
     console.log(mirrorXY .split("mirror")[1]);
     xy = mirrorXY .split("mirror")[1]
-    let data = {name: name, xy: xy};
-    document.getElementById("loadingDiv").style.display = "flex";
-    socket.emit('mirror', data);
+    let data = {name: "", xy: xy};
+    return data;
   }
 }
 
@@ -857,12 +857,10 @@ function rotate(){
   clicked = "rotate";
 }
 function rotateSend(){
-  name = activeObjects[activeObjects.length - 1];
   rotateValue = rotateSlider.getValue();
-  let data = {name: name, rv: rotateValue};
+  let data = {name: "", rv: rotateValue};
+  return data;
   console.log("angle: " + data.rv);
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('rotate', data);
 }
 socket.on('fromPythonRotate', (data) => {
   console.log("Hello after Rotate");
@@ -926,25 +924,16 @@ function crop(){
   }); */
 }
 function cropSend(){
-  name = activeObjects[activeObjects.length - 1];
   x1Value = cropXSlider.getValue()[0];
   x2Value = cropXSlider.getValue()[1];
   y1Value = cropYSlider.getValue()[0];
   y2Value = cropYSlider.getValue()[1];
   widthValue = document.getElementById("cropWidthInput").value;
   heightValue = document.getElementById("cropHeightInput").value;
-  //xcenterValue = document.getElementById("cropXcenterInput").value;
-  //ycenterValue = document.getElementById("cropYcenterInput").value;
 
   console.log('crop: ' + x1Value + " " + x2Value + " " + y1Value + " " + y2Value + " // " + widthValue + " " + heightValue);
-
-  let data = {name: name, x1: x1Value, x2: x2Value, y1: y1Value, y2: y2Value, width: widthValue, height: heightValue};
-  console.log('crop data: ' + data.x1 + " " + data.x2 + " " + data.y1 + " " + data.y2);
-  //document.getElementById('error').style.display = "none";
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('crop', data);
-
-  //speedfinaldurValue = document.getElementById("speedfinaldurInput").value;
+  let data = {name: "", x1: x1Value, x2: x2Value, y1: y1Value, y2: y2Value, width: widthValue, height: heightValue};
+  return data;
 }
 socket.on('fromPythonCrop', (data) => {
   console.log("Hello after Crop");
@@ -963,17 +952,15 @@ function speed(){
   clicked = "speed";
 }
 function speedSend(){
-  name = activeObjects[activeObjects.length - 1];
   speedxValue = document.getElementById("speedxInput").value;
   if(speedxValue == ""){
+    document.getElementById("loadingDiv").style.display = "none";
     document.getElementById('speedErrorEmpty').innerHTML = "This field cannot be empty";
   }else{
-    let data = {name: name, sx: speedxValue/*, sfd: speedfinaldurValue*/};
+    let data = {name: "", sx: speedxValue};
     document.getElementById('speedErrorEmpty').innerHTML = "";
-    document.getElementById("loadingDiv").style.display = "flex";
-    socket.emit('speed', data);
+    return data;
   }
-  //speedfinaldurValue = document.getElementById("speedfinaldurInput").value;
 }
 socket.on('fromPythonSpeed', (data) => {
   console.log("Hello after Speed");
@@ -1025,8 +1012,128 @@ function drawCanvas(height, width){
   });
 }
 
+function addToList(){
+  console.log("Hello add to list: " + clicked);
+  document.getElementById("emptyList").style.display = "none";
+  let listElement;
+  switch(clicked){
+    case 'trim':
+      listElement = trimSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Trim";
+      filterList.push(listElement);
+      break;
+    case 'luminosity':
+      listElement = luminositySend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Luminosity-contrast Correction";
+      filterList.push(listElement);
+      break;
+    case 'gamma':
+      listElement = gammaSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Gamma correction";
+      filterList.push(listElement);
+      break;
+    case 'blackwhite':
+      listElement = {};
+      listElement.Fname = clicked;
+      listElement.displayName = "Black and white";
+      filterList.push(listElement);
+      break;
+    case 'brightness':
+      listElement = brightnessSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Brightness";
+      filterList.push(listElement);
+      break;
+    case 'fade':
+      listElement = fadeSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Fade";
+      filterList.push(listElement);
+      break;
+    case 'mirror':
+      listElement = mirrorSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Mirror";
+      filterList.push(listElement);
+      break;
+    case 'loop':
+      listElement = loopSend();
+      listElement.Fname = clicked;
+      filterList.push(listElement);
+      break;
+    case 'fps':
+      listElement = fpsSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Change FPS";
+      filterList.push(listElement);
+      break;
+    case 'rotate':
+      listElement = rotateSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Rotate";
+      filterList.push(listElement);
+      break;
+    case 'crop':
+      listElement = cropSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Crop";
+      filterList.push(listElement);
+      break;
+    case 'speed':
+      listElement = speedSend();
+      listElement.Fname = clicked;
+      listElement.displayName = "Speed up";
+      filterList.push(listElement);
+      break;
+  }
+
+
+  console.log(filterList);
+  let divMain = document.createElement("DIV");
+  divMain.classList.add("listElements");
+  divMain.setAttribute('data-toggle', 'collapse');
+  divMain.innerHTML = listElement.displayName;
+  document.getElementById("editList").appendChild(divMain);
+
+  let divDetail = document.createElement("DIV");
+  for(i=1; i<Object.values(listElement).length-2; i++){
+    divDetail.innerHTML += "Value: " + Object.values(listElement)[i];
+    divDetail.innerHTML += '<br/>'
+  }
+  divDetail.id = clicked + detailIDNumber;
+  divDetail.classList.add("collapse");
+  divDetail.classList.add("listElements");
+  console.log(divDetail.id);
+  document.getElementById("editList").appendChild(divDetail);
+
+  let detailID = '#' + divDetail.id;
+  divMain.setAttribute('data-target', detailID);
+
+  detailIDNumber++;
+
+}
+
+function clearList() {
+  filterList = [];
+  console.log(filterList);
+  const myNode = document.getElementById("editList");
+  while (myNode.firstChild) {
+    myNode.removeChild(myNode.lastChild);
+  }
+  let p = document.createElement("P");
+  p.id = "emptyList";
+  p.innerHTML = "List is empty";
+  document.getElementById("editList").appendChild(p);
+  document.getElementById("emptyList").style.display = "block";
+}
+
 function apply(){
+  isList = false;
   console.log("apply: " + clicked);
+  let sendObject;
   if(activeObjects == ""){
     console.log('pusto');
     document.getElementById("error").innerHTML = "No video selected";
@@ -1036,31 +1143,43 @@ function apply(){
     //  document.getElementById("errorNoVideo").innerHTML = "At least two videos must be selected";
     //}
   }else{
+    document.getElementById("loadingDiv").style.display = "flex";
     switch(clicked){
       case 'trim':
-        trimSend();
-        console.log('Hello trim');
+        sendObject = trimSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('trim', sendObject);
         break;
       case 'join':
         joinSend();
         break;
       case 'luminosity':
-        luminositySend();
+        sendObject = luminositySend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('luminosity', sendObject);
         break;
       case 'gamma':
-        gammaSend();
+        sendObject = gammaSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('gamma', sendObject);
         break;
       case 'blackwhite':
         blackwhiteSend();
         break;
       case 'brightness':
-        brightnessSend();
+        sendObject = brightnessSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('brightness', sendObject);
         break;
       case 'fade':
-        fadeSend();
+        sendObject = fadeSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('fade', sendObject);
         break;
       case 'mirror':
-        mirrorSend();
+        sendObject = mirrorSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('mirror', sendObject);
         break;
       case 'loop':
         loopSend();
@@ -1069,17 +1188,61 @@ function apply(){
         fpsSend();
         break;
       case 'rotate':
-        rotateSend();
+        sendObject = rotateSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('rotate', sendObject);
         break;
       case 'crop':
-        cropSend();
+        sendObject = cropSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('crop', sendObject);
         break;
       case 'speed':
-        speedSend();
+        sendObject = speedSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('speed', sendObject);
         break;
     }
   }
 }
+
+function applyList() {
+  isList = true;
+  console.log('Długosć na początku: ' + filterList.length);
+  console.log('name: ' + activeObjects[activeObjects.length - 1]);
+  if(filterList == ""){
+    document.getElementById("error").innerHTML = "List is empty";
+    document.getElementById("error").style.display = "block";
+  }else if(activeObjects == ""){
+    console.log("no video!!");
+    document.getElementById("error").innerHTML = "No video selected";
+    document.getElementById("error").style.display = "block";
+  }else {
+    document.getElementById("error").style.display = "none";
+    document.getElementById("loadingDiv").style.display = "flex";
+    console.log(filterList);
+    console.log("!!!!START!!!!");
+    console.log('name: ' + activeObjects[activeObjects.length - 1]);
+    filterList[filterListLoop].name = activeObjects[activeObjects.length - 1];
+    console.log(filterList[filterListLoop].Fname);
+    socket.emit(filterList[filterListLoop].Fname, filterList[filterListLoop]);
+  }
+}
+socket.on('fromPython', (data) => {
+  if(isList == true){
+    console.log('After Filter, Hello!!!!');
+    console.log('Długosć: ' + filterListLoop + " " + filterList.length);
+    filterListLoop++;
+    if(filterListLoop < filterList.length){
+      console.log('Długosć: ' + filterListLoop + " " + filterList.length);
+      applyList();
+    }else{
+      console.log("!!!KONIEC!!!");
+      document.getElementById("loadingDiv").style.display = "none";
+      filterListLoop = 0;
+    }
+  }
+});
 
 function isNumberKey(evt){
   var charCode = (evt.which) ? evt.which : evt.keyCode;

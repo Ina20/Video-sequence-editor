@@ -96,6 +96,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonTrim', ok);
+      socket.emit('fromPython', 'OK');
     });
 
 
@@ -165,6 +166,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonLuminosity', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -182,6 +184,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonGamma', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -197,6 +200,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonBlackWhite', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -215,6 +219,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonBrightness', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -234,6 +239,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonFade', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -251,6 +257,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonMirror', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -269,6 +276,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonLoop', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -287,6 +295,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonFPS', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -305,6 +314,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonRotate', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -333,6 +343,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonCrop', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -353,6 +364,7 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonSpeed', ok);
+      socket.emit('fromPython', 'OK');
     });
   });
 
