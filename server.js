@@ -190,8 +190,9 @@ io.on("connection", (socket) => {
 
   socket.on('blackwhite', (data) => {
     console.log("blackWhiteFromServer: " + data);
+    name = data.name;
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "blackwhite", data]);
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "blackwhite", name]);
     pythonProcess.stdout.on('data', (data) => {
       // Do something with the data returned from python script
       data = data.toString().split(/\r?\n/);

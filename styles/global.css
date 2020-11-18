@@ -88,7 +88,7 @@ button:hover {
   align-items: center;
   width: 95%;
   height: fit-content;
-  background: #e5eaed;
+  //background: #e5eaed;
   margin-left: 16px;
 }
 .button {
@@ -463,6 +463,22 @@ video {
   font-size: 18px;
   color: rgb(0, 0, 0, 0.62);
   margin-right: 16px;
+  margin-top: 0;
+  background: #e5eaed;
+  width: 100%;
+}
+#editList > div {
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  color: #000;
+  //margin-right: 16px;
+  //margin-top: 0;
+  background: #e5eaed;
+  //width: 100%;
+}
+#editList > button {
+  margin-right: 0;
+  text-align: left;
 }
 .center {
   justify-content: center;
@@ -628,4 +644,10 @@ input:focus{
 }
 .listElement:hover {
   background: pink;
+}
+.closeButton {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  float: right;
 }

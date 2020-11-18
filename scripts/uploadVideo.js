@@ -296,7 +296,9 @@ function addVideo(file) {
         fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
         console.log("join: " + activeObjects);
       }else {
-
+        active = true;
+        activeObjects.push(file.name);
+        fileDisplay.classList.add("active");
         //vid = document.querySelector("video");
         vHeight = fileDisplay.videoHeight;
         vWidth = fileDisplay.videoWidth;
@@ -304,8 +306,6 @@ function addVideo(file) {
         document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
         document.getElementById("error").style.display = "none";
         videoDuration = fileDisplay.duration;
-        fileDisplay.classList.add("active");
-        active = true;
         console.log("join: " + activeObjects);
         slider.setAttribute("max", Math.round(videoDuration));
         GIFSlider.setAttribute("max", Math.round(videoDuration));
@@ -314,7 +314,6 @@ function addVideo(file) {
         cropYSlider.setAttribute("max", vHeight);
         drawCanvas(vHeight, vWidth);
         document.querySelector("video").src = blobURL;
-        activeObjects.push(file.name);
       }
       console.log("join active: " + activeObjects[activeObjects.length - 1])
       updateJoinList();
@@ -463,13 +462,14 @@ socket.on('fromPythonJoin', (data) => {
         fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
         console.log("join: " + activeObjects);
       }else {
+        active = true;
+        activeObjects.push(fileDisplay.name);
+        fileDisplay.classList.add("active");
         vHeight = fileDisplay.videoHeight;
         vWidth = fileDisplay.videoWidth;
         document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
         document.getElementById("error").style.display = "none";
         videoDuration = fileDisplay.duration;
-        fileDisplay.classList.add("active");
-        active = true;
         console.log("join: " + activeObjects);
         slider.setAttribute("max", Math.round(videoDuration));
         GIFSlider.setAttribute("max", Math.round(videoDuration));
@@ -478,7 +478,6 @@ socket.on('fromPythonJoin', (data) => {
         cropYSlider.setAttribute("max", vHeight);
         drawCanvas(vHeight, vWidth);
         document.querySelector("video").src = fileSrc;
-        activeObjects.push(fileDisplay.name);
       }
       updateJoinList();
     }
@@ -507,6 +506,7 @@ socket.on('fromPythonJoin', (data) => {
 
 function loop(){
   displayOptions("loop");
+  document.getElementById("addToListButton").style.display = "none";
   clicked = "loop";
   GIFSlider.setAttribute("max", Math.round(videoDuration));
 }
@@ -567,19 +567,19 @@ function fps(){
   clicked = "fps";
 }
 function fpsSend(){
-  name = activeObjects[activeObjects.length - 1];
+  //name = activeObjects[activeObjects.length - 1];
   fpsValue = document.getElementById("fpsInput").value;
   console.log("fpsValue: " + fpsValue);
   if(fpsValue == ""){
     document.getElementById('fpsErrorEmpty').innerHTML = "This field cannot be empty";
   }else{
-    let data = {name: name, fps: fpsValue};
-    console.log("fps: " + data.fps);
     document.getElementById('fpsErrorEmpty').innerHTML = "";
-    document.getElementById("loadingDiv").style.display = "flex";
-    socket.emit('fps', data);
+    let data = {name: "", fps: fpsValue};
+    return data;
+    //console.log("fps: " + data.fps);
+    //document.getElementById("loadingDiv").style.display = "flex";
+    //socket.emit('fps', data);
   }
-  //speedfinaldurValue = document.getElementById("speedfinaldurInput").value;
 }
 socket.on('fromPythonFPS', (data) => {
   console.log("Hello after FPS");
@@ -592,7 +592,6 @@ socket.on('fromPythonFPS', (data) => {
     $('.toast').toast('show');
   }
 });
-
 
 function displayOptions(option){
   document.getElementById('optionsTxt').style.display = "flex";
@@ -628,13 +627,13 @@ function replaceAfterFilter(filterName){
   fileDisplay.name = filterName + '_' + activeObjects[activeObjects.length - 1];
   fileDisplay.onclick = function() {
     if(active) {
-      fileDisplay.classList.remove("active");
       active = false;
       for(var i = 0; i < activeObjects.length; i++){
         if (activeObjects[i] === fileDisplay.name){
           activeObjects.splice(i, 1);
         }
       }
+      fileDisplay.classList.remove("active");
       document.querySelector("video").src = "./videos/" + activeObjects[activeObjects.length - 1];
       for(i=0; i<document.getElementById("videoBar").childNodes.length; i++){
         if(activeObjects[activeObjects.length - 1] == document.getElementById("videoBar").childNodes.item(i).name){
@@ -658,13 +657,14 @@ function replaceAfterFilter(filterName){
       GIFSlider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
     }else {
+      active = true;
+      activeObjects.push(fileDisplay.name);
+      fileDisplay.classList.add("active");
       vHeight = fileDisplay.videoHeight;
       vWidth = fileDisplay.videoWidth;
       document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
       document.getElementById("error").style.display = "none";
       videoDuration = fileDisplay.duration;
-      fileDisplay.classList.add("active");
-      active = true;
       slider.setAttribute("max", Math.round(videoDuration));
       GIFSlider.setAttribute("max", Math.round(videoDuration));
       fadeInOutSlider.setAttribute("max", Math.round(videoDuration));
@@ -672,7 +672,6 @@ function replaceAfterFilter(filterName){
       cropYSlider.setAttribute("max", vHeight);
       drawCanvas(vHeight, vWidth);
       document.querySelector("video").src = fileSrc;
-      activeObjects.push(fileDisplay.name);
     }
     updateJoinList();
   }
@@ -738,11 +737,11 @@ function blackwhite(){
   displayOptions("blackwhite");
   clicked = "blackwhite";
 }
-function blackwhiteSend(){
-  let name = activeObjects[activeObjects.length - 1];
-  document.getElementById("loadingDiv").style.display = "flex";
-  socket.emit('blackwhite', name);
-}
+//function blackwhiteSend(){
+//  let name = activeObjects[activeObjects.length - 1];
+//  document.getElementById("loadingDiv").style.display = "flex";
+//  socket.emit('blackwhite', name);
+//}
 socket.on('fromPythonBlackWhite', (data) => {
   console.log("Hello after BlackAndWhite");
   document.getElementById("loadingDiv").style.display = "none";
@@ -1050,18 +1049,17 @@ function addToList(){
     case 'fade':
       listElement = fadeSend();
       listElement.Fname = clicked;
-      listElement.displayName = "Fade";
+      listElement.displayName = "Fade " + listElement.inOut.split("fade")[1];
       filterList.push(listElement);
       break;
     case 'mirror':
       listElement = mirrorSend();
       listElement.Fname = clicked;
-      listElement.displayName = "Mirror";
-      filterList.push(listElement);
-      break;
-    case 'loop':
-      listElement = loopSend();
-      listElement.Fname = clicked;
+      if(listElement.xy == "X"){
+        listElement.displayName = "Mirror Horizontally";
+      }else if(listElement.xy == "Y"){
+        listElement.displayName = "Mirror Vertically";
+      }
       filterList.push(listElement);
       break;
     case 'fps':
@@ -1092,16 +1090,53 @@ function addToList(){
 
 
   console.log(filterList);
-  let divMain = document.createElement("DIV");
-  divMain.classList.add("listElements");
-  divMain.setAttribute('data-toggle', 'collapse');
-  divMain.innerHTML = listElement.displayName;
-  document.getElementById("editList").appendChild(divMain);
+  let listElementMain = document.createElement("BUTTON");
+  listElementMain.classList.add("listElements", "button");
+  listElementMain.setAttribute('data-toggle', 'collapse');
+  listElementMain.innerHTML = listElement.displayName;
+  listElementMain.Fname = listElement.Fname;
+  document.getElementById("editList").appendChild(listElementMain);
 
   let divDetail = document.createElement("DIV");
-  for(i=1; i<Object.values(listElement).length-2; i++){
-    divDetail.innerHTML += "Value: " + Object.values(listElement)[i];
-    divDetail.innerHTML += '<br/>'
+  switch(clicked){
+    case 'trim':
+      let ts = Object.values(listElement)[1];
+      let te = Object.values(listElement)[2]
+      //divDetail.innerHTML += "Time start: " + Object.values(listElement)[1] + "<br/>Time end: " + Object.values(listElement)[2];
+      divDetail.innerHTML += "Time start: " + Math.floor(ts / 60) + ":" + (ts % 60 ? ts % 60 : '00') + "<br/>Time end: " + Math.floor(te / 60) + ":" + (te % 60 ? te % 60 : '00');
+      break;
+    case 'luminosity':
+      divDetail.innerHTML += "Luminosity value: " + Object.values(listElement)[1] + "<br/>Contrast Value: " + Object.values(listElement)[2];
+      break;
+    case 'blackwhite':
+      divDetail.innerHTML += "No options";
+      divDetail.style.color = "rgb(0, 0, 0, 0.62)";
+      break;
+    case 'fade':
+      let dur = Object.values(listElement)[2]
+      divDetail.innerHTML += "Duration: " + Math.floor(dur / 60) + ":" + (dur % 60 ? dur % 60 : '00');
+      break;
+    case 'mirror':
+      divDetail.innerHTML += "No options";
+      divDetail.style.color = "rgb(0, 0, 0, 0.62)";
+      break;
+    case 'rotate':
+      divDetail.innerHTML += "Angle: " + Object.values(listElement)[1] + String.fromCharCode(176);
+      break;
+    case 'crop':
+      divDetail.innerHTML += "Horizontal: " + Object.values(listElement)[1] + "px - " + Object.values(listElement)[2] + "px<br/>";
+      divDetail.innerHTML += "Vertical: " + Object.values(listElement)[3] + "px - " + Object.values(listElement)[4] + "px<br/>";
+      divDetail.innerHTML += "Width: " + Object.values(listElement)[5] + "px <br/>Height: " + Object.values(listElement)[6] + "px";
+      break;
+    case 'speed':
+      divDetail.innerHTML += "Value: x" + Object.values(listElement)[1];
+      break;
+    default:
+      for(i=1; i<Object.values(listElement).length-2; i++){
+        divDetail.innerHTML += "Value: " + Object.values(listElement)[i];
+        divDetail.innerHTML += '<br/>';
+      }
+      break;
   }
   divDetail.id = clicked + detailIDNumber;
   divDetail.classList.add("collapse");
@@ -1110,14 +1145,32 @@ function addToList(){
   document.getElementById("editList").appendChild(divDetail);
 
   let detailID = '#' + divDetail.id;
-  divMain.setAttribute('data-target', detailID);
+  listElementMain.setAttribute('data-target', detailID);
 
+
+  let close = document.createElement("BUTTON");
+  close.classList.add("closeButton");
+  close.innerHTML = '&times;'
+  close.onclick = function(){
+    var index = filterList.map(x => {
+      return x.Fname;
+    }).indexOf(listElementMain.Fname);
+    filterList.splice(index, 1);
+    console.log(filterList);
+    document.getElementById('editList').removeChild(listElementMain);
+    document.getElementById('editList').removeChild(document.getElementById(divDetail.id));
+    if(filterList.length == 0){
+      document.getElementById("emptyList").style.display = "block";
+    }
+  };
+  listElementMain.appendChild(close);
   detailIDNumber++;
 
 }
 
 function clearList() {
   filterList = [];
+  detailIDNumber = 0;
   console.log(filterList);
   const myNode = document.getElementById("editList");
   while (myNode.firstChild) {
@@ -1164,7 +1217,9 @@ function apply(){
         socket.emit('gamma', sendObject);
         break;
       case 'blackwhite':
-        blackwhiteSend();
+        sendObject = {};
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('blackwhite', sendObject);
         break;
       case 'brightness':
         sendObject = brightnessSend();
@@ -1185,7 +1240,9 @@ function apply(){
         loopSend();
         break;
       case 'fps':
-        fpsSend();
+        sendObject = fpsSend();
+        sendObject.name = activeObjects[activeObjects.length - 1];
+        socket.emit('fps', sendObject);
         break;
       case 'rotate':
         sendObject = rotateSend();
@@ -1240,6 +1297,7 @@ socket.on('fromPython', (data) => {
       console.log("!!!KONIEC!!!");
       document.getElementById("loadingDiv").style.display = "none";
       filterListLoop = 0;
+      activeObjects = [];
     }
   }
 });
