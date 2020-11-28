@@ -581,7 +581,7 @@ function fpsSend(){
     //socket.emit('fps', data);
   }
 }
-socket.on('fromPythonFPS', (data) => {
+socket.on('fromPythonFps', (data) => {
   console.log("Hello after FPS");
   document.getElementById("loadingDiv").style.display = "none";
   if(data == "OK"){
@@ -742,7 +742,7 @@ function blackwhite(){
 //  document.getElementById("loadingDiv").style.display = "flex";
 //  socket.emit('blackwhite', name);
 //}
-socket.on('fromPythonBlackWhite', (data) => {
+socket.on('fromPythonBlackwhite', (data) => {
   console.log("Hello after BlackAndWhite");
   document.getElementById("loadingDiv").style.display = "none";
   if(data == "OK"){
@@ -1200,64 +1200,76 @@ function apply(){
     switch(clicked){
       case 'trim':
         sendObject = trimSend();
+        sendObject.Fname = "trim";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('trim', sendObject);
+        socket.emit('toPython', sendObject);
+        //socket.emit('trim', sendObject);
         break;
       case 'join':
         joinSend();
         break;
       case 'luminosity':
         sendObject = luminositySend();
+        sendObject.Fname = "luminosity";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('luminosity', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'gamma':
         sendObject = gammaSend();
+        sendObject.Fname = "gamma";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('gamma', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'blackwhite':
         sendObject = {};
+        sendObject.Fname = "blackwhite";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('blackwhite', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'brightness':
         sendObject = brightnessSend();
+        sendObject.Fname = "brightness";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('brightness', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'fade':
         sendObject = fadeSend();
+        sendObject.Fname = "fade";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('fade', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'mirror':
         sendObject = mirrorSend();
+        sendObject.Fname = "mirror";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('mirror', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'loop':
         loopSend();
         break;
       case 'fps':
         sendObject = fpsSend();
+        sendObject.Fname = "fps";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('fps', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'rotate':
         sendObject = rotateSend();
+        sendObject.Fname = "rotate";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('rotate', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'crop':
         sendObject = cropSend();
+        sendObject.Fname = "crop";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('crop', sendObject);
+        socket.emit('toPython', sendObject);
         break;
       case 'speed':
         sendObject = speedSend();
+        sendObject.Fname = "speed";
         sendObject.name = activeObjects[activeObjects.length - 1];
-        socket.emit('speed', sendObject);
+        socket.emit('toPython', sendObject);
         break;
     }
   }
@@ -1282,7 +1294,7 @@ function applyList() {
     console.log('name: ' + activeObjects[activeObjects.length - 1]);
     filterList[filterListLoop].name = activeObjects[activeObjects.length - 1];
     console.log(filterList[filterListLoop].Fname);
-    socket.emit(filterList[filterListLoop].Fname, filterList[filterListLoop]);
+    socket.emit('toPython', filterList[filterListLoop]);
   }
 }
 socket.on('fromPython', (data) => {

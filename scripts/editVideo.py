@@ -11,10 +11,12 @@ def read_in():
     return json.loads(lines[0])
 
 def trim():
-    video_name = sys.argv[2]
-    t1 = int(sys.argv[3])
-    t2 = int(sys.argv[4])
-    print("Python Trim")
+    print("Hello from Python!")
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    t1 = int(data['t1'])
+    t2 = int(data['t2'])
+    print(t1)
     try:
         ffmpeg_extract_subclip("./videos/" + video_name, t1, t2, targetname="./videos/trim_" + video_name)
         print("Trim_OK")
@@ -28,6 +30,7 @@ def join():
     video_name = ''
     try:
         video_list = sys.argv[2].split(',')
+        print(video_list)
         for video in video_list:
             video_array.append(VideoFileClip("./videos/" + video))
         video_name = video_list[0]
@@ -40,9 +43,10 @@ def join():
 
 def luminosity():
     print("Hello from Python LM")
-    video_name = sys.argv[2]
-    lbv = float(sys.argv[3])
-    lcv = float(sys.argv[4])
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    lbv = float(data['lbv'])
+    lcv = float(data['lcv'])
     print(video_name)
     try:
         video = VideoFileClip("./videos/" + video_name)
@@ -55,8 +59,9 @@ def luminosity():
 
 def gamma():
     print("Hello from Python G")
-    video_name = sys.argv[2]
-    gv = float(sys.argv[3])
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    gv = float(data['gv'])
     print(video_name)
     try:
         video = VideoFileClip("./videos/" + video_name)
@@ -69,7 +74,8 @@ def gamma():
 
 def blackwhite():
     print("Hello from Python BW")
-    video_name = sys.argv[2]
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
     print(video_name)
     try:
         video = VideoFileClip("./videos/" + video_name)
@@ -82,8 +88,9 @@ def blackwhite():
 
 def brightness():
     print("Hello from Python BR")
-    video_name = sys.argv[2]
-    bv = float(sys.argv[3])
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    bv = float(data['bv'])
     print(video_name)
     print(bv)
     try:
@@ -97,9 +104,10 @@ def brightness():
 
 def fade():
     print("Hello from Python F")
-    video_name = sys.argv[2]
-    inOut = sys.argv[3]
-    dur = float(sys.argv[4])
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    inOut = data['inOut']
+    dur = float(data['fd'])
     print(video_name)
     print(inOut)
     print(dur)
@@ -120,8 +128,9 @@ def fade():
 
 def mirror():
     print("Hello from Python M")
-    video_name = sys.argv[2]
-    xy = sys.argv[3]
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    xy = data['xy']
     try:
         video = VideoFileClip("./videos/" + video_name)
         if xy == "X":
@@ -170,8 +179,9 @@ def loop():
 
 def fps():
     print("Hello from Python FPS")
-    video_name = sys.argv[2]
-    fps = int(sys.argv[3])
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    fps = int(data['fps'])
     try:
         video = VideoFileClip("./videos/" + video_name)
         videoCV = cv2.VideoCapture("./videos/" + video_name)
@@ -187,8 +197,9 @@ def fps():
 
 def rotate():
     print("Hello from Python R")
-    video_name = sys.argv[2]
-    angle = float(sys.argv[3])
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    angle = float(data['rv'])
     print(video_name)
     print(angle)
     try:
@@ -202,16 +213,14 @@ def rotate():
 
 def crop():
     print("Hello from Python C")
-    video_name = sys.argv[2]
-    x1 = int(sys.argv[3])
-    x2 = int(sys.argv[4])
-    y1 = int(sys.argv[5])
-    y2 = int(sys.argv[6])
-    width = int(sys.argv[7])
-    height = int(sys.argv[8])
-    #xcenter = int(sys.argv[9])
-    #ycenter = int(sys.argv[10])
-    print(x2)
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    x1 = int(data['x1'])
+    x2 = int(data['x2'])
+    y1 = int(data['y1'])
+    y2 = int(data['y2'])
+    width = int(data['width'])
+    height = int(data['height'])
     try:
         video = VideoFileClip("./videos/" + video_name)
         newclip = (video.fx( vfx.crop, x1=x1, y1=y1, x2=x2, y2=y2, width=width, height=height))
@@ -223,8 +232,9 @@ def crop():
 
 def speed():
     print("Hello from Python S")
-    video_name = sys.argv[2]
-    sx = float(sys.argv[3])
+    data = json.loads(sys.argv[2])
+    video_name = data['name']
+    sx = float(data['sx'])
     #sfd = float(sys.argv[4])
     print(video_name)
     print(sx)

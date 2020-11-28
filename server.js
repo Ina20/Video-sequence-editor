@@ -40,16 +40,6 @@ app.post('/upload', (req, res) => {
     var filename = file.name;
     console.log(filename);
 
-
-/*
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", toPython]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      console.log(data.toString());
-    });
-*/
-
      //save file
     file.mv('./videos/' + filename, function (err) {
       if(err) {
@@ -80,59 +70,27 @@ io.on("connection", (socket) => {
     });
   })
 
-
-  socket.on('trim', (data) => {
-    let name = data.name;
-    let t1 = data.t1;
-    let t2 = data.t2;
-    console.log(name + t1 + t2);
+  socket.on('toPython', (data) => {
+    console.log('Hello from serwer');
+    console.log(data);
+    console.log(data.Fname);
+    Fname = data.Fname;
+    data = JSON.stringify(data);
     const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "trim", name, t1, t2]);
+    const pythonProcess = spawn('python', ["./scripts/editVideo.py", Fname, data]);
     pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
       data = data.toString().split(/\r?\n/);
       console.log(data);
       ok = data[data.length-2].split('_')[1];
       console.log(ok);
 
-      socket.emit('fromPythonTrim', ok);
+      FnameCapitalize = Fname.charAt(0).toUpperCase() + Fname.slice(1);
+
+      socket.emit('fromPython' + FnameCapitalize, ok);
       socket.emit('fromPython', 'OK');
     });
-
-
-    /*
-    let result = JSON.parse(data);
-    console.log('result: ' + result.name);
-    console.log('data: ' + data);
-    arg1 = data;
-    console.log("Hello from socket " + arg1.name);
-
-      const spawn = require("child_process").spawn;
-
-      const pythonProcess = spawn('python', ["./scripts/editVideo.py"]);
-
-      pythonProcess.stdout.on('data', (data) => {
-        // Do something with the data returned from python script
-        fromPython = data.toString();
-        console.log(fromPython);
-        console.log(data.toString());
-
-      });
-      pythonProcess.stdout.on('end', () => {
-        try {
-          let fromPythonJSON = JSON.parse(fromPython);
-          console.log("coming from python: " + fromPythonJSON.name);
-          console.log(fromPython);
-          socket.emit('fromPython', fromPython);
-        } catch (e) {
-          console.log(fromPython);
-        }
-      });
-      pythonProcess.stdin.write(arg1);
-      pythonProcess.stdin.end();
-
-      */
   });
+
 
   socket.on('join', (data) => {
     console.log("joinFromServer: " + data);
@@ -148,117 +106,6 @@ io.on("connection", (socket) => {
       console.log(ok);
 
       socket.emit('fromPythonJoin', ok);
-    });
-  });
-
-  socket.on('luminosity', (data) => {
-    console.log("luminosityFromServer: " + data);
-    name = data.name;
-    lbv = data.lbv;
-    lcv = data.lcv;
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "luminosity", name, lbv, lcv]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonLuminosity', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-  socket.on('gamma', (data) => {
-    console.log("gammaFromServer: " + data);
-    name = data.name;
-    gv = data.gv;
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "gamma", name, gv]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonGamma', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-  socket.on('blackwhite', (data) => {
-    console.log("blackWhiteFromServer: " + data);
-    name = data.name;
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "blackwhite", name]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonBlackWhite', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-  socket.on('brightness', (data) => {
-    console.log("brightnessFromServer: " + data);
-    let name = data.name;
-    let bv = data.bv;
-    console.log("server: " + name + " " + bv);
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "brightness", name, bv]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonBrightness', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-  socket.on('fade', (data) => {
-    console.log("fadeFromServer: " + data);
-    let name = data.name;
-    let inOut = data.inOut;
-    let fd = data.fd;
-    console.log(name + " " + inOut + " " + fd);
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "fade", name, inOut, fd]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonFade', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-  socket.on('mirror', (data) => {
-    console.log("mirrorFromServer: " + data);
-    let name = data.name;
-    let xy = data.xy;
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "mirror", name, xy]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonMirror', ok);
-      socket.emit('fromPython', 'OK');
     });
   });
 
@@ -281,114 +128,8 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on('fps', (data) => {
-    console.log("FPSFromServer: " + data);
-    name = data.name;
-    fps = data.fps;
-    console.log("fps: " + fps);
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "fps", name, fps]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonFPS', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-  socket.on('rotate', (data) => {
-    console.log("rotateFromServer: " + data);
-    name = data.name;
-    rv = data.rv;
-    console.log("angle: " + rv);
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "rotate", name, rv]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonRotate', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-  socket.on('crop', (data) => {
-    console.log("cropFromServer: " + data);
-    name = data.name;
-    x1 = data.x1;
-    x2 = data.x2;
-    y1 = data.y1;
-    y2 = data.y2;
-    width = data.width;
-    height = data.height;
-    //xcenter = data.xcenter;
-    //ycenter = data.ycenter;
-    //sfd = data.sfd;
-    //console.log('name: ' + name + " sx: " + sx + " sfd: " + sfd);
-    //console.log("center: " + xcenter + " " + ycenter);
-    console.log('x2: ' + x2);
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "crop", name, x1, x2, y1, y2, width, height]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonCrop', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-
-  socket.on('speed', (data) => {
-    console.log("speedFromServer: " + data);
-    name = data.name;
-    sx = data.sx;
-    //sfd = data.sfd;
-    //console.log('name: ' + name + " sx: " + sx + " sfd: " + sfd);
-    const spawn = require("child_process").spawn;
-    const pythonProcess = spawn('python', ["./scripts/editVideo.py", "speed", name, sx]);
-    pythonProcess.stdout.on('data', (data) => {
-      // Do something with the data returned from python script
-      data = data.toString().split(/\r?\n/);
-      console.log(data);
-      ok = data[data.length-2].split('_')[1];
-      console.log(ok);
-
-      socket.emit('fromPythonSpeed', ok);
-      socket.emit('fromPython', 'OK');
-    });
-  });
-
-
 });
 
 http.listen(3000, () => {
   console.log('listening on *:3000');
 });
-
-/*
-app.get('/', (req, res) => {
-  var dataToSend;
-  const python = spawn('python', ['./scripts/editVideo.py']);
-  python.stdout.on('data', function (data) {
-    console.log('Pipe data from python script ...');
-    dataToSend = data.toString();
-  });
-  python.on('close', (code) => {
-    console.log(`child process close all stdio with code ${code}`);
-    res.send(dataToSend)
-  });
-});
-*/
-
-//app.listen(port, () => console.log("App listening at http://localhost:3000"));
