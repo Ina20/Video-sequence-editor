@@ -170,13 +170,10 @@ var rotateSlider = new Slider('#rotSlider', {
 document.getElementsByClassName("fa-spinner")[0].style.display = "none";
 
 function openEditor(){
-    //document.getElementById("uploadForm").submit();
 
     let file = document.getElementById("startUpload").files[0];
 
     document.body.style.backgroundImage = "linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(334deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44,44,44, 0.050980392156862744) 53%, rgba(44,44,44, 0.050980392156862744) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(321deg, rgb(255,255,255),rgb(255,255,255))";
-
-    //document.body.style.backgroundImage = "linear-gradient(12deg, rgba(193, 193, 193,0.05) 0%, rgba(193, 193, 193,0.05) 2%,rgba(129, 129, 129,0.05) 2%, rgba(129, 129, 129,0.05) 27%,rgba(185, 185, 185,0.05) 27%, rgba(185, 185, 185,0.05) 66%,rgba(83, 83, 83,0.05) 66%, rgba(83, 83, 83,0.05) 100%),linear-gradient(321deg, rgba(240, 240, 240,0.05) 0%, rgba(240, 240, 240,0.05) 13%,rgba(231, 231, 231,0.05) 13%, rgba(231, 231, 231,0.05) 34%,rgba(139, 139, 139,0.05) 34%, rgba(139, 139, 139,0.05) 71%,rgba(112, 112, 112,0.05) 71%, rgba(112, 112, 112,0.05) 100%),linear-gradient(236deg, rgba(189, 189, 189,0.05) 0%, rgba(189, 189, 189,0.05) 47%,rgba(138, 138, 138,0.05) 47%, rgba(138, 138, 138,0.05) 58%,rgba(108, 108, 108,0.05) 58%, rgba(108, 108, 108,0.05) 85%,rgba(143, 143, 143,0.05) 85%, rgba(143, 143, 143,0.05) 100%),linear-gradient(96deg, rgba(53, 53, 53,0.05) 0%, rgba(53, 53, 53,0.05) 53%,rgba(44, 44, 44,0.05) 53%, rgba(44, 44, 44,0.05) 82%,rgba(77, 77, 77,0.05) 82%, rgba(77, 77, 77,0.05) 98%,rgba(8, 8, 8,0.05) 98%, rgba(8, 8, 8,0.05) 100%),linear-gradient(334deg, rgb(237,235,215),rgb(237,235,215))";
 
     console.log("Hello there!");
     document.getElementById("home").style.display = "none";
@@ -192,7 +189,6 @@ function openEditor(){
 }
 
 function addMoreVideo(){
-    //document.getElementById("uploadForm2").submit();
 
     let file = document.getElementById("nextUpload").files[0];
     if(file.type == "video/mp4"){
@@ -227,7 +223,6 @@ function addVideo(file) {
 
   if(canUpload){
     var data = new FormData();
-    //data = document.getElementById("startUpload").files[0];
     data.append('myVideo', file)
     console.log(data);
         $.ajax({
@@ -299,7 +294,6 @@ function addVideo(file) {
         active = true;
         activeObjects.push(file.name);
         fileDisplay.classList.add("active");
-        //vid = document.querySelector("video");
         vHeight = fileDisplay.videoHeight;
         vWidth = fileDisplay.videoWidth;
         console.log("dimensions: " + vWidth + " " + vHeight);
@@ -340,8 +334,6 @@ function toggleClick(id){
   document.getElementById('applyButton').style.display = "none";
   document.getElementById("error").style.display = "none";
   document.getElementById("listButtons").style.display = "none";
-  //console.log(document.getElementById(id).classList[1]);
-  //document.getElementById('sideBar').style.display = "block";
   if(id == "editNavButton"){
     console.log('display edit');
     document.getElementById("editButtons").style.display = "flex";
@@ -558,8 +550,6 @@ socket.on('fromPythonLoop', (data) => {
     $('.toast').toast('show');
   }
 
-
-  //replaceAfterFilter('loop');
 });
 
 function fps(){
@@ -567,7 +557,6 @@ function fps(){
   clicked = "fps";
 }
 function fpsSend(){
-  //name = activeObjects[activeObjects.length - 1];
   fpsValue = document.getElementById("fpsInput").value;
   console.log("fpsValue: " + fpsValue);
   if(fpsValue == ""){
@@ -576,9 +565,6 @@ function fpsSend(){
     document.getElementById('fpsErrorEmpty').innerHTML = "";
     let data = {name: "", fps: fpsValue};
     return data;
-    //console.log("fps: " + data.fps);
-    //document.getElementById("loadingDiv").style.display = "flex";
-    //socket.emit('fps', data);
   }
 }
 socket.on('fromPythonFps', (data) => {
@@ -737,11 +723,7 @@ function blackwhite(){
   displayOptions("blackwhite");
   clicked = "blackwhite";
 }
-//function blackwhiteSend(){
-//  let name = activeObjects[activeObjects.length - 1];
-//  document.getElementById("loadingDiv").style.display = "flex";
-//  socket.emit('blackwhite', name);
-//}
+
 socket.on('fromPythonBlackwhite', (data) => {
   console.log("Hello after BlackAndWhite");
   document.getElementById("loadingDiv").style.display = "none";
@@ -871,7 +853,6 @@ socket.on('fromPythonRotate', (data) => {
     document.getElementById('thead').innerHTML = "Oops, something went wrong";
     $('.toast').toast('show');
   }
-
 });
 
 function crop(){
@@ -882,46 +863,8 @@ function crop(){
   vHeight = vid.videoHeight;
   vWidth = vid.videoWidth;
   drawCanvas(vHeight, vWidth);
-/*  canvas = document.getElementById('cropCanvas');
-  var ctx = canvas.getContext("2d");
-
-  let x1, x2, y1, y2;
-  let scaleX;
-  let scaleY;
-
-  vid = document.querySelector("video");
-  console.log('vid: ' + vid);
-  vHeight = vid.videoHeight;
-  vWidth = vid.videoWidth;
-  cropXSlider.setValue([0, vWidth]);
-  cropYSlider.setValue([0, vHeight]);
-  console.log('Dimensions: ' + vHeight + " " + vWidth);
-  document.getElementById("videoDimensions").innerHTML = vWidth + "x" + vHeight + "px";
-  ctx.fillStyle = "#5e2c49";
-  scaleX = vWidth/225;
-  scaleY = vHeight/125;
-  x1 = 0;
-  y1 = 0;
-  x2 = vWidth/scaleX;
-  y2 = vHeight/scaleY;
-  ctx.fillRect(x1,y1,x2-x1,y2-y1);
-  cropXSlider.on("slide", function(sliderValue) {
-	   //console.log(sliderValue[0]);
-     x1 = Math.round(sliderValue[0]/scaleX);
-     x2 = Math.round(sliderValue[1]/scaleX);
-     ctx.fillRect(x1,y1,x2-x1,y2-y1);
-     ctx.clearRect(0,y1,x1,y2-y1);
-     ctx.clearRect(x2,y1,225-x2,y2-y1);
-  });
-  cropYSlider.on("slide", function(sliderValue) {
-	   //console.log(sliderValue[0]);
-     y1 = Math.round(sliderValue[0]/scaleY);
-     y2 = Math.round(sliderValue[1]/scaleY);
-     ctx.fillRect(x1,y1,x2-x1,y2-y1);
-     ctx.clearRect(x1,0,x2-x1,y1);
-     ctx.clearRect(x1,y2,x2-x1,225-y2);
-  }); */
 }
+
 function cropSend(){
   x1Value = cropXSlider.getValue()[0];
   x2Value = cropXSlider.getValue()[1];
@@ -994,7 +937,6 @@ function drawCanvas(height, width){
   y2 = vHeight/scaleY;
   ctx.fillRect(x1,y1,x2-x1,y2-y1);
   cropXSlider.on("slide", function(sliderValue) {
-	   //console.log(sliderValue[0]);
      x1 = Math.round(sliderValue[0]/scaleX);
      x2 = Math.round(sliderValue[1]/scaleX);
      ctx.fillRect(x1,y1,x2-x1,y2-y1);
@@ -1002,7 +944,6 @@ function drawCanvas(height, width){
      ctx.clearRect(x2,y1,225-x2,y2-y1);
   });
   cropYSlider.on("slide", function(sliderValue) {
-	   //console.log(sliderValue[0]);
      y1 = Math.round(sliderValue[0]/scaleY);
      y2 = Math.round(sliderValue[1]/scaleY);
      ctx.fillRect(x1,y1,x2-x1,y2-y1);
@@ -1102,7 +1043,6 @@ function addToList(){
     case 'trim':
       let ts = Object.values(listElement)[1];
       let te = Object.values(listElement)[2]
-      //divDetail.innerHTML += "Time start: " + Object.values(listElement)[1] + "<br/>Time end: " + Object.values(listElement)[2];
       divDetail.innerHTML += "Time start: " + Math.floor(ts / 60) + ":" + (ts % 60 ? ts % 60 : '00') + "<br/>Time end: " + Math.floor(te / 60) + ":" + (te % 60 ? te % 60 : '00');
       break;
     case 'luminosity':
@@ -1192,9 +1132,6 @@ function apply(){
     document.getElementById("error").innerHTML = "No video selected";
     document.getElementById("error").style.display = "block";
     console.log('active now: ' + activeObjects.length);
-    //if(clicked == "join"){
-    //  document.getElementById("errorNoVideo").innerHTML = "At least two videos must be selected";
-    //}
   }else{
     document.getElementById("loadingDiv").style.display = "flex";
     switch(clicked){

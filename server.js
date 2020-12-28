@@ -1,5 +1,4 @@
 const express = require('express');
-//const {spawn} = require('child_process');
 const app = express();
 const port = 3000;
 const upload = require('express-fileupload');
@@ -12,7 +11,6 @@ const path = require('path');
 
 
 let fromPython = '';
-//let arg1 = 'Hello';
 let dir = './videos';
 if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);

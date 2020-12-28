@@ -20,10 +20,8 @@ def trim():
     try:
         ffmpeg_extract_subclip("./videos/" + video_name, t1, t2, targetname="./videos/trim_" + video_name)
         print("Trim_OK")
-        #sys.stdout.flush()
     except Exception:
         print("Trim_NotOK")
-        #sys.stdout.flush()
 
 def join():
     video_array = []
@@ -39,7 +37,6 @@ def join():
         print("Join_OK")
     except Exception:
         print("Join_NotOK")
-    #sys.stdout.flush()
 
 def luminosity():
     print("Hello from Python LM")
@@ -55,7 +52,6 @@ def luminosity():
         print("Luminosity_OK")
     except Exception:
         print("Luminosity_NotOK")
-    #sys.stdout.flush()
 
 def gamma():
     print("Hello from Python G")
@@ -70,7 +66,6 @@ def gamma():
         print("gamma_OK")
     except Exception:
         print("gamma_NotOK")
-    #sys.stdout.flush()
 
 def blackwhite():
     print("Hello from Python BW")
@@ -84,7 +79,6 @@ def blackwhite():
         print("BlackWhite_OK")
     except Exception:
         print("BlackWhite_NotOK")
-    #sys.stdout.flush()
 
 def brightness():
     print("Hello from Python BR")
@@ -100,7 +94,6 @@ def brightness():
         print("Brightness_OK")
     except Exception:
         print("Brightness_NotOK")
-    #sys.stdout.flush()
 
 def fade():
     print("Hello from Python F")
@@ -124,7 +117,6 @@ def fade():
         print("Fade_OK")
     except Exception:
         print("Fade_NotOK")
-    #sys.stdout.flush()
 
 def mirror():
     print("Hello from Python M")
@@ -144,13 +136,9 @@ def mirror():
         print("Mirror_OK")
     except Exception:
         print("Mirror_NotOK")
-    #sys.stdout.flush()
 
 
 def time_symetrize(clip):
-    """ Returns the clip played forwards then backwards. In case
-    you are wondering, vfx (short for Video FX) is loaded by
-    >>> from moviepy.editor import * """
     return concatenate([clip, clip.fx( vfx.time_mirror )])
 
 def loop():
@@ -175,7 +163,6 @@ def loop():
         print("Loop_OK")
     except Exception:
         print("Loop_NotOK")
-    #sys.stdout.flush()
 
 def fps():
     print("Hello from Python FPS")
@@ -209,7 +196,6 @@ def rotate():
         print("Rotate_OK")
     except Exception:
         print("Rotate_NotOK")
-    #sys.stdout.flush()
 
 def crop():
     print("Hello from Python C")
@@ -228,17 +214,14 @@ def crop():
         print("Crop_OK")
     except Exception:
         print("Crop_NotOK")
-    #sys.stdout.flush()
 
 def speed():
     print("Hello from Python S")
     data = json.loads(sys.argv[2])
     video_name = data['name']
     sx = float(data['sx'])
-    #sfd = float(sys.argv[4])
     print(video_name)
     print(sx)
-    #print(sfd)
     try:
         video = VideoFileClip("./videos/" + video_name)
         newclip = (video.fx( vfx.speedx, factor=sx))
@@ -246,18 +229,7 @@ def speed():
         print("Speed_OK")
     except Exception:
         print("Speed_NotOK")
-    #sys.stdout.flush()
 
-#lines = read_in()
-#print('Python')
-#print(lines["name"])
-
-#y = json.dumps(lines)
-#print(y)
-
-#print(sys.argv[1]["name"])
-#sys.argv[1] = 'Hello from Python'
-#print(sys.argv[1])
 def filters(argument):
     switcher = {
         'luminosity': luminosity,
